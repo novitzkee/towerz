@@ -1,5 +1,6 @@
-package engine.time;
+package engine;
 
+import engine.time.TimeAware;
 import lombok.Getter;
 
 public class TickCounter implements TimeAware {

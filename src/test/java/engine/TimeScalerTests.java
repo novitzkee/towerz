@@ -1,5 +1,6 @@
-package engine.time;
+package engine;
 
+import engine.time.TimeScaler;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
