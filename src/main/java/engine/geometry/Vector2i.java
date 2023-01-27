@@ -3,12 +3,14 @@ package engine.geometry;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.function.Function;
 
 @Getter
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class Vector2i {
 
     private final int x;
@@ -28,5 +30,9 @@ public class Vector2i {
 
     public Vector2i map(Function<Integer, Integer> f) {
         return new Vector2i(f.apply(x), f.apply(y));
+    }
+
+    public double getLength() {
+        return Math.sqrt(x * x + y * y);
     }
 }
