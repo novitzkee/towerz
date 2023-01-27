@@ -1,4 +1,4 @@
-package game;
+package presentation;
 
 public class Menu {
 }
