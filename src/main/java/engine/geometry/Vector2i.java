@@ -1,10 +1,12 @@
 package engine.geometry;
 
+import engine.utils.Fraction;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 @Getter
@@ -28,11 +30,30 @@ public class Vector2i {
         return new Vector2i(x * a, y * a);
     }
 
+    public Vector2i div(int a) {
+        return new Vector2i(x / a, y / a);
+    }
+
     public Vector2i map(Function<Integer, Integer> f) {
         return new Vector2i(f.apply(x), f.apply(y));
     }
 
     public double getLength() {
         return Math.sqrt(x * x + y * y);
+    }
+
+    public Vector2f toVector2f() {
+        return new Vector2f(x, y);
+    }
+
+    public Vector2i interpolate(Vector2i v, Fraction f) {
+        return this.toVector2f()
+                .mul(1 - f.getValue())
+                .add(v.toVector2f().mul(f.getValue()))
+                .round();
+    }
+
+    public static boolean areInLine(Vector2i a, Vector2i b, Vector2i c) {
+        return (a.x == b.x && b.x == c.x) || (a.y == b.y && b.y == c.y);
     }
 }

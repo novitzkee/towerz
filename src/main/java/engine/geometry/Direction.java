@@ -13,4 +13,13 @@ public enum Direction {
 
     @Getter
     private final Vector2i vector;
+
+    public static Direction invert(Direction direction) {
+        return switch (direction) {
+            case UP -> DOWN;
+            case RIGHT -> LEFT;
+            case DOWN -> UP;
+            case LEFT -> RIGHT;
+        };
+    }
 }
