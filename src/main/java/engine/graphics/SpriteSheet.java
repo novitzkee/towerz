@@ -6,17 +6,18 @@ import lombok.SneakyThrows;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SpriteSheet {
 
-    private final BufferedImage spriteSheet;
+    private final BufferedImage spriteSheetImage;
     private final Vector2i spriteSize;
 
     public SpriteSheet(String imageFilename, Vector2i spriteSize) {
-        this.spriteSheet = loadImage(imageFilename);
+        this.spriteSheetImage = loadImage(imageFilename);
         this.spriteSize = spriteSize;
     }
 
@@ -27,15 +28,20 @@ public class SpriteSheet {
     }
 
     public BasicSprite getSprite(int x, int y) {
-
-        final BufferedImage sprite = spriteSheet.getSubimage(
-                spriteSize.getX() * x, spriteSize.getY() * y,
-                spriteSize.getX(), spriteSize.getY());
-
+        final BufferedImage sprite = getSubImage(x, y);
         return new BasicSprite(sprite, spriteSize);
     }
 
-    public List<BasicSprite> getSpriteRow(int y) {
-        return Collections.emptyList();
+    public List<Sprite> getSpriteRow(int y, int n) {
+        return IntStream.range(0, n)
+                .mapToObj(i -> getSubImage(i, y))
+                .map(image -> new BasicSprite(image, spriteSize))
+                .collect(Collectors.toList());
+    }
+
+    private BufferedImage getSubImage(int x, int y) {
+        return spriteSheetImage.getSubimage(
+                spriteSize.getX() * x, spriteSize.getY() * y,
+                spriteSize.getX(), spriteSize.getY());
     }
 }

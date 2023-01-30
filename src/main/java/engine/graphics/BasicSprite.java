@@ -11,17 +11,18 @@ import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class BasicSprite implements Sprite {
+
     private final BufferedImage bufferedImage;
 
     @Getter
     private final Vector2i size;
 
-    public void draw(Vector2i position, Graphics2D target) {
-        target.drawImage(bufferedImage, Transformations.offset(position.mul(64)), null);
+    @Override
+    public void draw(Vector2i position, DrawingTarget drawingTarget, DrawingPositioning drawingPositioning) {
+        drawingTarget.drawImage(bufferedImage, position, drawingPositioning);
     }
 
     public BasicSprite rotate(Angle byAngle) {
         return null;
     }
-
 }

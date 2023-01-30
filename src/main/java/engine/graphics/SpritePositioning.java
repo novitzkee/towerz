@@ -1,6 +1,6 @@
 package engine.graphics;
 
-public enum Positioning {
+public enum SpritePositioning {
     ORIGIN,
     CENTER
 }

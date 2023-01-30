@@ -17,15 +17,24 @@ public class LayeredSprite implements Sprite {
     }
 
     @Override
-    public void draw(Vector2i position, Graphics2D graphics) {
-        layers.forEach(layer -> layer.draw(position, graphics));
+    public void draw(Vector2i position, DrawingTarget drawingTarget, DrawingPositioning drawingPositioning) {
+        layers.forEach(layer -> layer.draw(position, drawingTarget, drawingPositioning));
     }
 
     @Override
     public Vector2i getSize() {
-        return layers.stream()
-                .findFirst()
+        final int x = layers.stream()
                 .map(Sprite::getSize)
-                .orElse(new Vector2i(0, 0));
+                .mapToInt(Vector2i::getX)
+                .max()
+                .orElse(0);
+
+        final int y = layers.stream()
+                .map(Sprite::getSize)
+                .mapToInt(Vector2i::getY)
+                .max()
+                .orElse(0);
+
+        return new Vector2i(x, y);
     }
 }
