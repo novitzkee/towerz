@@ -1,14 +1,21 @@
-package engine.time;
+package engine.time.delegators;
 
+import engine.time.TimeAware;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class TimeScaler implements TimeAware {
+public class ScalingDelegator implements TimeAware {
 
-    private float remainingTicks = 0f;
-
-    private float scale;
     private final TimeAware subject;
+
+    private float remainingTicks = 1f;
+
+    private float scale = 1f;
+
+    public ScalingDelegator(float scale, TimeAware subject) {
+        this.scale = scale;
+        this.subject = subject;
+    }
 
     public synchronized void setScale(float newScale) {
         scale = newScale;

@@ -1,5 +1,6 @@
-package engine.time;
+package engine.time.delegators;
 
+import engine.time.TimeAware;
 import lombok.RequiredArgsConstructor;
 
 import java.util.function.Consumer;
