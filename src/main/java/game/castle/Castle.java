@@ -1,14 +1,14 @@
 package game.castle;
 
 import engine.geometry.Vector2i;
+import engine.graphics.DrawingPositioning;
+import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
 import engine.graphics.Sprite;
 import game.creature.Health;
 import lombok.RequiredArgsConstructor;
 
-import java.awt.*;
 import java.util.Map;
-import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class Castle implements Paintable {
@@ -19,10 +19,9 @@ public class Castle implements Paintable {
 
     private final Map<State, Sprite> sprites;
 
-
     @Override
-    public void draw(Graphics2D graphics) {
-        sprites.get(getState()).draw(position, graphics);
+    public void draw(DrawingTarget drawingTarget) {
+        sprites.get(getState()).draw(position, drawingTarget, DrawingPositioning.RELATIVE);
     }
 
     private State getState() {
