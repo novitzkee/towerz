@@ -1,10 +1,20 @@
 package game.creature;
 
-import game.world.Path;
+import engine.graphics.Paintable;
+import engine.time.TimeAware;
+import engine.traits.Removable;
 
-public class Creature {
+public interface Creature extends TimeAware, Paintable, Removable {
 
-    private final long pathPosition;
+    int getPathPosition();
 
-    private final Path path;
+    int getPathPositionInTicks(int ticks);
+
+    CreatureState getState();
+
+    void setState(CreatureState creatureState);
+
+    void takeDamage(int amount);
+
+    int getDamage();
 }

@@ -2,14 +2,13 @@ package game.tower;
 
 import engine.events.EventEmitter;
 import engine.geometry.Vector2i;
+import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
 import engine.graphics.BasicSprite;
 import engine.time.TimeAware;
 import engine.traits.Removable;
 import game.events.ProjectileHitEvent;
 import lombok.RequiredArgsConstructor;
-
-import java.awt.*;
 
 @RequiredArgsConstructor
 public class Projectile implements TimeAware, Removable, Paintable {
@@ -45,8 +44,8 @@ public class Projectile implements TimeAware, Removable, Paintable {
     }
 
     @Override
-    public void draw(Graphics2D graphics) {
-        sprite.draw(realPosition, graphics);
+    public void draw(DrawingTarget drawingTarget) {
+        sprite.draw(realPosition, drawingTarget);
     }
 
     @Override

@@ -1,5 +1,5 @@
 package game.events;
 
-import game.creature.ICreature;
+import game.creature.Creature;
 
-public record SoldierArrivalEvent(ICreature soldier) { }
+public record SoldierArrivalEvent(Creature soldier) { }
