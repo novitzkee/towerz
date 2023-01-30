@@ -1,4 +1,4 @@
-package presentation.loaders;
+package game.engine;
 
 import engine.events.EventEmitter;
 import engine.events.EventRouter;
@@ -13,4 +13,8 @@ public interface GameEngine {
     Loop getRepaintLoop();
 
     World getWorldObject();
+
+    void start();
+
+    void stop();
 }
