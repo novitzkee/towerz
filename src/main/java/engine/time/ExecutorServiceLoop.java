@@ -1,6 +1,7 @@
 package engine.time;
 
 
+import engine.time.delegators.CatchDelegator;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
@@ -23,7 +24,6 @@ public class ExecutorServiceLoop implements Loop {
     @Override
     public synchronized void start() {
         if(isRunning) return;
-
         tasksForSubjects.keySet().forEach(sub -> tasksForSubjects.put(sub, scheduleTask(sub)));
         isRunning = true;
     }
@@ -43,12 +43,13 @@ public class ExecutorServiceLoop implements Loop {
     }
 
     private ScheduledFuture<?> scheduleTask(TimeAware subject) {
-        return scheduler.scheduleAtFixedRate(subject::tick, delay.amount(), delay.amount(), delay.timeUnit());
+        final TimeAware task = new CatchDelegator(subject);
+        return scheduler.scheduleAtFixedRate(task::tick, delay.amount(), delay.amount(), delay.timeUnit());
     }
 
     @Override
     public synchronized void remove(TimeAware subject) {
-        Optional.of(tasksForSubjects.get(subject)).ifPresent(t -> t.cancel(false));
+        Optional.ofNullable(tasksForSubjects.get(subject)).ifPresent(t -> t.cancel(false));
         tasksForSubjects.remove(subject);
     }
 }
