@@ -2,6 +2,7 @@ package presentation.components;
 
 import engine.events.EventEmitter;
 import engine.geometry.Vector2i;
+import engine.graphics.Graphics2DTarget;
 import engine.graphics.Paintable;
 import game.events.GameMapClickEvent;
 import game.events.GameMapHoverEvent;
@@ -12,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static presentation.config.Dimensions.TILE_DIMENSIONS_PX;
+import static presentation.config.Dimensions.WORLD_TO_REAL_POSITION_TRANSLATION;
 
 public class WorldPanel extends JPanel {
 
@@ -30,11 +32,12 @@ public class WorldPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        worldPaintable.draw((Graphics2D) g);
+        final Graphics2DTarget drawingTarget = new Graphics2DTarget((Graphics2D) g, WORLD_TO_REAL_POSITION_TRANSLATION);
+        worldPaintable.draw(drawingTarget);
     }
 
     private Vector2i translatePosition(int realX, int realY) {
-        return new Vector2i(realX, realY).map(position -> position / TILE_DIMENSIONS_PX);
+        return new Vector2i(realX, realY).div(TILE_DIMENSIONS_PX);
     }
 
     private class MouseClickEmitter extends MouseAdapter {

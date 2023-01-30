@@ -1,7 +1,7 @@
 package presentation.components;
 
+import game.engine.GameEngine;
 import lombok.Getter;
-import presentation.loaders.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ public class GUI {
 
     private static final int JFRAME_X_SIZE = WORLD_SIZE_PX.getX() + SELECTION_WIDTH + JFRAME_X_BOUNDS;
 
-    private static final int JFRAME_Y_SIZE = WORLD_SIZE_PX.getY() + JFRMAE_Y_BOUNDS;
+    private static final int JFRAME_Y_SIZE = WORLD_SIZE_PX.getY() + JFRAME_Y_BOUNDS;
 
     private final GameEngine gameEngine;
 
@@ -33,11 +33,7 @@ public class GUI {
         this.statisticsPanel = new StatisticsPanel();
 
         gameEngine.getRepaintLoop().add(worldPanel::repaint);
-    }
-
-    public void start() {
         composeGUI();
-        gameEngine.getRepaintLoop().start();
     }
 
     private void composeGUI() {
