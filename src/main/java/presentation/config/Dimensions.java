@@ -8,7 +8,7 @@ public class Dimensions {
 
     public static final int JFRAME_X_BOUNDS = 14;
 
-    public static final int JFRMAE_Y_BOUNDS = 35;
+    public static final int JFRAME_Y_BOUNDS = 35;
 
     public static final int SELECTION_WIDTH = 300;
 
@@ -22,6 +22,6 @@ public class Dimensions {
     public static final Function<Vector2i, Vector2i> WORLD_TO_REAL_POSITION_TRANSLATION = Dimensions::translateMapPositionToRealPosition;
 
     private static Vector2i translateMapPositionToRealPosition(Vector2i worldPosition) {
-        return worldPosition.map(position -> position * TILE_DIMENSIONS_PX);
+        return worldPosition.mul(TILE_DIMENSIONS_PX);
     }
 }
