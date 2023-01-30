@@ -1,6 +1,6 @@
 package engine;
 
-import engine.time.TimeScaler;
+import engine.time.delegators.ScalingDelegator;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -28,7 +28,7 @@ public class TimeScalerTests {
     public void shouldScaleTicks(int totalTickCount, float scale) {
         final int expectedTickCount = Math.round(totalTickCount * scale);
         final TickCounter tickCounter = new TickCounter();
-        final TimeScaler scaledCounter = new TimeScaler(tickCounter);
+        final ScalingDelegator scaledCounter = new ScalingDelegator(tickCounter);
         scaledCounter.setScale(scale);
 
         for(int i = 0; i < totalTickCount; i++) {
