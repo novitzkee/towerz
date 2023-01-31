@@ -1,9 +1,10 @@
-package engine.graphics;
+package engine.graphics.sprites;
 
 import engine.geometry.Vector2i;
+import engine.graphics.DrawingPositioning;
+import engine.graphics.DrawingTarget;
 import lombok.RequiredArgsConstructor;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 

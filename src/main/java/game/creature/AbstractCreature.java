@@ -3,9 +3,9 @@ package game.creature;
 import engine.events.EventEmitter;
 import engine.geometry.Direction;
 import engine.geometry.Vector2i;
-import engine.graphics.Animation;
 import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
+import engine.graphics.animations.Animation;
 import game.events.EnemyArrivalEvent;
 import game.events.SoldierArrivalEvent;
 import game.world.GameGeometry;
@@ -13,13 +13,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+
 public abstract class AbstractCreature implements Creature {
 
     private final EventEmitter eventEmitter;
 
     protected final GameGeometry gameGeometry;
 
-    private final Animation animation;
+    private final Map<CreatureState, Animation> animations;
 
     private final CreatureBehaviour creatureBehaviour;
 
@@ -37,14 +39,14 @@ public abstract class AbstractCreature implements Creature {
 
     protected AbstractCreature(EventEmitter eventEmitter,
                                GameGeometry gameGeometry,
-                               Animation animation,
+                               Map<CreatureState, Animation> animation,
                                CreatureType creatureType,
                                Health health,
                                int speed,
                                int damage) {
         this.eventEmitter = eventEmitter;
         this.gameGeometry = gameGeometry;
-        this.animation = animation;
+        this.animations = animation;
 
         this.creatureBehaviour = creatureType == CreatureType.ATTACKER ?
                 new AttackerBehaviour(speed) :
@@ -58,8 +60,8 @@ public abstract class AbstractCreature implements Creature {
     @Override
     public void draw(DrawingTarget drawingTarget) {
         final Vector2i realPosition = gameGeometry.toRealPosition(pathPosition);
-        animation.setDirection(creatureBehaviour.getDirection());
-        animation.draw(realPosition, drawingTarget, DrawingPositioning.ABSOLUTE);
+        animations.get(state).setDirection(creatureBehaviour.getDirection());
+        animations.get(state).draw(realPosition, drawingTarget, DrawingPositioning.ABSOLUTE);
     }
 
     @Override

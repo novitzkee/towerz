@@ -1,6 +1,6 @@
 package engine.traits;
 
-import engine.graphics.Sprite;
+import engine.graphics.sprites.Sprite;
 
 public interface Selectable {
     Sprite getSprite();

@@ -3,7 +3,7 @@ package presentation.loaders.map;
 import engine.geometry.BasicRange;
 import engine.geometry.Direction;
 import engine.geometry.Vector2i;
-import engine.graphics.Sprite;
+import engine.graphics.sprites.Sprite;
 import game.engine.loaders.MapLoader;
 import game.world.GameMap;
 import game.world.PathSegment;

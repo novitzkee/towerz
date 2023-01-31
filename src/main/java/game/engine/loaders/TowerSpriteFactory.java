@@ -1,6 +1,6 @@
 package game.engine.loaders;
 
-import engine.graphics.Sprite;
+import engine.graphics.sprites.Sprite;
 import game.tower.TowerLevel;
 
 import java.util.Map;

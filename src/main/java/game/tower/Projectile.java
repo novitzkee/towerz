@@ -4,7 +4,7 @@ import engine.events.EventEmitter;
 import engine.geometry.Vector2i;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
-import engine.graphics.BasicSprite;
+import engine.graphics.sprites.BasicSprite;
 import engine.time.TimeAware;
 import engine.traits.Removable;
 import game.events.ProjectileHitEvent;

@@ -1,4 +1,4 @@
-package engine.graphics;
+package engine.graphics.sprites;
 
 import engine.geometry.Vector2i;
 import lombok.SneakyThrows;

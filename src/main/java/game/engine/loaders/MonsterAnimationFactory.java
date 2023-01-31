@@ -1,6 +1,6 @@
 package game.engine.loaders;
 
-import engine.graphics.Animation;
+import engine.graphics.animations.Animation;
 
 public interface MonsterAnimationFactory {
 

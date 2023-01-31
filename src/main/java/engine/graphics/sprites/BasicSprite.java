@@ -1,13 +1,13 @@
-package engine.graphics;
+package engine.graphics.sprites;
 
 import engine.geometry.Angle;
 import engine.geometry.Vector2i;
+import engine.graphics.DrawingPositioning;
+import engine.graphics.DrawingTarget;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class BasicSprite implements Sprite {

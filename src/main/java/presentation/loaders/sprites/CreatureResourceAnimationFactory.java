@@ -1,10 +1,12 @@
 package presentation.loaders.sprites;
 
 import engine.geometry.Direction;
-import engine.graphics.Animation;
-import engine.graphics.BasicAnimation;
-import engine.graphics.Sprite;
-import engine.graphics.SpriteSheet;
+import engine.graphics.animations.Animation;
+import engine.graphics.animations.BouncingAnimation;
+import engine.graphics.animations.RepeatingAnimation;
+import engine.graphics.sprites.Sprite;
+import engine.graphics.sprites.SpriteSheet;
+import game.creature.CreatureState;
 import game.engine.loaders.MonsterAnimationFactory;
 import game.engine.loaders.SoldierAnimationFactory;
 
@@ -26,9 +28,15 @@ public class CreatureResourceAnimationFactory implements MonsterAnimationFactory
 
     private static final SpriteSheet SOLDIER_1_SPRITE_SHEET = new SpriteSheet(SOLDIER1_SPRITE_SHEET, TILE_SIZE_PX);
 
+    private static final SpriteSheet SOLDIER_1_ATTACK_SPRITE_SHEET = new SpriteSheet(SOLDIER1_ATTACK_SPRITE_SHEET, TILE_SIZE_PX);
+
     private static final SpriteSheet SOLDIER_2_SPRITE_SHEET = new SpriteSheet(SOLDIER2_SPRITE_SHEET, TILE_SIZE_PX);
 
+    private static final SpriteSheet SOLDIER_2_ATTACK_SPRITE_SHEET = new SpriteSheet(SOLDIER2_ATTACK_SPRITE_SHEET, TILE_SIZE_PX);
+
     private static final SpriteSheet SOLDIER_3_SPRITE_SHEET = new SpriteSheet(SOLDIER3_SPRITE_SHEET, TILE_SIZE_PX);
+
+    private static final SpriteSheet SOLDIER_3_ATTACK_SPRITE_SHEET = new SpriteSheet(SOLDIER3_ATTACK_SPRITE_SHEET, TILE_SIZE_PX);
 
     private static final SpriteSheet SOLDIER_4_SPRITE_SHEET = new SpriteSheet(SOLDIER4_SPRITE_SHEET, TILE_SIZE_PX);
 
@@ -59,36 +67,54 @@ public class CreatureResourceAnimationFactory implements MonsterAnimationFactory
                 Direction.RIGHT, spriteSheet.getSpriteRow(2, length),
                 Direction.LEFT, spriteSheet.getSpriteRow(2, length));
 
-        return new BasicAnimation(spritesByDirection, timeScale);
+        return new RepeatingAnimation(spritesByDirection, timeScale);
     }
 
     @Override
-    public Animation getLightSoldierAnimation() {
-        return createSoldierAnimationFromSpriteSheet(SOLDIER_1_SPRITE_SHEET);
+    public Map<CreatureState, Animation> getLightSoldierAnimations() {
+        return Map.of(
+                CreatureState.WALKING, createSoldierWalkAnimation(SOLDIER_1_SPRITE_SHEET),
+                CreatureState.FIGHTING, createSoldierFightAnimation(SOLDIER_1_ATTACK_SPRITE_SHEET));
     }
 
     @Override
-    public Animation getMediumSoldierAnimation() {
-        return createSoldierAnimationFromSpriteSheet(SOLDIER_2_SPRITE_SHEET);
+    public Map<CreatureState, Animation> getMediumSoldierAnimations() {
+        return Map.of(
+                CreatureState.WALKING, createSoldierWalkAnimation(SOLDIER_2_SPRITE_SHEET),
+                CreatureState.FIGHTING, createSoldierFightAnimation(SOLDIER_2_ATTACK_SPRITE_SHEET));
     }
 
     @Override
-    public Animation getHeavySoldierAnimation() {
-        return createSoldierAnimationFromSpriteSheet(SOLDIER_3_SPRITE_SHEET);
+    public Map<CreatureState, Animation> getHeavySoldierAnimations() {
+        return Map.of(
+                CreatureState.WALKING, createSoldierWalkAnimation(SOLDIER_3_SPRITE_SHEET),
+                CreatureState.FIGHTING, createSoldierFightAnimation(SOLDIER_3_ATTACK_SPRITE_SHEET));
     }
 
     @Override
-    public Animation getSkeletonSoldierAnimation() {
-        return createSoldierAnimationFromSpriteSheet(SOLDIER_4_SPRITE_SHEET);
+    public Map<CreatureState, Animation> getSkeletonSoldierAnimations() {
+        return Map.of(
+                CreatureState.WALKING, createSoldierWalkAnimation(SOLDIER_4_SPRITE_SHEET),
+                CreatureState.FIGHTING, createSoldierFightAnimation(SOLDIER_4_SPRITE_SHEET));
     }
 
-    private Animation createSoldierAnimationFromSpriteSheet(SpriteSheet spriteSheet) {
+    private Animation createSoldierWalkAnimation(SpriteSheet spriteSheet) {
         final Map<Direction, List<Sprite>> spritesByDirection = Map.of(
                 Direction.UP, spriteSheet.getSpriteRow(0, 9),
                 Direction.DOWN, spriteSheet.getSpriteRow(2, 9),
                 Direction.RIGHT, spriteSheet.getSpriteRow(3, 9),
                 Direction.LEFT, spriteSheet.getSpriteRow(1, 9));
 
-        return new BasicAnimation(spritesByDirection, 0.5f);
+        return new RepeatingAnimation(spritesByDirection, 0.5f);
+    }
+
+    private Animation createSoldierFightAnimation(SpriteSheet spriteSheet) {
+        final Map<Direction, List<Sprite>> spritesByDirection = Map.of(
+                Direction.UP, spriteSheet.getSpriteRow(0, 8),
+                Direction.DOWN, spriteSheet.getSpriteRow(2, 8),
+                Direction.RIGHT, spriteSheet.getSpriteRow(3, 8),
+                Direction.LEFT, spriteSheet.getSpriteRow(1, 8));
+
+        return new BouncingAnimation(spritesByDirection, 0.5f);
     }
 }

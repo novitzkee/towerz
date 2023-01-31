@@ -1,7 +1,7 @@
 package presentation.loaders.map;
 
 import engine.geometry.Vector2i;
-import engine.graphics.Sprite;
+import engine.graphics.sprites.Sprite;
 import game.castle.Castle;
 import game.castle.State;
 import game.creature.Health;

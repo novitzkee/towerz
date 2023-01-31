@@ -1,11 +1,12 @@
 package game.world;
 
 import engine.geometry.Vector2i;
-import engine.graphics.*;
+import engine.graphics.DrawingPositioning;
+import engine.graphics.DrawingTarget;
+import engine.graphics.Paintable;
+import engine.graphics.sprites.Sprite;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.awt.*;
 
 @RequiredArgsConstructor
 public class Tile implements Paintable {

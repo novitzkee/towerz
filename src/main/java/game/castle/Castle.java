@@ -4,7 +4,7 @@ import engine.geometry.Vector2i;
 import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
-import engine.graphics.Sprite;
+import engine.graphics.sprites.Sprite;
 import game.creature.Health;
 import lombok.RequiredArgsConstructor;
 

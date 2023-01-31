@@ -1,14 +1,17 @@
 package game.engine.loaders;
 
-import engine.graphics.Animation;
+import engine.graphics.animations.Animation;
+import game.creature.CreatureState;
+
+import java.util.Map;
 
 public interface SoldierAnimationFactory {
 
-    Animation getLightSoldierAnimation();
+    Map<CreatureState, Animation> getLightSoldierAnimations();
 
-    Animation getMediumSoldierAnimation();
+    Map<CreatureState, Animation> getMediumSoldierAnimations();
 
-    Animation getHeavySoldierAnimation();
+    Map<CreatureState, Animation> getHeavySoldierAnimations();
 
-    Animation getSkeletonSoldierAnimation();
+    Map<CreatureState, Animation> getSkeletonSoldierAnimations();
 }

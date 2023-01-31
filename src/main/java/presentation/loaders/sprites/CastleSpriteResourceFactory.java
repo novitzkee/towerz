@@ -1,8 +1,8 @@
 package presentation.loaders.sprites;
 
 import engine.geometry.Vector2i;
-import engine.graphics.Sprite;
-import engine.graphics.SpriteSheet;
+import engine.graphics.sprites.Sprite;
+import engine.graphics.sprites.SpriteSheet;
 import game.castle.State;
 import presentation.config.Resources;
 

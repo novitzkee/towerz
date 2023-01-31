@@ -1,7 +1,7 @@
 package game.creature;
 
 import engine.events.EventEmitter;
-import engine.graphics.Animation;
+import engine.graphics.animations.Animation;
 import engine.time.TimeAware;
 import engine.time.delegators.ScalingDelegator;
 import game.engine.loaders.MonsterAnimationFactory;
@@ -34,7 +34,7 @@ public class EnemySpawner implements TimeAware {
     }
 
     private Enemy createEnemy() {
-        final Animation animation = creatureAnimationFactory.getBeetleAnimation();
+        final Animation animation = creatureAnimationFactory.getBeeAnimation();
         return new Enemy(eventEmitter, gameGeometry, animation, new Health(100), 10, 10);
     }
 }

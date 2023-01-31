@@ -1,6 +1,8 @@
-package engine.graphics;
+package engine.graphics.animations;
 
 import engine.geometry.Direction;
+import engine.graphics.Drawable;
+import engine.graphics.sprites.Sprite;
 
 import java.util.List;
 import java.util.Map;

@@ -50,9 +50,16 @@ public class Resources {
 
     public static final String SOLDIER1_SPRITE_SHEET = "sprites/creatures/soldier1.png";
 
+    public static final String SOLDIER1_ATTACK_SPRITE_SHEET = "sprites/creatures/soldier1_attack.png";
+
     public static final String SOLDIER2_SPRITE_SHEET = "sprites/creatures/soldier2.png";
+
+    public static final String SOLDIER2_ATTACK_SPRITE_SHEET = "sprites/creatures/soldier2_attack.png";
 
     public static final String SOLDIER3_SPRITE_SHEET = "sprites/creatures/soldier3.png";
 
+    public static final String SOLDIER3_ATTACK_SPRITE_SHEET = "sprites/creatures/soldier3_attack.png";
+
     public static final String SOLDIER4_SPRITE_SHEET = "sprites/creatures/soldier4.png";
+    public static final String SOLDIER4_ATTACK_SPRITE_SHEET = "sprites/creatures/soldier4_attack.png";
 }

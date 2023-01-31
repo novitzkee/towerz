@@ -1,9 +1,9 @@
 package presentation.loaders.sprites;
 
 import engine.geometry.Direction;
-import engine.graphics.LayeredSprite;
-import engine.graphics.Sprite;
-import engine.graphics.SpriteSheet;
+import engine.graphics.sprites.LayeredSprite;
+import engine.graphics.sprites.Sprite;
+import engine.graphics.sprites.SpriteSheet;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package engine.graphics;
+package engine.graphics.sprites;
 
 public enum SpritePositioning {
     ORIGIN,

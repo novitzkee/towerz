@@ -1,7 +1,7 @@
 package game.creature;
 
 import engine.events.EventEmitter;
-import engine.graphics.Animation;
+import engine.graphics.animations.Animation;
 import engine.time.TimeAware;
 import engine.time.delegators.ScalingDelegator;
 import game.engine.loaders.SoldierAnimationFactory;
@@ -9,6 +9,8 @@ import game.fight.Creatures;
 import game.world.GameGeometry;
 import lombok.RequiredArgsConstructor;
 import presentation.loaders.sprites.CreatureResourceAnimationFactory;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class SoldierSpawner implements TimeAware {
@@ -34,7 +36,7 @@ public class SoldierSpawner implements TimeAware {
     }
 
     private Soldier createSoldier() {
-        final Animation animation = creatureAnimationFactory.getSkeletonSoldierAnimation();
+        final Map<CreatureState, Animation> animation = creatureAnimationFactory.getHeavySoldierAnimations();
         return new Soldier(eventEmitter, gameGeometry, animation, new Health(1000), 10, 1);
     }
 }
