@@ -66,7 +66,13 @@ public class TextFileMapLoader implements MapLoader {
         final List<PathSegment> pathSegments = generatePathSegments(path);
         final Tile[][] tiles = generateTiles(map);
 
-        return new GameMap(WORLD_TO_REAL_POSITION_TRANSLATION, worldSize, CREATURE_STEPS_PER_TILE, tiles, path, pathSegments);
+        return new GameMap(
+                WORLD_TO_REAL_POSITION_TRANSLATION,
+                worldSize,
+                CREATURE_STEPS_PER_TILE,
+                tiles,
+                path,
+                pathSegments);
     }
 
     private List<Vector2i> findPath(List<String> map) {
@@ -172,6 +178,7 @@ public class TextFileMapLoader implements MapLoader {
     private Tile createTile(Vector2i position, char character) {
         return switch (character) {
             case ROCK_CHAR -> new Tile(position, mapSpriteFactory.getRockSprite(), false);
+            case CASTLE_CHAR -> new Tile(position, mapSpriteFactory.getGrassSprite(), false);
             default -> new Tile(position, mapSpriteFactory.getGrassSprite(), true);
         };
     }

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Fight implements Paintable, TimeAware {
 
+    private final Towers towers;
+
     private final Creatures creatures;
 
     private final EnemySpawner enemySpawner;
@@ -19,6 +21,7 @@ public class Fight implements Paintable, TimeAware {
     @Override
     public void draw(DrawingTarget drawingTarget) {
         creatures.draw(drawingTarget);
+        towers.draw(drawingTarget);
     }
 
     @Override

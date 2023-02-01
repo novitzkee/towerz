@@ -1,6 +1,7 @@
 package engine.events;
 
+import java.util.List;
+
 public interface Subscriber {
-    void subscribe(EventRouter eventRouter);
-    void unsubscribe(EventRouter eventRouter);
+    List<EventListener<?>> getEventListeners();
 }

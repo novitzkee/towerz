@@ -18,4 +18,6 @@ public interface GameGeometry {
     Pair<Integer> getAttackerPositions();
 
     Pair<Integer> getDefenderPositions();
+
+    boolean canBuildOn(Rect2i rect);
 }

@@ -3,5 +3,12 @@ package game.tower;
 public enum TowerLevel {
     WEAK,
     MEDIUM,
-    STRONG
+    STRONG;
+
+    public static TowerLevel getNextLevel(TowerLevel currentLevel) {
+        return switch (currentLevel) {
+            case WEAK -> MEDIUM;
+            case MEDIUM, STRONG -> STRONG;
+        };
+    }
 }

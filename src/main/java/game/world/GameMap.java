@@ -1,9 +1,6 @@
 package game.world;
 
-import engine.geometry.Circle;
-import engine.geometry.Direction;
-import engine.geometry.Range;
-import engine.geometry.Vector2i;
+import engine.geometry.*;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
 import engine.utils.Fraction;
@@ -11,7 +8,9 @@ import engine.utils.Pair;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 public class GameMap implements Paintable {
@@ -20,7 +19,7 @@ public class GameMap implements Paintable {
 
     private final Tile[][] tiles;
 
-    private final List<Vector2i> path;
+    private final Set<Vector2i> path;
 
     private final List<PathSegment> pathSegments;
 
@@ -35,7 +34,7 @@ public class GameMap implements Paintable {
                    List<PathSegment> pathSegments) {
         this.size = size;
         this.tiles = tiles;
-        this.path = path;
+        this.path = new HashSet<>(path);
         this.pathSegments = pathSegments;
         this.gameGeometry = new Geometry(relativeTranslation, stepsPerTile);
     }
@@ -111,6 +110,15 @@ public class GameMap implements Paintable {
 
         private int getMaxPathPosition() {
             return pathSegments.size() * stepsPerTile - 1;
+        }
+
+        @Override
+        public boolean canBuildOn(Rect2i rect) {
+            return rect.units().allMatch(this::canBuildOnTile);
+        }
+
+        private boolean canBuildOnTile(Vector2i position) {
+            return tiles[position.getX()][position.getY()].isCanPlaceTower() && !path.contains(position);
         }
     }
 }
