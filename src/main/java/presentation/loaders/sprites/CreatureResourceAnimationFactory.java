@@ -4,6 +4,7 @@ import engine.geometry.Direction;
 import engine.graphics.animations.Animation;
 import engine.graphics.animations.BouncingAnimation;
 import engine.graphics.animations.RepeatingAnimation;
+import engine.graphics.animations.StaticAnimation;
 import engine.graphics.sprites.Sprite;
 import engine.graphics.sprites.SpriteSheet;
 import game.creature.CreatureState;
@@ -114,7 +115,7 @@ public class CreatureResourceAnimationFactory implements MonsterAnimationFactory
     public Map<CreatureState, Animation> getSkeletonSoldierAnimations() {
         return Map.of(
                 CreatureState.WALKING, createSoldierWalkAnimation(SOLDIER_4_SPRITE_SHEET),
-                CreatureState.FIGHTING, createSoldierFightAnimation(SOLDIER_4_SPRITE_SHEET));
+                CreatureState.FIGHTING, createSoldierStandingAnimation(SOLDIER_4_SPRITE_SHEET));
     }
 
     private Animation createSoldierWalkAnimation(SpriteSheet sheet) {
@@ -134,6 +135,16 @@ public class CreatureResourceAnimationFactory implements MonsterAnimationFactory
                 Direction.RIGHT, sheet.getSpriteRow(3, 8),
                 Direction.LEFT, sheet.getSpriteRow(1, 8));
 
-        return new BouncingAnimation(spritesByDirection, 0.3f);
+        return new BouncingAnimation(spritesByDirection, 0.4f);
+    }
+
+    private Animation createSoldierStandingAnimation(SpriteSheet sheet) {
+        final Map<Direction, List<Sprite>> spritesByDirection = Map.of(
+                Direction.UP, sheet.getSpriteRow(0, 1),
+                Direction.DOWN, sheet.getSpriteRow(2, 1),
+                Direction.RIGHT, sheet.getSpriteRow(3, 1),
+                Direction.LEFT, sheet.getSpriteRow(1, 1));
+
+        return new StaticAnimation(spritesByDirection);
     }
 }

@@ -1,5 +1,6 @@
 package engine.graphics.sprites;
 
+import engine.geometry.Angle;
 import engine.geometry.Vector2i;
 import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
@@ -49,6 +50,11 @@ public class LayeredSprite implements Sprite {
     @Override
     public Sprite flipY() {
         return transformLayers(Sprite::flipY);
+    }
+
+    @Override
+    public Sprite rotate(Angle angle) {
+        return transformLayers(sprite -> sprite.rotate(angle));
     }
 
     @Override

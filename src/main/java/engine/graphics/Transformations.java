@@ -20,6 +20,13 @@ public class Transformations {
         return affineTransform;
     }
 
+    public static AffineTransform rotate(Image image, double radians) {
+        return AffineTransform.getRotateInstance(
+                radians,
+                image.getHeight(null) / 2d,
+                image.getWidth(null) / 2d);
+    }
+
     public static AffineTransform flipX(Image image) {
         final AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-image.getWidth(null), 0);

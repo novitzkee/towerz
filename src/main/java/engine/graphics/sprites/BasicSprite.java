@@ -37,19 +37,23 @@ public class BasicSprite implements Sprite {
     }
 
     public BasicSprite rotate(Angle byAngle) {
-        return null;
+        final AffineTransform nextTransform = Transformations.rotate(bufferedImage, byAngle.getValueRadians());
+        return new BasicSprite(bufferedImage, size,
+                Transformations.combine(affineTransform, nextTransform));
     }
 
     @Override
     public Sprite flipX() {
+        final AffineTransform nextTransform = Transformations.flipX(bufferedImage);
         return new BasicSprite(bufferedImage, size,
-                Transformations.combine(affineTransform, Transformations.flipX(bufferedImage)));
+                Transformations.combine(affineTransform, nextTransform));
     }
 
     @Override
     public Sprite flipY() {
+        final AffineTransform nextTransform = Transformations.flipY(bufferedImage);
         return new BasicSprite(bufferedImage, size,
-                Transformations.combine(affineTransform, Transformations.flipY(bufferedImage)));
+                Transformations.combine(affineTransform, nextTransform));
     }
 
     @Override

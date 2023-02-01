@@ -9,6 +9,7 @@ import engine.time.delegators.ScalingDelegator;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 public class WigglyAnimation implements Animation {
@@ -20,7 +21,7 @@ public class WigglyAnimation implements Animation {
     private float currentWiggleAmount = 0;
 
     @Getter
-    private final Map<Direction, Sprite> sprites;
+    private final Map<Direction, List<Sprite>> sprites;
 
     @Getter
     @Setter
@@ -28,12 +29,12 @@ public class WigglyAnimation implements Animation {
 
     private final ScalingDelegator animationScalingDelegator;
 
-    public WigglyAnimation(Map<Direction, Sprite> sprites) {
+    public WigglyAnimation(Map<Direction, List<Sprite>> sprites) {
         this.sprites = sprites;
         this.animationScalingDelegator = new ScalingDelegator(this::update);
     }
 
-    public WigglyAnimation(Map<Direction, Sprite> sprites, float timeScale) {
+    public WigglyAnimation(Map<Direction, List<Sprite>> sprites, float timeScale) {
         this.sprites = sprites;
         this.animationScalingDelegator = new ScalingDelegator(timeScale, this::update);
     }
@@ -41,7 +42,7 @@ public class WigglyAnimation implements Animation {
     @Override
     public void draw(Vector2i position, DrawingTarget drawingTarget, DrawingPositioning drawingPositioning) {
         final Vector2i wiggleVector = position.interpolate(position.add(direction.getVector()), currentWiggleAmount);
-        sprites.get(direction).draw(wiggleVector, drawingTarget, drawingPositioning);
+        sprites.get(direction).get(0).draw(wiggleVector, drawingTarget, drawingPositioning);
     }
 
     private void update() {

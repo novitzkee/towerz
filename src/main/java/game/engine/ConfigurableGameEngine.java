@@ -7,7 +7,11 @@ import engine.time.*;
 import engine.time.delegators.TickDelegator;
 import game.castle.Castle;
 import game.creature.EnemySpawner;
+import game.creature.MonsterFactory;
+import game.creature.SoldierFactory;
 import game.creature.SoldierSpawner;
+import game.engine.loaders.MonsterAnimationFactory;
+import game.engine.loaders.SoldierAnimationFactory;
 import game.fight.Creatures;
 import game.fight.Fight;
 import game.world.GameMap;
@@ -39,15 +43,22 @@ public class ConfigurableGameEngine implements GameEngine {
 
 
     public static GameEngine configure(EngineConfig engineConfig) {
+        final MonsterAnimationFactory monsterAnimationFactory = engineConfig.getMonsterAnimationFactory();
+        final SoldierAnimationFactory soldierAnimationFactory = engineConfig.getSoldierAnimationFactory();
 
         final SingleDispatchEventRouter eventHandler = new SingleDispatchEventRouter();
 
         final Castle castle = engineConfig.getCastleLoader().load();
         final GameMap map = engineConfig.getMapLoader().load();
 
+        final MonsterFactory monsterFactory = new MonsterFactory(eventHandler, map.getGameGeometry(), monsterAnimationFactory);
+        final SoldierFactory soldierFactory = new SoldierFactory(eventHandler, map.getGameGeometry(), soldierAnimationFactory);
+
         final Creatures creatures = new Creatures(map.getGameGeometry());
-        final EnemySpawner enemySpawner = new EnemySpawner(eventHandler, map.getGameGeometry(),  creatures);
-        final SoldierSpawner soldierSpawner = new SoldierSpawner(eventHandler, map.getGameGeometry(), creatures);
+
+        final EnemySpawner enemySpawner = new EnemySpawner(monsterFactory,  creatures);
+        final SoldierSpawner soldierSpawner = new SoldierSpawner(soldierFactory, creatures);
+
         final Fight fight = new Fight(creatures, enemySpawner, soldierSpawner);
 
         final World world = new World(castle, fight, map);
