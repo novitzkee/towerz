@@ -1,12 +1,10 @@
 package engine.geometry;
 
-import engine.utils.Fraction;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 @Getter
@@ -46,10 +44,10 @@ public class Vector2i {
         return new Vector2f(x, y);
     }
 
-    public Vector2i interpolate(Vector2i v, Fraction f) {
+    public Vector2i interpolate(Vector2i v, float f) {
         return this.toVector2f()
-                .mul(1 - f.getValue())
-                .add(v.toVector2f().mul(f.getValue()))
+                .mul(1 - f)
+                .add(v.toVector2f().mul(f))
                 .round();
     }
 

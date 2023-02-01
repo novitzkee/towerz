@@ -42,32 +42,51 @@ public class CreatureResourceAnimationFactory implements MonsterAnimationFactory
 
     @Override
     public Animation getMantisAnimation() {
-        return createEnemyAnimationFromSpriteSheet(ENEMY_1_SPRITE_SHEET, 12, 0.5f);
+        return createEnemyAnimationWithLeftFlip(ENEMY_1_SPRITE_SHEET, 12, 0.5f);
     }
 
     @Override
     public Animation getBeeAnimation() {
-        return createEnemyAnimationFromSpriteSheet(ENEMY_2_SPRITE_SHEET, 12, 0.7f);
+        return createEnemyAnimationWithLeftFlip(ENEMY_2_SPRITE_SHEET, 12, 0.7f);
     }
 
     @Override
     public Animation getButterflyAnimation() {
-        return createEnemyAnimationFromSpriteSheet(ENEMY_3_SPRITE_SHEET, 6, 0.3f);
+        return createEnemyAnimationWithLeftFlip(ENEMY_3_SPRITE_SHEET, 6, 0.3f);
     }
 
     @Override
     public Animation getBeetleAnimation() {
-        return createEnemyAnimationFromSpriteSheet(ENEMY_4_SPRITE_SHEET, 8, 0.3f);
+        return createEnemyAnimationWithRightFlip(ENEMY_4_SPRITE_SHEET, 8, 0.3f);
     }
 
-    private Animation createEnemyAnimationFromSpriteSheet(SpriteSheet spriteSheet, int length, float timeScale) {
+    private Animation createEnemyAnimationWithLeftFlip(SpriteSheet sheet, int length, float timeScale) {
+        final List<Sprite> flippedSprites = flipSprites(sheet.getSpriteRow(2, length));
         final Map<Direction, List<Sprite>> spritesByDirection = Map.of(
-                Direction.UP, spriteSheet.getSpriteRow(1, length),
-                Direction.DOWN, spriteSheet.getSpriteRow(0, length),
-                Direction.RIGHT, spriteSheet.getSpriteRow(2, length),
-                Direction.LEFT, spriteSheet.getSpriteRow(2, length));
+                Direction.UP, sheet.getSpriteRow(1, length),
+                Direction.DOWN, sheet.getSpriteRow(0, length),
+                Direction.RIGHT, sheet.getSpriteRow(2, length),
+                Direction.LEFT, flippedSprites);
 
         return new RepeatingAnimation(spritesByDirection, timeScale);
+    }
+
+    private Animation createEnemyAnimationWithRightFlip(SpriteSheet sheet, int length, float timeScale) {
+        final List<Sprite> flippedSprites = flipSprites(sheet.getSpriteRow(2, length));
+        final Map<Direction, List<Sprite>> spritesByDirection = Map.of(
+                Direction.UP, sheet.getSpriteRow(1, length),
+                Direction.DOWN, sheet.getSpriteRow(0, length),
+                Direction.RIGHT, flippedSprites,
+                Direction.LEFT, sheet.getSpriteRow(2, length));
+
+        return new RepeatingAnimation(spritesByDirection, timeScale);
+    }
+
+    private List<Sprite> flipSprites(List<Sprite> sprites) {
+        return sprites
+                .stream()
+                .map(Sprite::flipX)
+                .toList();
     }
 
     @Override
@@ -98,23 +117,23 @@ public class CreatureResourceAnimationFactory implements MonsterAnimationFactory
                 CreatureState.FIGHTING, createSoldierFightAnimation(SOLDIER_4_SPRITE_SHEET));
     }
 
-    private Animation createSoldierWalkAnimation(SpriteSheet spriteSheet) {
+    private Animation createSoldierWalkAnimation(SpriteSheet sheet) {
         final Map<Direction, List<Sprite>> spritesByDirection = Map.of(
-                Direction.UP, spriteSheet.getSpriteRow(0, 9),
-                Direction.DOWN, spriteSheet.getSpriteRow(2, 9),
-                Direction.RIGHT, spriteSheet.getSpriteRow(3, 9),
-                Direction.LEFT, spriteSheet.getSpriteRow(1, 9));
+                Direction.UP, sheet.getSpriteRow(0, 9),
+                Direction.DOWN, sheet.getSpriteRow(2, 9),
+                Direction.RIGHT, sheet.getSpriteRow(3, 9),
+                Direction.LEFT, sheet.getSpriteRow(1, 9));
 
-        return new RepeatingAnimation(spritesByDirection, 0.5f);
+        return new RepeatingAnimation(spritesByDirection, 0.4f);
     }
 
-    private Animation createSoldierFightAnimation(SpriteSheet spriteSheet) {
+    private Animation createSoldierFightAnimation(SpriteSheet sheet) {
         final Map<Direction, List<Sprite>> spritesByDirection = Map.of(
-                Direction.UP, spriteSheet.getSpriteRow(0, 8),
-                Direction.DOWN, spriteSheet.getSpriteRow(2, 8),
-                Direction.RIGHT, spriteSheet.getSpriteRow(3, 8),
-                Direction.LEFT, spriteSheet.getSpriteRow(1, 8));
+                Direction.UP, sheet.getSpriteRow(0, 8),
+                Direction.DOWN, sheet.getSpriteRow(2, 8),
+                Direction.RIGHT, sheet.getSpriteRow(3, 8),
+                Direction.LEFT, sheet.getSpriteRow(1, 8));
 
-        return new BouncingAnimation(spritesByDirection, 0.5f);
+        return new BouncingAnimation(spritesByDirection, 0.3f);
     }
 }

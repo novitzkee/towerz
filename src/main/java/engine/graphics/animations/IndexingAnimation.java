@@ -12,7 +12,7 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractAnimation implements Animation {
+public abstract class IndexingAnimation implements Animation {
 
     @Getter
     protected final Map<Direction, List<Sprite>> sprites;
@@ -23,23 +23,23 @@ public abstract class AbstractAnimation implements Animation {
 
     private final ScalingDelegator animationScalingDelegator;
 
-    public AbstractAnimation(Map<Direction, List<Sprite>> sprites) {
+    public IndexingAnimation(Map<Direction, List<Sprite>> sprites) {
         this.sprites = sprites;
         this.animationScalingDelegator = new ScalingDelegator(this::update);
     }
 
-    public AbstractAnimation(Map<Direction, List<Sprite>> sprites, float timeScale) {
+    public IndexingAnimation(Map<Direction, List<Sprite>> sprites, float timeScale) {
         this.sprites = sprites;
         this.animationScalingDelegator = new ScalingDelegator(timeScale, this::update);
     }
 
     @Override
     public void draw(Vector2i position, DrawingTarget drawingTarget, DrawingPositioning drawingPositioning) {
-        getCurrentSprite().draw(position, drawingTarget, drawingPositioning);
+        sprites.get(direction).get(getCurrentSpriteIndex()).draw(position, drawingTarget, drawingPositioning);
         animationScalingDelegator.tick();
     }
 
-    abstract Sprite getCurrentSprite();
+    protected abstract int getCurrentSpriteIndex();
 
-    abstract void update();
+    protected abstract void update();
 }

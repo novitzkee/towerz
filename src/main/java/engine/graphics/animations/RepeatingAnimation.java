@@ -6,7 +6,7 @@ import engine.graphics.sprites.Sprite;
 import java.util.List;
 import java.util.Map;
 
-public class RepeatingAnimation extends AbstractAnimation {
+public class RepeatingAnimation extends IndexingAnimation {
 
     private int currentSprite = 0;
 
@@ -19,12 +19,12 @@ public class RepeatingAnimation extends AbstractAnimation {
     }
 
     @Override
-    Sprite getCurrentSprite() {
-        return sprites.get(direction).get(currentSprite);
+    protected int getCurrentSpriteIndex() {
+        return currentSprite;
     }
 
     @Override
-    void update() {
+    protected void update() {
         currentSprite++;
         currentSprite %= sprites.size();
     }

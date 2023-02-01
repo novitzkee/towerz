@@ -34,7 +34,7 @@ public class EnemySpawner implements TimeAware {
     }
 
     private Enemy createEnemy() {
-        final Animation animation = creatureAnimationFactory.getBeeAnimation();
+        final Animation animation = creatureAnimationFactory.getBeetleAnimation();
         return new Enemy(eventEmitter, gameGeometry, animation, new Health(100), 10, 10);
     }
 }

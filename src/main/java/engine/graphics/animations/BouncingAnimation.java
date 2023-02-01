@@ -6,7 +6,7 @@ import engine.graphics.sprites.Sprite;
 import java.util.List;
 import java.util.Map;
 
-public class BouncingAnimation extends AbstractAnimation {
+public class BouncingAnimation extends IndexingAnimation {
 
     private int delta = 1;
 
@@ -21,12 +21,12 @@ public class BouncingAnimation extends AbstractAnimation {
     }
 
     @Override
-    Sprite getCurrentSprite() {
-        return sprites.get(direction).get(currentSprite);
+    protected int getCurrentSpriteIndex() {
+        return currentSprite;
     }
 
     @Override
-    void update() {
+    protected void update() {
         currentSprite += delta;
 
         if (shouldBounce()) {

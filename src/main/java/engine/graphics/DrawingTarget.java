@@ -3,11 +3,9 @@ package engine.graphics;
 import engine.geometry.Vector2i;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 public interface DrawingTarget {
-    void drawImage(Image image, Vector2i position, DrawingPositioning drawingPositioning);
 
-    default void drawImage(Image image, Vector2i position) {
-        drawImage(image, position, DrawingPositioning.ABSOLUTE);
-    }
+    void drawImage(Image image, Vector2i position, AffineTransform transform, DrawingPositioning positioning);
 }

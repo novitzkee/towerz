@@ -78,7 +78,7 @@ public class PathSegment implements Paintable {
     public Vector2i getPosition(Fraction tilePosition, Function<Vector2i, Vector2i> positionTranslation) {
         final Vector2i realFrom = positionTranslation.apply(from);
         final Vector2i realPosition = positionTranslation.apply(position);
-        return realFrom.interpolate(realPosition, tilePosition);
+        return realFrom.interpolate(realPosition, tilePosition.getValue());
     }
 
     @Override
