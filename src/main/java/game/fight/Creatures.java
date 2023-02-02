@@ -60,7 +60,7 @@ public class Creatures implements TimeAware, Paintable {
     }
 
     @Override
-    public synchronized void tick() {
+    public void tick() {
         setWalkingState();
         setFightingState();
         performFight();
@@ -71,7 +71,7 @@ public class Creatures implements TimeAware, Paintable {
     }
 
     @Override
-    public synchronized void draw(DrawingTarget drawingTarget) {
+    public void draw(DrawingTarget drawingTarget) {
         attackingCreatures.forEach(creature -> creature.draw(drawingTarget));
         defendingCreatures.forEach(creature -> creature.draw(drawingTarget));
     }
@@ -162,7 +162,7 @@ public class Creatures implements TimeAware, Paintable {
         defendingCreatures.removeAll(defendersToRemove);
     }
 
-    public void add(Creature creature, CreatureType creatureType) {
+    public synchronized void add(Creature creature, CreatureType creatureType) {
         switch (creatureType) {
             case ATTACKER -> attackingCreatures.add(creature);
             case DEFENDER -> defendingCreatures.add(creature);
