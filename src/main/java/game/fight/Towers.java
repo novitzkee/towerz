@@ -11,6 +11,7 @@ import game.world.GameGeometry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
@@ -19,11 +20,15 @@ import java.util.TreeMap;
 @RequiredArgsConstructor
 public class Towers implements Paintable, TimeAware {
 
+    private static final Comparator<Vector2i> TOWER_POSITION_COMPARATOR = Comparator
+            .comparing(Vector2i::getX)
+            .thenComparing(Vector2i::getY);
+
     private static final Vector2i TOWER_BASE_SIZE = new Vector2i(1, 1);
 
     private final GameGeometry gameGeometry;
 
-    private final Map<Vector2i, Tower> towers = new TreeMap<>();
+    private final Map<Vector2i, Tower> towers = new TreeMap<>(TOWER_POSITION_COMPARATOR);
 
     @Getter
     private final TowerBuildingInteractionTarget interactionTarget = new BuildingInteractionTarget();
