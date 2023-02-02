@@ -19,7 +19,7 @@ public class MapResourceSpriteFactory {
 
     public Sprite getRockSprite() {
         final Sprite grassSpriteLayer = getGrassSprite();
-        final Sprite rockSpriteLayer = WORLD_SPRITE_SHEET.getSprite(4, 3);
+        final Sprite rockSpriteLayer = WORLD_SPRITE_SHEET.getSprite(7, 3);
         return new LayeredSprite(grassSpriteLayer, rockSpriteLayer);
     }
 
