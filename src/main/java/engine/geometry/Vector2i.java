@@ -11,7 +11,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Vector2i {
+public class Vector2i implements Comparable<Vector2i> {
 
     private final int x;
     private final int y;
@@ -53,5 +53,16 @@ public class Vector2i {
 
     public static boolean areInLine(Vector2i a, Vector2i b, Vector2i c) {
         return (a.x == b.x && b.x == c.x) || (a.y == b.y && b.y == c.y);
+    }
+
+    @Override
+    public int compareTo(Vector2i v) {
+        if(this.equals(v)) {
+            return 0;
+        } else if(this.x <= v.x && this.y <= v.y) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

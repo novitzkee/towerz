@@ -1,4 +1,4 @@
-package game.events;
+package game.events.world;
 
 import engine.geometry.Vector2i;
 import game.tower.Projectile;

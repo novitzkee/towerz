@@ -10,6 +10,7 @@ import engine.graphics.sprites.Sprite;
 import engine.time.TimeAware;
 import game.creature.Creature;
 import game.world.GameGeometry;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class Tower implements Paintable, TimeAware {
 
+    private static final Vector2i TOWER_DRAWING_OFFSET = new Vector2i(0, -1);
+
     private final EventEmitter eventEmitter;
 
     private final GameGeometry gameGeometry;
@@ -27,6 +30,7 @@ public class Tower implements Paintable, TimeAware {
 
     private final Map<TowerLevel, Sprite> projectileSprites;
 
+    @Getter
     private final Vector2i position;
 
     private final List<Projectile> projectiles = new ArrayList<>();
@@ -47,7 +51,7 @@ public class Tower implements Paintable, TimeAware {
 
     @Override
     public void draw(DrawingTarget drawingTarget) {
-        baseSprites.get(level).draw(position, drawingTarget, DrawingPositioning.RELATIVE);
+        baseSprites.get(level).draw(position.add(TOWER_DRAWING_OFFSET), drawingTarget, DrawingPositioning.RELATIVE);
         projectiles.forEach(projectile -> projectile.draw(drawingTarget));
     }
 

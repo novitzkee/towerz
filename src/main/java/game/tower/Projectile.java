@@ -7,7 +7,7 @@ import engine.graphics.Paintable;
 import engine.graphics.sprites.BasicSprite;
 import engine.time.TimeAware;
 import engine.traits.Removable;
-import game.events.ProjectileHitEvent;
+import game.events.world.ProjectileHitEvent;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

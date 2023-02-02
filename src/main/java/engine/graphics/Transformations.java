@@ -39,6 +39,12 @@ public class Transformations {
         return tx;
     }
 
+    public static AffineTransform scale(Image image, double scale) {
+        final AffineTransform tx = AffineTransform.getScaleInstance(scale, scale);
+        tx.translate(0 , 0);
+        return tx;
+    }
+
     public static AffineTransform combine(AffineTransform first, AffineTransform second) {
         final AffineTransform affineTransform = new AffineTransform();
         affineTransform.concatenate(second);

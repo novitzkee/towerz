@@ -4,16 +4,17 @@ import engine.events.EventEmitter;
 import engine.geometry.Vector2i;
 import engine.graphics.Graphics2DTarget;
 import engine.graphics.Paintable;
-import game.events.GameMapClickEvent;
-import game.events.GameMapHoverEvent;
+import game.engine.GameEngine;
+import game.events.interaction.GameMapClickEvent;
+import game.events.interaction.GameMapHoverEvent;
+import game.interactions.GameMapMouseInteractionHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static presentation.config.Dimensions.TILE_DIMENSIONS_PX;
-import static presentation.config.Dimensions.WORLD_TO_REAL_POSITION_TRANSLATION;
+import static presentation.config.Dimensions.*;
 
 public class WorldPanel extends JPanel {
 
@@ -21,12 +22,20 @@ public class WorldPanel extends JPanel {
 
     private final Paintable worldPaintable;
 
-    public WorldPanel(EventEmitter eventEmitter, Paintable worldPaintable) {
-        this.eventEmitter = eventEmitter;
-        this.worldPaintable = worldPaintable;
+    private final GameMapMouseInteractionHandler gameMapMouseInteractionHandler;
+
+    public WorldPanel(GameEngine gameEngine) {
+        this.eventEmitter = gameEngine.getEventEmitter();
+        this.worldPaintable = gameEngine.getWorldObject();
+        this.gameMapMouseInteractionHandler = gameEngine.getGameMapMouseInteractionHandler();
 
         addMouseListener(new MouseClickEmitter());
         addMouseMotionListener(new MouseMovementEmitter());
+    }
+
+    public void compose() {
+        setPreferredSize(new Dimension(WORLD_SIZE_PX.getX(), WORLD_SIZE_PX.getY()));
+        setVisible(true);
     }
 
     @Override
@@ -34,6 +43,7 @@ public class WorldPanel extends JPanel {
         super.paintComponent(g);
         final Graphics2DTarget drawingTarget = new Graphics2DTarget((Graphics2D) g, WORLD_TO_REAL_POSITION_TRANSLATION);
         worldPaintable.draw(drawingTarget);
+        gameMapMouseInteractionHandler.draw(drawingTarget);
     }
 
     private Vector2i translatePosition(int realX, int realY) {

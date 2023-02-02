@@ -1,5 +1,6 @@
 package engine.geometry;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.stream.IntStream;
@@ -8,8 +9,10 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class Rect2i {
 
+    @Getter
     private final Vector2i position;
 
+    @Getter
     private final Vector2i size;
 
     public boolean contains(Vector2i point) {

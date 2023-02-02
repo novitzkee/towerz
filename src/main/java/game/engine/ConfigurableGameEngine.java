@@ -17,6 +17,7 @@ import game.engine.loaders.TowerSpriteFactory;
 import game.fight.Creatures;
 import game.fight.Fight;
 import game.fight.Towers;
+import game.interactions.GameMapMouseInteractionHandler;
 import game.tower.TowerFactory;
 import game.world.GameMap;
 import game.world.World;
@@ -45,6 +46,9 @@ public class ConfigurableGameEngine implements GameEngine {
     @Getter
     private final World worldObject;
 
+    @Getter
+    private final GameMapMouseInteractionHandler gameMapMouseInteractionHandler;
+
 
     public static GameEngine configure(EngineConfig engineConfig) {
         final MonsterAnimationFactory monsterAnimationFactory = engineConfig.getMonsterAnimationFactory();
@@ -65,13 +69,15 @@ public class ConfigurableGameEngine implements GameEngine {
         final SoldierSpawner soldierSpawner = new SoldierSpawner(soldierFactory, creatures);
 
         final TowerFactory towerFactory = new TowerFactory(eventHandler, map.getGameGeometry(), towerSpriteFactory);
-        final Towers towers = new Towers(map.getGameGeometry(), towerFactory);
+        final Towers towers = new Towers(map.getGameGeometry());
 
         final Fight fight = new Fight(towers, creatures, enemySpawner, soldierSpawner);
 
         final World world = new World(castle, fight, map);
 
-        attachSubscriber(eventHandler, towers);
+        final GameMapMouseInteractionHandler gameMapMouseInteractionHandler = new GameMapMouseInteractionHandler(towerFactory, towers.getInteractionTarget());
+
+        attachSubscriber(eventHandler, gameMapMouseInteractionHandler);
 
         final Loop mainLoop = new ExecutorServiceLoop(Delay.ratePerSecond(30));
         final TimeAwareLoop tickLoop = new TimeAwareLoop();
@@ -82,7 +88,7 @@ public class ConfigurableGameEngine implements GameEngine {
         mainLoop.add(delegatedRepaintLoop);
         tickLoop.add(fight);
 
-        return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world);
+        return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world, gameMapMouseInteractionHandler);
     }
 
     private static void attachSubscriber(EventRouter eventRouter, Subscriber subscriber) {

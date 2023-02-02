@@ -11,38 +11,26 @@ import static presentation.config.Dimensions.*;
 @Getter
 public class GUI {
 
-    private static final int JFRAME_X_SIZE = WORLD_SIZE_PX.getX() + SELECTION_WIDTH + JFRAME_X_BOUNDS;
+    public static final int JFRAME_X_SIZE = WORLD_SIZE_PX.getX() + SELECTION_WIDTH + JFRAME_X_BOUNDS;
 
-    private static final int JFRAME_Y_SIZE = WORLD_SIZE_PX.getY() + JFRAME_Y_BOUNDS;
-
-    private final GameEngine gameEngine;
+    public static final int JFRAME_Y_SIZE = WORLD_SIZE_PX.getY() + JFRAME_Y_BOUNDS;
 
     private final WorldPanel worldPanel;
 
-    private final SelectionPanel selectionPanel;
+    private final SidePanel sidePanel;
 
-    private final TowerPanel towerPanel;
-
-    private final StatisticsPanel statisticsPanel;
 
     public GUI(GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
-        this.worldPanel = new WorldPanel(gameEngine.getEventEmitter(), gameEngine.getWorldObject());
-        this.selectionPanel = new SelectionPanel(gameEngine.getEventEmitter());
-        this.towerPanel = new TowerPanel(gameEngine.getEventEmitter());
-        this.statisticsPanel = new StatisticsPanel();
+        this.worldPanel = new WorldPanel(gameEngine);
+        this.sidePanel = new SidePanel(gameEngine.getEventEmitter());
 
         gameEngine.getRepaintLoop().add(worldPanel::repaint);
         composeGUI();
     }
 
     private void composeGUI() {
-        selectionPanel.setPreferredSize(new Dimension(SELECTION_WIDTH, JFRAME_Y_SIZE));
-        selectionPanel.setVisible(true);
-        selectionPanel.setBackground(Color.LIGHT_GRAY);
-
-        worldPanel.setPreferredSize(new Dimension(WORLD_SIZE_PX.getX(), WORLD_SIZE_PX.getY()));
-        worldPanel.setVisible(true);
+        sidePanel.compose();
+        worldPanel.compose();
 
         JFrame frame = new JFrame("Tower defence");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +39,7 @@ public class GUI {
         frame.setResizable(false);
         frame.setVisible(true);
 
-        frame.getContentPane().add(selectionPanel, BorderLayout.WEST);
+        frame.getContentPane().add(sidePanel, BorderLayout.WEST);
         frame.getContentPane().add(worldPanel, BorderLayout.EAST);
     }
 }
