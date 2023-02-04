@@ -61,5 +61,16 @@ public class Resources {
     public static final String SOLDIER3_ATTACK_SPRITE_SHEET = "sprites/creatures/soldier3_attack.png";
 
     public static final String SOLDIER4_SPRITE_SHEET = "sprites/creatures/soldier4.png";
-    public static final String SOLDIER4_ATTACK_SPRITE_SHEET = "sprites/creatures/soldier4_attack.png";
+
+    // Fonts
+
+    public static final String FONT_PATH = "fonts/retroville-nc.ttf";
+
+    // Icons
+
+    public static final String GOLD_SMALL = "icons/gold_small.png";
+
+    public static final String GOLD_BIG = "icons/gold_big.png";
+
+    public static final String HEART = "icons/heart.png";
 }

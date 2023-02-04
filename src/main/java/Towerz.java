@@ -7,7 +7,7 @@ import presentation.loaders.map.TextFileMapLoader;
 import presentation.loaders.sprites.CreatureResourceAnimationFactory;
 import presentation.loaders.sprites.TowerResourceSpriteFactory;
 
-public class TowerDefence {
+public class Towerz {
 
     public static void main(String[] args) {
         final EngineConfig engineConfig = getEngineConfiguration();

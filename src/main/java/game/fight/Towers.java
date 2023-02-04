@@ -33,15 +33,6 @@ public class Towers implements Paintable, TimeAware {
     @Getter
     private final TowerBuildingInteractionTarget interactionTarget = new BuildingInteractionTarget();
 
-    private void tryBuildTower(Vector2i position) {
-        final Rect2i targetBuildingRect = new Rect2i(position, TOWER_BASE_SIZE);
-    }
-
-    private boolean containsTower(Vector2i position) {
-        //return towers.stream().anyMatch()
-        return false;
-    }
-
     @Override
     public void draw(DrawingTarget drawingTarget) {
         towers.values().forEach(tower -> tower.draw(drawingTarget));

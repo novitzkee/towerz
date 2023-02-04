@@ -47,8 +47,8 @@ public class TextFileMapLoader implements MapLoader {
         this.turnSprites = mapSpriteFactory.getPathTurnSprites();
 
         this.worldSize = worldSize;
-        this.mapXRange = new BasicRange(0, worldSize.getX());
-        this.mapYRange = new BasicRange(0, worldSize.getY());
+        this.mapXRange = new BasicRange(0, worldSize.getX() - 1);
+        this.mapYRange = new BasicRange(0, worldSize.getY() - 1);
         this.mapFilePath = mapFilePath;
     }
 

@@ -35,7 +35,7 @@ public class Tower implements Paintable, TimeAware {
 
     private final List<Projectile> projectiles = new ArrayList<>();
 
-    private TowerLevel level = TowerLevel.STRONG;
+    private TowerLevel level = TowerLevel.WEAK;
 
     public void upgrade() {
         level = TowerLevel.getNextLevel(level);

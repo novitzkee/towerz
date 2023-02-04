@@ -35,4 +35,12 @@ public class Castle implements Paintable {
             return State.GOOD;
         }
     }
+
+    public int getCurrentHealth() {
+        return health.getCurrentAmount();
+    }
+
+    public void damage(int amount) {
+        health.decrease(amount);
+    }
 }

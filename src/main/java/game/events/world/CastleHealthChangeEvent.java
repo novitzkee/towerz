@@ -1,5 +1,3 @@
 package game.events.world;
 
-import game.creature.Health;
-
-public record CastleHealthChangeEvent(Health currentHealth) { }
+public record CastleHealthChangeEvent(int currentHealth) { }

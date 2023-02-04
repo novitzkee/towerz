@@ -1,42 +1,35 @@
 package presentation.components;
 
 import engine.events.EventEmitter;
-import engine.events.EventListener;
-import game.events.interaction.TowerBuildSelectionChangedEvent;
-import game.events.interaction.TowerSelection;
-import lombok.Getter;
+import game.events.interaction.SoldierForSpawnSelectionEvent;
+import game.events.interaction.SoldierSelection;
 import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
-import presentation.components.selection.TowerBuySelections;
+import presentation.components.selection.SoldierBuySelections;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static presentation.config.Dimensions.SELECTION_WIDTH;
 
-public class TowerPanel extends JPanel {
+public class SoldierPanel extends JPanel {
 
     private final EventEmitter eventEmitter;
 
-    @Getter
-    private final List<EventListener<?>> eventListeners = new ArrayList<>();
+    private final SoldierBuySelections soldierBuySelections = new SoldierBuySelections();
 
-    private final TowerBuySelections towerBuySelections = new TowerBuySelections();
-
-    public TowerPanel(EventEmitter eventEmitter) {
+    public SoldierPanel(EventEmitter eventEmitter) {
         this.eventEmitter = eventEmitter;
-        towerBuySelections.addSelectionChangeConsumer(this::emitSelectionEvent);
+        soldierBuySelections.addSelectionChangeConsumer(this::notifySelected);
     }
 
     public void compose() {
         setPreferredSize(new Dimension(SELECTION_WIDTH, 0));
         setBackground(Colors.TRANSPARENT);
 
-        final JLabel towerPanelLabel = new JLabel("Towers");
-        towerPanelLabel.setFont(FontProvider.get().deriveFont(18f));
-        towerPanelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        final JLabel soldierPanelLabel = new JLabel("Soldiers");
+        soldierPanelLabel.setFont(FontProvider.get().deriveFont(18f));
+        soldierPanelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         setLayout(new GridBagLayout());
         final GridBagConstraints labelConstraints = new GridBagConstraints();
@@ -44,7 +37,7 @@ public class TowerPanel extends JPanel {
         labelConstraints.gridy = 0;
         labelConstraints.gridwidth = 4;
 
-        add(towerPanelLabel, labelConstraints);
+        add(soldierPanelLabel, labelConstraints);
 
         final GridBagConstraints towerSelectionConstraints = new GridBagConstraints();
 
@@ -54,26 +47,26 @@ public class TowerPanel extends JPanel {
         towerSelectionConstraints.gridx = 0;
         towerSelectionConstraints.gridy = 1;
 
-        add(towerBuySelections.getArrowTowerSelection(), towerSelectionConstraints);
+        add(soldierBuySelections.getLightSoldierSelection(), towerSelectionConstraints);
 
         towerSelectionConstraints.gridx = 1;
         towerSelectionConstraints.gridy = 1;
 
-        add(towerBuySelections.getElectricTowerSelection(), towerSelectionConstraints);
+        add(soldierBuySelections.getMediumSoldierSelection(), towerSelectionConstraints);
 
         towerSelectionConstraints.gridx = 2;
         towerSelectionConstraints.gridy = 1;
 
-        add(towerBuySelections.getCandyTowerSelection(), towerSelectionConstraints);
+        add(soldierBuySelections.getHeavySoldierSelection(), towerSelectionConstraints);
 
         towerSelectionConstraints.gridx = 3;
         towerSelectionConstraints.gridy = 1;
 
-        add(towerBuySelections.getBastionTowerSelection(), towerSelectionConstraints);
+        add(soldierBuySelections.getSkeletonSoldierSelection(), towerSelectionConstraints);
     }
 
-    private void emitSelectionEvent(TowerSelection selection) {
-        final TowerBuildSelectionChangedEvent event = new TowerBuildSelectionChangedEvent(selection);
+    private void notifySelected(SoldierSelection soldierSelection) {
+        final SoldierForSpawnSelectionEvent event = new SoldierForSpawnSelectionEvent(soldierSelection);
         eventEmitter.emit(event);
     }
 }

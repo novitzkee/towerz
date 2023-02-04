@@ -1,28 +1,50 @@
 package game.creature;
 
+import engine.action.Action;
+import engine.action.ConsecutiveAction;
 import engine.time.TimeAware;
-import engine.time.delegators.ScalingDelegator;
 import game.fight.Creatures;
+import game.interactions.targets.SoldierSpawnInteractionTarget;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class SoldierSpawner implements TimeAware {
 
-    private final SoldierFactory soldierFactory;
-
     private final Creatures creatures;
 
-    private final ScalingDelegator spawnDelegator = new ScalingDelegator(0.01f, this::spawnSoldier);
+    private final List<Action> activeSpawnActions = new ArrayList<>();
+
+    @Getter
+    private final SoldierSpawnInteractionTarget interactionTarget = new SpawningInteractionTarget();
 
     @Override
     public void tick() {
-        spawnDelegator.tick();
+        activeSpawnActions.forEach(TimeAware::tick);
+        activeSpawnActions.removeIf(Action::isGarbage);
     }
 
-    public void spawnSoldier() {
-        creatures.add(soldierFactory.createLightSolder(), CreatureType.DEFENDER);
-        creatures.add(soldierFactory.createMediumSoldier(), CreatureType.DEFENDER);
-        creatures.add(soldierFactory.createHeavySoldier(), CreatureType.DEFENDER);
-        creatures.add(soldierFactory.createSkeletonSolder(), CreatureType.DEFENDER);
+    private class SpawningInteractionTarget implements SoldierSpawnInteractionTarget {
+
+        @Override
+        public void spawn(List<Soldier> soldiers) {
+            scheduleSpawn(soldiers);
+        }
+
+        private void scheduleSpawn(List<Soldier> soldiers) {
+            final List<Runnable> spawningRunnables = soldiers.stream()
+                    .map(this::createSpawningRunnable)
+                    .toList();
+
+            final Action spawningAction = new ConsecutiveAction(20, spawningRunnables);
+            activeSpawnActions.add(spawningAction);
+        }
+
+        private Runnable createSpawningRunnable(Soldier soldier) {
+            return () -> creatures.add(soldier, CreatureType.DEFENDER);
+        }
     }
 }

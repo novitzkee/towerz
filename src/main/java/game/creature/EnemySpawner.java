@@ -12,14 +12,14 @@ public class EnemySpawner implements TimeAware {
 
     private final Creatures creatures;
 
-    private final ScalingDelegator spawnDelegator = new ScalingDelegator(0.01f, this::spawnEnemy);
+    private final ScalingDelegator spawnDelegator = new ScalingDelegator(0.01f, this::spawnEnemies);
 
     @Override
     public void tick() {
         spawnDelegator.tick();
     }
 
-    private void spawnEnemy() {
+    private void spawnEnemies() {
         creatures.add(monsterFactory.createMantis(), CreatureType.ATTACKER);
         creatures.add(monsterFactory.createBee(), CreatureType.ATTACKER);
         creatures.add(monsterFactory.createButterfly(), CreatureType.ATTACKER);

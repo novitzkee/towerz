@@ -147,19 +147,17 @@ public class Creatures implements TimeAware, Paintable {
     }
 
     private void removeDeadCreatures() {
-        final List<Creature> attackersToRemove = attackingCreatures.stream()
+        attackingCreatures.stream()
                 .filter(Creature::isGarbage)
-                .peek(Creature::cleanUp)
-                .toList();
+                .forEach(Creature::cleanUp);
 
-        attackingCreatures.removeAll(attackersToRemove);
+        attackingCreatures.removeIf(Creature::isGarbage);
 
-        final List<Creature> defendersToRemove = defendingCreatures.stream()
+        defendingCreatures.stream()
                 .filter(Creature::isGarbage)
-                .peek(Creature::cleanUp)
-                .toList();
+                .forEach(Creature::cleanUp);
 
-        defendingCreatures.removeAll(defendersToRemove);
+        defendingCreatures.removeIf(Creature::isGarbage);
     }
 
     public synchronized void add(Creature creature, CreatureType creatureType) {

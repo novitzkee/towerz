@@ -1,5 +1,7 @@
 package presentation.components;
 
+import engine.events.EventRouter;
+import engine.events.Subscriber;
 import game.engine.GameEngine;
 import lombok.Getter;
 
@@ -24,8 +26,14 @@ public class GUI {
         this.worldPanel = new WorldPanel(gameEngine);
         this.sidePanel = new SidePanel(gameEngine.getEventEmitter());
 
+        attachSubscriber(gameEngine.getEventRouter(), sidePanel);
+
         gameEngine.getRepaintLoop().add(worldPanel::repaint);
         composeGUI();
+    }
+
+    private void attachSubscriber(EventRouter eventRouter, Subscriber subscriber) {
+        eventRouter.addAll(subscriber.getEventListeners());
     }
 
     private void composeGUI() {

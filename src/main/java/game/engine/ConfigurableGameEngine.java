@@ -17,7 +17,9 @@ import game.engine.loaders.TowerSpriteFactory;
 import game.fight.Creatures;
 import game.fight.Fight;
 import game.fight.Towers;
+import game.gameplay.GameStatisticsHandler;
 import game.interactions.GameMapMouseInteractionHandler;
+import game.interactions.SoldierSpawnInteractionHandler;
 import game.tower.TowerFactory;
 import game.world.GameMap;
 import game.world.World;
@@ -66,7 +68,7 @@ public class ConfigurableGameEngine implements GameEngine {
         final Creatures creatures = new Creatures(map.getGameGeometry());
 
         final EnemySpawner enemySpawner = new EnemySpawner(monsterFactory,  creatures);
-        final SoldierSpawner soldierSpawner = new SoldierSpawner(soldierFactory, creatures);
+        final SoldierSpawner soldierSpawner = new SoldierSpawner(creatures);
 
         final TowerFactory towerFactory = new TowerFactory(eventHandler, map.getGameGeometry(), towerSpriteFactory);
         final Towers towers = new Towers(map.getGameGeometry());
@@ -75,9 +77,14 @@ public class ConfigurableGameEngine implements GameEngine {
 
         final World world = new World(castle, fight, map);
 
-        final GameMapMouseInteractionHandler gameMapMouseInteractionHandler = new GameMapMouseInteractionHandler(towerFactory, towers.getInteractionTarget());
+        final GameStatisticsHandler gameStatisticsHandler = new GameStatisticsHandler(eventHandler, castle);
 
+        final GameMapMouseInteractionHandler gameMapMouseInteractionHandler = new GameMapMouseInteractionHandler(towerFactory, towers.getInteractionTarget());
+        final SoldierSpawnInteractionHandler soldierSpawnInteractionHandler = new SoldierSpawnInteractionHandler(soldierFactory, soldierSpawner.getInteractionTarget());
+
+        attachSubscriber(eventHandler, gameStatisticsHandler);
         attachSubscriber(eventHandler, gameMapMouseInteractionHandler);
+        attachSubscriber(eventHandler, soldierSpawnInteractionHandler);
 
         final Loop mainLoop = new ExecutorServiceLoop(Delay.ratePerSecond(30));
         final TimeAwareLoop tickLoop = new TimeAwareLoop();

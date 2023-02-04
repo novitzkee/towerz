@@ -10,7 +10,7 @@ public class Dimensions {
 
     public static final int JFRAME_Y_BOUNDS = 35;
 
-    public static final int SELECTION_WIDTH = 300;
+    public static final int SELECTION_WIDTH = 320;
 
     public static final int TILE_DIMENSIONS_PX = 64;
 

@@ -2,6 +2,7 @@ package game.tower;
 
 import engine.events.EventEmitter;
 import engine.geometry.Vector2i;
+import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
 import engine.graphics.sprites.BasicSprite;
@@ -45,7 +46,7 @@ public class Projectile implements TimeAware, Removable, Paintable {
 
     @Override
     public void draw(DrawingTarget drawingTarget) {
-        sprite.draw(realPosition, drawingTarget);
+        sprite.draw(realPosition, drawingTarget, DrawingPositioning.ABSOLUTE);
     }
 
     @Override
