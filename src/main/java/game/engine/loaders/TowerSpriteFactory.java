@@ -17,7 +17,7 @@ public interface TowerSpriteFactory {
 
     Map<TowerLevel, Sprite> getCandyTowerSprites();
 
-    Map<TowerLevel, Sprite> getCandyProjectiles();
+    Map<TowerLevel, Sprite> getCandyTowerProjectileSprites();
 
     Map<TowerLevel, Sprite> getBastionTowerSprites();
 

@@ -3,7 +3,7 @@ package game.engine;
 import engine.events.EventEmitter;
 import engine.events.EventRouter;
 import engine.time.Loop;
-import game.interactions.GameMapMouseInteractionHandler;
+import game.interactions.TowerMouseInteractionHandler;
 import game.world.World;
 
 public interface GameEngine {
@@ -15,7 +15,7 @@ public interface GameEngine {
 
     World getWorldObject();
 
-    GameMapMouseInteractionHandler getGameMapMouseInteractionHandler();
+    TowerMouseInteractionHandler getTowerMouseInteractionHandler();
 
     void start();
 

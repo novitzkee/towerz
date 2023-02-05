@@ -8,7 +8,9 @@ import presentation.components.resources.FontProvider;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static presentation.components.GUI.JFRAME_Y_SIZE;
 import static presentation.config.Dimensions.SELECTION_WIDTH;
@@ -66,6 +68,9 @@ public class SidePanel extends JPanel implements Subscriber {
 
     @Override
     public List<EventListener<?>> getEventListeners() {
-        return statisticsPanel.getEventListeners();
+        return Stream.of(upgradePanel, statisticsPanel)
+                .map(Subscriber::getEventListeners)
+                .flatMap(Collection::stream)
+                .toList();
     }
 }

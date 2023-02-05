@@ -2,8 +2,8 @@ package presentation.components;
 
 import engine.events.EventListener;
 import engine.events.Subscriber;
-import game.events.interaction.CastleGoldChangeEvent;
-import game.events.interaction.CastleHealthChangeEvent;
+import game.events.interaction.castle.CastleGoldChangeEvent;
+import game.events.interaction.castle.CastleHealthChangeEvent;
 import lombok.Getter;
 import presentation.components.resources.FontProvider;
 import presentation.components.resources.SymbolIcons;

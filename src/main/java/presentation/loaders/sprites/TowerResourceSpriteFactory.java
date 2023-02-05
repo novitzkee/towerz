@@ -62,7 +62,7 @@ public class TowerResourceSpriteFactory implements TowerSpriteFactory {
     }
 
     @Override
-    public Map<TowerLevel, Sprite> getCandyProjectiles() {
+    public Map<TowerLevel, Sprite> getCandyTowerProjectileSprites() {
         return loadSpriteSheetSequence(TOWER_3_PROJECTILE_SPRITE_SHEET);
     }
 

@@ -7,8 +7,8 @@ import engine.utils.RandomRNG;
 import game.creature.Soldier;
 import game.creature.SoldierFactory;
 import game.events.interaction.PricedSelection;
-import game.events.interaction.SoldierForSpawnSelectionEvent;
-import game.events.interaction.SoldierType;
+import game.events.interaction.soldier.SoldierForSpawnSelectionEvent;
+import game.events.interaction.soldier.SoldierType;
 import game.interactions.targets.SoldierSpawnInteractionTarget;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class SoldierSpawnInteractionHandler implements Subscriber {
     private final List<EventListener<?>> eventListeners = List.of(new SoldierForSpawnEventListener());
 
     private void handleSpawnSelection(PricedSelection<SoldierType> soldierSelection) {
-        if(!gameStatisticsHolder.canPurchase(soldierSelection)) return;
+        if(!gameStatisticsHolder.canPurchase(soldierSelection.price())) return;
 
-        gameStatisticsHolder.purchase(soldierSelection);
+        gameStatisticsHolder.purchase(soldierSelection.price());
         final List<Soldier> soldiers = createSoldiersForSelection(soldierSelection.selection());
         soldierSpawnInteractionTarget.spawn(soldiers);
     }

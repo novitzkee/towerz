@@ -1,4 +1,4 @@
-package game.events.interaction;
+package game.events.interaction.tower;
 
 public enum TowerType {
     ARROW,

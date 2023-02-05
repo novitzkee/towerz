@@ -73,4 +73,6 @@ public class Resources {
     public static final String GOLD_BIG = "icons/gold_big.png";
 
     public static final String HEART = "icons/heart.png";
+
+    public static final String ARROW = "icons/arrow.png";
 }

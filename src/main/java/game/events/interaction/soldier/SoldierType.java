@@ -1,4 +1,4 @@
-package game.events.interaction;
+package game.events.interaction.soldier;
 
 public enum SoldierType {
     LIGHT,

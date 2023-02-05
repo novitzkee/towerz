@@ -13,13 +13,14 @@ import game.creature.SoldierFactory;
 import game.creature.SoldierSpawner;
 import game.engine.loaders.MonsterAnimationFactory;
 import game.engine.loaders.SoldierAnimationFactory;
+import game.engine.loaders.TowerIconFactory;
 import game.engine.loaders.TowerSpriteFactory;
 import game.fight.Creatures;
 import game.fight.Fight;
 import game.fight.Towers;
-import game.interactions.GameMapMouseInteractionHandler;
 import game.interactions.GameStatisticsHolder;
 import game.interactions.SoldierSpawnInteractionHandler;
+import game.interactions.TowerMouseInteractionHandler;
 import game.tower.TowerFactory;
 import game.world.GameMap;
 import game.world.World;
@@ -51,12 +52,13 @@ public class ConfigurableGameEngine implements GameEngine {
     private final World worldObject;
 
     @Getter
-    private final GameMapMouseInteractionHandler gameMapMouseInteractionHandler;
+    private final TowerMouseInteractionHandler towerMouseInteractionHandler;
 
 
     public static GameEngine configure(EngineConfig engineConfig) {
         final MonsterAnimationFactory monsterAnimationFactory = engineConfig.getMonsterAnimationFactory();
         final SoldierAnimationFactory soldierAnimationFactory = engineConfig.getSoldierAnimationFactory();
+        final TowerIconFactory towerIconFactory = engineConfig.getTowerIconFactory();
         final TowerSpriteFactory towerSpriteFactory = engineConfig.getTowerSpriteFactory();
 
         final SingleDispatchEventRouter eventHandler = new SingleDispatchEventRouter();
@@ -72,7 +74,7 @@ public class ConfigurableGameEngine implements GameEngine {
         final EnemySpawner enemySpawner = new EnemySpawner(monsterFactory,  creatures);
         final SoldierSpawner soldierSpawner = new SoldierSpawner(creatures);
 
-        final TowerFactory towerFactory = new TowerFactory(eventHandler, map.getGameGeometry(), towerSpriteFactory);
+        final TowerFactory towerFactory = new TowerFactory(eventHandler, map.getGameGeometry(), towerIconFactory, towerSpriteFactory, creatures);
         final Towers towers = new Towers(map.getGameGeometry());
 
         final Fight fight = new Fight(towers, creatures, enemySpawner, soldierSpawner);
@@ -81,11 +83,11 @@ public class ConfigurableGameEngine implements GameEngine {
 
         final GameStatisticsHolder gameStatisticsHolder = new GameStatisticsHolder(eventHandler, castle, STARTING_GOLD_AMOUNT);
 
-        final GameMapMouseInteractionHandler gameMapMouseInteractionHandler = new GameMapMouseInteractionHandler(gameStatisticsHolder, towerFactory, towers.getInteractionTarget());
+        final TowerMouseInteractionHandler towerMouseInteractionHandler = new TowerMouseInteractionHandler(eventHandler, gameStatisticsHolder, towerFactory, towers.getInteractionTarget());
         final SoldierSpawnInteractionHandler soldierSpawnInteractionHandler = new SoldierSpawnInteractionHandler(gameStatisticsHolder, soldierFactory, soldierSpawner.getInteractionTarget());
 
         attachSubscriber(eventHandler, gameStatisticsHolder);
-        attachSubscriber(eventHandler, gameMapMouseInteractionHandler);
+        attachSubscriber(eventHandler, towerMouseInteractionHandler);
         attachSubscriber(eventHandler, soldierSpawnInteractionHandler);
 
         final Loop mainLoop = new ExecutorServiceLoop(Delay.ratePerSecond(30));
@@ -97,7 +99,7 @@ public class ConfigurableGameEngine implements GameEngine {
         mainLoop.add(delegatedRepaintLoop);
         tickLoop.add(fight);
 
-        return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world, gameMapMouseInteractionHandler);
+        return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world, towerMouseInteractionHandler);
     }
 
     private static void attachSubscriber(EventRouter eventRouter, Subscriber subscriber) {

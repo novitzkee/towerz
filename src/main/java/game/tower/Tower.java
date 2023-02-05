@@ -1,21 +1,23 @@
 package game.tower;
 
 import engine.events.EventEmitter;
-import engine.geometry.Range;
 import engine.geometry.Vector2i;
 import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
 import engine.graphics.sprites.Sprite;
 import engine.time.TimeAware;
-import game.creature.Creature;
+import engine.traits.Upgradeable;
+import game.fight.Creatures;
 import game.world.GameGeometry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class Tower implements Paintable, TimeAware {
@@ -26,9 +28,16 @@ public class Tower implements Paintable, TimeAware {
 
     private final GameGeometry gameGeometry;
 
+    private final Creatures creatures;
+
+    private final Map<TowerLevel, ImageIcon> upgradeIcons;
+
     private final Map<TowerLevel, Sprite> baseSprites;
 
     private final Map<TowerLevel, Sprite> projectileSprites;
+
+    @Getter
+    private final Upgradeable upgradeable = new TowerUpgradeable();
 
     @Getter
     private final Vector2i position;
@@ -37,16 +46,21 @@ public class Tower implements Paintable, TimeAware {
 
     private TowerLevel level = TowerLevel.WEAK;
 
+    private Set<Vector2i> tileRange;
+
+    private int reloadCounter;
+
     public void upgrade() {
         level = TowerLevel.getNextLevel(level);
+        updateTileRange();
     }
 
-    public void updateTarget(Creature target) {
+    private void updateTileRange() {
 
     }
 
-    public Range getPathRange() {
-        return null;
+    public void updateTarget() {
+
     }
 
     @Override
@@ -57,6 +71,40 @@ public class Tower implements Paintable, TimeAware {
 
     @Override
     public void tick() {
+        updateTarget();
         projectiles.forEach(Projectile::tick);
+    }
+
+    private final class TowerUpgradeable implements Upgradeable {
+
+        @Override
+        public Vector2i getPosition() {
+            return position;
+        }
+
+        @Override
+        public boolean canUpgrade() {
+            return level != TowerLevel.STRONG;
+        }
+
+        @Override
+        public ImageIcon getCurrentIcon() {
+            return upgradeIcons.get(level);
+        }
+
+        @Override
+        public ImageIcon getUpgradedIcon() {
+            return upgradeIcons.get(TowerLevel.getNextLevel(level));
+        }
+
+        @Override
+        public int getUpgradePrice() {
+            return 100;
+        }
+
+        @Override
+        public int getSellPrice() {
+            return 100;
+        }
     }
 }

@@ -2,6 +2,7 @@ package presentation.components.resources;
 
 import engine.geometry.Rect2i;
 import engine.geometry.Vector2i;
+import engine.graphics.ImageToIconConverter;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -19,22 +20,22 @@ public class TowerIcons {
 
     private static final double ICON_SCALE_FACTOR = 0.7f;
 
-    private final ImageIcon arrowTowerIcon = SpriteToIconConverter.createIcon(
+    private final ImageIcon arrowTowerIcon = ImageToIconConverter.createIcon(
             TOWER1_BASES_SPRITE_SHEET,
             TOWER_SUBIMAGE_LOCATION,
             ICON_SCALE_FACTOR);
 
-    private final ImageIcon electricTowerIcon = SpriteToIconConverter.createIcon(
+    private final ImageIcon electricTowerIcon = ImageToIconConverter.createIcon(
             TOWER2_BASES_SPRITE_SHEET,
             TOWER_SUBIMAGE_LOCATION,
             ICON_SCALE_FACTOR);
 
-    private final ImageIcon candyTowerIcon = SpriteToIconConverter.createIcon(
+    private final ImageIcon candyTowerIcon = ImageToIconConverter.createIcon(
             TOWER3_BASES_SPRITE_SHEET,
             TOWER_SUBIMAGE_LOCATION,
             ICON_SCALE_FACTOR);
 
-    private final ImageIcon bastionTowerIcon = SpriteToIconConverter.createIcon(
+    private final ImageIcon bastionTowerIcon = ImageToIconConverter.createIcon(
             TOWER4_BASES_SPRITE_SHEET,
             TOWER_SUBIMAGE_LOCATION,
             ICON_SCALE_FACTOR);

@@ -1,7 +1,6 @@
-package presentation.components.resources;
+package engine.graphics;
 
 import engine.geometry.Rect2i;
-import engine.graphics.Transformations;
 import engine.graphics.sprites.SpriteSheet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import java.net.URL;
 import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SpriteToIconConverter {
+public class ImageToIconConverter {
 
     public static ImageIcon createIcon(String filename, Rect2i subImageLocation, double scaleFactor) {
         final BufferedImage wholeImage = loadImage(filename);

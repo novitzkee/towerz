@@ -46,6 +46,11 @@ public class Towers implements Paintable, TimeAware {
     public class BuildingInteractionTarget implements TowerBuildingInteractionTarget {
 
         @Override
+        public boolean remove(Vector2i position) {
+            return towers.remove(position) != null;
+        }
+
+        @Override
         public boolean place(Tower tower) {
             if (towers.containsKey(tower.getPosition())) {
                 return false;

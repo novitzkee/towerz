@@ -3,8 +3,8 @@ package presentation.components;
 import engine.events.EventEmitter;
 import engine.events.EventListener;
 import game.events.interaction.PricedSelection;
-import game.events.interaction.TowerBuildSelectionChangedEvent;
-import game.events.interaction.TowerType;
+import game.events.interaction.tower.TowerBuildSelectionChangedEvent;
+import game.events.interaction.tower.TowerType;
 import lombok.Getter;
 import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
@@ -41,6 +41,7 @@ public class TowerPanel extends JPanel {
 
         setLayout(new GridBagLayout());
         final GridBagConstraints labelConstraints = new GridBagConstraints();
+        labelConstraints.insets = new Insets(20, 0, 0, 0);
         labelConstraints.gridx = 0;
         labelConstraints.gridy = 0;
         labelConstraints.gridwidth = 4;

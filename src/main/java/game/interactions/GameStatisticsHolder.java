@@ -5,11 +5,11 @@ import engine.events.EventListener;
 import engine.events.Subscriber;
 import game.castle.Castle;
 import game.creature.Creature;
-import game.events.interaction.CastleGoldChangeEvent;
-import game.events.interaction.CastleHealthChangeEvent;
-import game.events.interaction.PricedSelection;
+import game.events.interaction.castle.CastleGoldChangeEvent;
+import game.events.interaction.castle.CastleHealthChangeEvent;
 import game.events.world.EnemyArrivalEvent;
 import game.events.world.EnemyDeathEvent;
+import game.events.world.SoldierArrivalEvent;
 import lombok.Getter;
 
 import java.util.List;
@@ -19,6 +19,7 @@ public class GameStatisticsHolder implements Subscriber {
     private final EventEmitter eventEmitter;
     private final Castle castle;
 
+    @Getter
     private int goldAmount;
 
     public GameStatisticsHolder(EventEmitter eventEmitter, Castle castle, int startingGoldAmount) {
@@ -30,14 +31,19 @@ public class GameStatisticsHolder implements Subscriber {
     @Getter
     private final List<EventListener<?>> eventListeners = List.of(
             new EnemyArrivalEventListener(),
-            new EnemyDeathEventListener());
+            new EnemyDeathEventListener(),
+            new SoldierArrivalListener());
 
-    public boolean canPurchase(PricedSelection<?> selection) {
-        return goldAmount >= selection.price();
+    public boolean canPurchase(int price) {
+        return goldAmount >= price;
     }
 
-    public void purchase(PricedSelection<?> selection) {
-        updateGoldAndNotify(-selection.price());
+    public void purchase(int price) {
+        updateGoldAndNotify(-price);
+    }
+
+    public void sell(int price) {
+        updateGoldAndNotify(price);
     }
 
     private void updateHealthAndNotify(int damage) {
@@ -48,6 +54,11 @@ public class GameStatisticsHolder implements Subscriber {
 
     private void handleEnemyDeath(Creature enemy) {
         final int goldToIncrease = enemy.getHealth().getMaxAmount() / 100;
+        updateGoldAndNotify(goldToIncrease);
+    }
+
+    private void handleSoldierArrival(Creature soldier) {
+        final int goldToIncrease = soldier.getHealth().getMaxAmount() / 100;
         updateGoldAndNotify(goldToIncrease);
     }
 
@@ -80,6 +91,19 @@ public class GameStatisticsHolder implements Subscriber {
         @Override
         public Class<EnemyDeathEvent> getEventClass() {
             return EnemyDeathEvent.class;
+        }
+    }
+
+    private class SoldierArrivalListener implements EventListener<SoldierArrivalEvent> {
+
+        @Override
+        public void onEvent(SoldierArrivalEvent event) {
+            handleSoldierArrival(event.soldier());
+        }
+
+        @Override
+        public Class<SoldierArrivalEvent> getEventClass() {
+            return SoldierArrivalEvent.class;
         }
     }
 }

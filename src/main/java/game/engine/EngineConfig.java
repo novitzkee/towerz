@@ -22,6 +22,8 @@ public class EngineConfig {
     private final SoldierAnimationFactory soldierAnimationFactory;
 
     @NonNull
-    private final TowerSpriteFactory towerSpriteFactory;
+    private final TowerIconFactory towerIconFactory;
 
+    @NonNull
+    private final TowerSpriteFactory towerSpriteFactory;
 }

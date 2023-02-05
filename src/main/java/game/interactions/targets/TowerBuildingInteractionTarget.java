@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface TowerBuildingInteractionTarget {
 
+    boolean remove(Vector2i position);
+
     boolean place(Tower tower);
 
     boolean canPlace(Vector2i position);

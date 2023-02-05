@@ -2,6 +2,7 @@ package presentation.components.resources;
 
 import engine.geometry.Rect2i;
 import engine.geometry.Vector2i;
+import engine.graphics.ImageToIconConverter;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -21,9 +22,11 @@ public class SymbolIcons {
 
     private static final Rect2i BIG_ICON_LOCATION = new Rect2i(ICON_POSITION, BIG_ICON_SIZE);
 
-    private final ImageIcon smallGoldIcon = SpriteToIconConverter.createIcon(GOLD_SMALL, SMALL_ICON_LOCATION, 1d);
+    private final ImageIcon smallGoldIcon = ImageToIconConverter.createIcon(GOLD_SMALL, SMALL_ICON_LOCATION, 1d);
 
-    private final ImageIcon bigGoldIcon = SpriteToIconConverter.createIcon(GOLD_BIG, BIG_ICON_LOCATION, 1d);
+    private final ImageIcon bigGoldIcon = ImageToIconConverter.createIcon(GOLD_BIG, BIG_ICON_LOCATION, 1d);
 
-    private final ImageIcon bigHeartIcon = SpriteToIconConverter.createIcon(HEART, BIG_ICON_LOCATION, 1d);
+    private final ImageIcon bigHeartIcon = ImageToIconConverter.createIcon(HEART, BIG_ICON_LOCATION, 1d);
+
+    private final ImageIcon arrowIcon = ImageToIconConverter.createIcon(ARROW, BIG_ICON_LOCATION, 1d);
 }

@@ -2,8 +2,8 @@ package presentation.components;
 
 import engine.events.EventEmitter;
 import game.events.interaction.PricedSelection;
-import game.events.interaction.SoldierForSpawnSelectionEvent;
-import game.events.interaction.SoldierType;
+import game.events.interaction.soldier.SoldierForSpawnSelectionEvent;
+import game.events.interaction.soldier.SoldierType;
 import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
 import presentation.components.selection.SoldierBuySelections;

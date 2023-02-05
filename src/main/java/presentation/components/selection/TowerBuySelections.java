@@ -1,7 +1,7 @@
 package presentation.components.selection;
 
 import game.events.interaction.PricedSelection;
-import game.events.interaction.TowerType;
+import game.events.interaction.tower.TowerType;
 import lombok.Getter;
 import presentation.components.resources.SymbolIcons;
 import presentation.components.resources.TowerIcons;

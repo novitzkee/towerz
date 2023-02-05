@@ -1,4 +1,4 @@
-package game.events.interaction;
+package game.events.interaction.input;
 
 import engine.geometry.Vector2i;
 

@@ -1,7 +1,7 @@
 package presentation.components.selection;
 
 import game.events.interaction.PricedSelection;
-import game.events.interaction.SoldierType;
+import game.events.interaction.soldier.SoldierType;
 import lombok.Getter;
 import presentation.components.resources.SoldierIcons;
 import presentation.components.resources.SymbolIcons;
@@ -15,13 +15,13 @@ import java.util.stream.Stream;
 @Getter
 public class SoldierBuySelections {
 
-    private static final int LIGHT_SOLDIERS_PRICE = 100;
+    private static final int LIGHT_SOLDIERS_PRICE = 150;
 
     private static final int MEDIUM_SOLDIERS_PRICE = 200;
 
     private static final int HEAVY_SOLDIERS_PRICE = 300;
 
-    private static final int SKELETON_SOLDIERS_PRICE = 500;
+    private static final int SKELETON_SOLDIERS_PRICE = 400;
 
     private final BuySelection<SoldierType> lightSoldierSelection;
 
