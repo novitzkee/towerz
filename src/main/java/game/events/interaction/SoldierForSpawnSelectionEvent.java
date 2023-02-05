@@ -1,3 +1,3 @@
 package game.events.interaction;
 
-public record SoldierForSpawnSelectionEvent(SoldierSelection soldierSelection) { }
+public record SoldierForSpawnSelectionEvent(PricedSelection<SoldierType> currentSelection) { }

@@ -2,8 +2,9 @@ package presentation.components;
 
 import engine.events.EventEmitter;
 import engine.events.EventListener;
+import game.events.interaction.PricedSelection;
 import game.events.interaction.TowerBuildSelectionChangedEvent;
-import game.events.interaction.TowerSelection;
+import game.events.interaction.TowerType;
 import lombok.Getter;
 import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
@@ -72,7 +73,7 @@ public class TowerPanel extends JPanel {
         add(towerBuySelections.getBastionTowerSelection(), towerSelectionConstraints);
     }
 
-    private void emitSelectionEvent(TowerSelection selection) {
+    private void emitSelectionEvent(PricedSelection<TowerType> selection) {
         final TowerBuildSelectionChangedEvent event = new TowerBuildSelectionChangedEvent(selection);
         eventEmitter.emit(event);
     }

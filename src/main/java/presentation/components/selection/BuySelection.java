@@ -1,5 +1,6 @@
 package presentation.components.selection;
 
+import game.events.interaction.PricedSelection;
 import lombok.RequiredArgsConstructor;
 import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
@@ -18,16 +19,12 @@ import static presentation.components.SidePanel.SIDE_PANEL_COLOR;
 
 public class BuySelection<T> extends JPanel {
 
-    private final T selection;
+    private final PricedSelection<T> selection;
 
-    private final AbstractButton button;
-
-    private final List<Consumer<T>> selectionConsumers = new ArrayList<>();
+    private final List<Consumer<PricedSelection<T>>> selectionConsumers = new ArrayList<>();
 
     public BuySelection(int price, AbstractButton button, T selection, SymbolIcons symbolIcons) {
-        this.selection = selection;
-        this.button = button;
-
+        this.selection = new PricedSelection<>(price, selection);
         setBackground(Colors.TRANSPARENT);
 
         button.setBackground(SIDE_PANEL_COLOR);
@@ -63,11 +60,11 @@ public class BuySelection<T> extends JPanel {
         return String.format("%-" + 4 + "s", priceValue);
     }
 
-    public void addSelectionChangeConsumer(Consumer<T> selectionConsumer) {
+    public void addSelectionChangeConsumer(Consumer<PricedSelection<T>> selectionConsumer) {
         selectionConsumers.add(selectionConsumer);
     }
 
-    private void notifySelectionChanged(T selection) {
+    private void notifySelectionChanged(PricedSelection<T> selection) {
         selectionConsumers.forEach(consumer -> consumer.accept(selection));
     }
 

@@ -7,10 +7,7 @@ import engine.geometry.Vector2i;
 import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
-import game.events.interaction.GameMapClickEvent;
-import game.events.interaction.GameMapHoverEvent;
-import game.events.interaction.TowerBuildSelectionChangedEvent;
-import game.events.interaction.TowerSelection;
+import game.events.interaction.*;
 import game.interactions.targets.TowerBuildingInteractionTarget;
 import game.tower.Tower;
 import game.tower.TowerFactory;
@@ -29,6 +26,8 @@ public class GameMapMouseInteractionHandler implements Paintable, Subscriber {
 
     private static final Color INACTIVE_SELECTION_COLOR = new Color(50, 100, 50, 64);
 
+    private final GameStatisticsHolder gameStatisticsHolder;
+
     private final TowerFactory towerFactory;
 
     private final TowerBuildingInteractionTarget towerBuildingInteractionTarget;
@@ -41,14 +40,44 @@ public class GameMapMouseInteractionHandler implements Paintable, Subscriber {
 
     private Vector2i selectionPosition;
 
-    private TowerSelection towerSelection;
+    private PricedSelection<TowerType> currentTowerSelection = PricedSelection.empty();
 
     @Override
     public void draw(DrawingTarget drawingTarget) {
-        if (towerSelection == null) return;
+        if (!isBuildingActive()) return;
 
         final Rect2i selectionRect = new Rect2i(selectionPosition, SELECTION_RECT_SIZE);
         drawingTarget.drawRect(selectionRect, getDrawingColor(), DrawingPositioning.RELATIVE);
+    }
+
+    private void handleClick(Vector2i position) {
+        if (isBuildingActive()) {
+            build(position);
+        } else {
+            select(position);
+        }
+    }
+
+    private boolean isBuildingActive() {
+        return currentTowerSelection.selection() != null && gameStatisticsHolder.canPurchase(currentTowerSelection);
+    }
+
+    private void build(Vector2i position) {
+        if(currentTowerSelection.selection() == null || !towerBuildingInteractionTarget.canPlace(position)) return;
+
+        final Tower tower = switch (currentTowerSelection.selection()) {
+            case ARROW -> towerFactory.createArrowTower(position);
+            case ELECTRIC -> towerFactory.createElectricTower(position);
+            case CANDY -> towerFactory.createCandyTower(position);
+            case BASTION -> towerFactory.createBastionTower(position);
+        };
+
+        gameStatisticsHolder.purchase(currentTowerSelection);
+        towerBuildingInteractionTarget.place(tower);
+    }
+
+    private void select(Vector2i position) {
+        // TODO
     }
 
     private Color getDrawingColor() {
@@ -57,25 +86,12 @@ public class GameMapMouseInteractionHandler implements Paintable, Subscriber {
                 ACTIVE_SELECTION_COLOR;
     }
 
-    private void updateSelection(TowerSelection newSelection) {
-        towerSelection = newSelection;
+    private void updateSelection(PricedSelection<TowerType> newSelection) {
+        currentTowerSelection = newSelection;
     }
 
     private void updatePosition(Vector2i newPosition) {
         selectionPosition = newPosition;
-    }
-
-    private void build(Vector2i position) {
-        if(towerSelection == null || !towerBuildingInteractionTarget.canPlace(position)) return;
-
-        final Tower tower = switch (towerSelection) {
-            case ARROW -> towerFactory.createArrowTower(position);
-            case ELECTRIC -> towerFactory.createElectricTower(position);
-            case CANDY -> towerFactory.createCandyTower(position);
-            case BASTION -> towerFactory.createBastionTower(position);
-        };
-
-        towerBuildingInteractionTarget.place(tower);
     }
 
     private class TowerSelectionChangeListener implements EventListener<TowerBuildSelectionChangedEvent> {
@@ -108,7 +124,7 @@ public class GameMapMouseInteractionHandler implements Paintable, Subscriber {
 
         @Override
         public void onEvent(GameMapClickEvent event) {
-            build(event.position());
+            handleClick(event.position());
         }
 
         @Override

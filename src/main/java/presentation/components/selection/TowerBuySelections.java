@@ -1,6 +1,7 @@
 package presentation.components.selection;
 
-import game.events.interaction.TowerSelection;
+import game.events.interaction.PricedSelection;
+import game.events.interaction.TowerType;
 import lombok.Getter;
 import presentation.components.resources.SymbolIcons;
 import presentation.components.resources.TowerIcons;
@@ -22,15 +23,15 @@ public class TowerBuySelections {
 
     private static final int BASTION_TOWER_PRICE = 2000;
 
-    private final BuySelection<TowerSelection> arrowTowerSelection;
+    private final BuySelection<TowerType> arrowTowerSelection;
 
-    private final BuySelection<TowerSelection> electricTowerSelection;
+    private final BuySelection<TowerType> electricTowerSelection;
 
-    private final BuySelection<TowerSelection> candyTowerSelection;
+    private final BuySelection<TowerType> candyTowerSelection;
 
-    private final BuySelection<TowerSelection> bastionTowerSelection;
+    private final BuySelection<TowerType> bastionTowerSelection;
 
-    private final List<Consumer<TowerSelection>> towerSelectionConsumers = new ArrayList<>();
+    private final List<Consumer<PricedSelection<TowerType>>> towerSelectionConsumers = new ArrayList<>();
 
     public TowerBuySelections() {
         final SymbolIcons symbolIcons = new SymbolIcons();
@@ -41,25 +42,29 @@ public class TowerBuySelections {
         final JToggleButton candyTowerButton = new JToggleButton(towerIcons.getCandyTowerIcon());
         final JToggleButton bastionTowerButton = new JToggleButton(towerIcons.getBastionTowerIcon());
 
-        final ToggleableButtonGroup buttonGroup = new ToggleableButtonGroup(() -> notifyAnySelectionChanged(null));
+        final ToggleableButtonGroup buttonGroup = new ToggleableButtonGroup(this::notifySelectionCancelled);
 
         Stream.of(arrowTowerButton, electricTowerButton, candyTowerButton, bastionTowerButton)
                 .forEach(buttonGroup::add);
 
-        this.arrowTowerSelection = new BuySelection<>(ARROW_TOWER_PRICE, arrowTowerButton, TowerSelection.ARROW, symbolIcons);
-        this.electricTowerSelection = new BuySelection<>(ELECTRIC_TOWER_PRICE, electricTowerButton, TowerSelection.ELECTRIC, symbolIcons);
-        this.candyTowerSelection = new BuySelection<>(CANDY_TOWER_PRICE, candyTowerButton, TowerSelection.CANDY, symbolIcons);
-        this.bastionTowerSelection = new BuySelection<>(BASTION_TOWER_PRICE, bastionTowerButton, TowerSelection.BASTION, symbolIcons);
+        this.arrowTowerSelection = new BuySelection<>(ARROW_TOWER_PRICE, arrowTowerButton, TowerType.ARROW, symbolIcons);
+        this.electricTowerSelection = new BuySelection<>(ELECTRIC_TOWER_PRICE, electricTowerButton, TowerType.ELECTRIC, symbolIcons);
+        this.candyTowerSelection = new BuySelection<>(CANDY_TOWER_PRICE, candyTowerButton, TowerType.CANDY, symbolIcons);
+        this.bastionTowerSelection = new BuySelection<>(BASTION_TOWER_PRICE, bastionTowerButton, TowerType.BASTION, symbolIcons);
 
         Stream.of(arrowTowerSelection, electricTowerSelection, candyTowerSelection, bastionTowerSelection)
                 .forEach(towerSelection -> towerSelection.addSelectionChangeConsumer(this::notifyAnySelectionChanged));
     }
 
-    private void notifyAnySelectionChanged(TowerSelection towerSelection) {
-        towerSelectionConsumers.forEach(consumer -> consumer.accept(towerSelection));
+    private void notifySelectionCancelled() {
+        towerSelectionConsumers.forEach(consumer -> consumer.accept(PricedSelection.empty()));
     }
 
-    public void addSelectionChangeConsumer(Consumer<TowerSelection> consumer) {
+    private void notifyAnySelectionChanged(PricedSelection<TowerType> towerType) {
+        towerSelectionConsumers.forEach(consumer -> consumer.accept(towerType));
+    }
+
+    public void addSelectionChangeConsumer(Consumer<PricedSelection<TowerType>> consumer) {
         towerSelectionConsumers.add(consumer);
     }
 }

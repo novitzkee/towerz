@@ -1,8 +1,9 @@
 package presentation.components;
 
 import engine.events.EventEmitter;
+import game.events.interaction.PricedSelection;
 import game.events.interaction.SoldierForSpawnSelectionEvent;
-import game.events.interaction.SoldierSelection;
+import game.events.interaction.SoldierType;
 import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
 import presentation.components.selection.SoldierBuySelections;
@@ -65,8 +66,8 @@ public class SoldierPanel extends JPanel {
         add(soldierBuySelections.getSkeletonSoldierSelection(), towerSelectionConstraints);
     }
 
-    private void notifySelected(SoldierSelection soldierSelection) {
-        final SoldierForSpawnSelectionEvent event = new SoldierForSpawnSelectionEvent(soldierSelection);
+    private void notifySelected(PricedSelection<SoldierType> soldierType) {
+        final SoldierForSpawnSelectionEvent event = new SoldierForSpawnSelectionEvent(soldierType);
         eventEmitter.emit(event);
     }
 }

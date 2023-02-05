@@ -2,7 +2,8 @@ package presentation.components;
 
 import engine.events.EventListener;
 import engine.events.Subscriber;
-import game.events.world.CastleHealthChangeEvent;
+import game.events.interaction.CastleGoldChangeEvent;
+import game.events.interaction.CastleHealthChangeEvent;
 import lombok.Getter;
 import presentation.components.resources.FontProvider;
 import presentation.components.resources.SymbolIcons;
@@ -14,6 +15,7 @@ import java.util.List;
 import static presentation.components.SidePanel.SIDE_PANEL_COLOR;
 import static presentation.config.Dimensions.SELECTION_WIDTH;
 import static presentation.config.Gameplay.STARTING_CASTLE_HEALTH;
+import static presentation.config.Gameplay.STARTING_GOLD_AMOUNT;
 
 public class StatisticsPanel extends JPanel implements Subscriber {
 
@@ -22,7 +24,9 @@ public class StatisticsPanel extends JPanel implements Subscriber {
     private final JLabel goldLabel;
 
     @Getter
-    private final List<EventListener<?>> eventListeners = List.of(new CastleHealthChangeListener());
+    private final List<EventListener<?>> eventListeners = List.of(
+            new CastleHealthChangeListener(),
+            new CastleGoldChangeListener());
 
     public StatisticsPanel() {
         final SymbolIcons symbolIcons = new SymbolIcons();
@@ -33,7 +37,7 @@ public class StatisticsPanel extends JPanel implements Subscriber {
         healthLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         final ImageIcon goldIcon = symbolIcons.getBigGoldIcon();
-        this.goldLabel = new JLabel(String.valueOf(0), goldIcon, SwingConstants.RIGHT);
+        this.goldLabel = new JLabel(String.valueOf(STARTING_GOLD_AMOUNT), goldIcon, SwingConstants.RIGHT);
         goldLabel.setFont(FontProvider.get().deriveFont(18f));
         goldLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
@@ -72,6 +76,10 @@ public class StatisticsPanel extends JPanel implements Subscriber {
         healthLabel.setText(String.valueOf(health));
     }
 
+    private void updateGold(int gold) {
+        goldLabel.setText(String.valueOf(gold));
+    }
+
     private class CastleHealthChangeListener implements EventListener<CastleHealthChangeEvent> {
 
         @Override
@@ -82,6 +90,19 @@ public class StatisticsPanel extends JPanel implements Subscriber {
         @Override
         public Class<CastleHealthChangeEvent> getEventClass() {
             return CastleHealthChangeEvent.class;
+        }
+    }
+
+    private class CastleGoldChangeListener implements EventListener<CastleGoldChangeEvent> {
+
+        @Override
+        public void onEvent(CastleGoldChangeEvent event) {
+            updateGold(event.currentGoldAmount());
+        }
+
+        @Override
+        public Class<CastleGoldChangeEvent> getEventClass() {
+            return CastleGoldChangeEvent.class;
         }
     }
 }

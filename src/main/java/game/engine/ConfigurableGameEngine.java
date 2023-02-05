@@ -17,8 +17,8 @@ import game.engine.loaders.TowerSpriteFactory;
 import game.fight.Creatures;
 import game.fight.Fight;
 import game.fight.Towers;
-import game.gameplay.GameStatisticsHandler;
 import game.interactions.GameMapMouseInteractionHandler;
+import game.interactions.GameStatisticsHolder;
 import game.interactions.SoldierSpawnInteractionHandler;
 import game.tower.TowerFactory;
 import game.world.GameMap;
@@ -28,6 +28,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.swing.*;
+
+import static presentation.config.Gameplay.STARTING_GOLD_AMOUNT;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConfigurableGameEngine implements GameEngine {
@@ -77,12 +79,12 @@ public class ConfigurableGameEngine implements GameEngine {
 
         final World world = new World(castle, fight, map);
 
-        final GameStatisticsHandler gameStatisticsHandler = new GameStatisticsHandler(eventHandler, castle);
+        final GameStatisticsHolder gameStatisticsHolder = new GameStatisticsHolder(eventHandler, castle, STARTING_GOLD_AMOUNT);
 
-        final GameMapMouseInteractionHandler gameMapMouseInteractionHandler = new GameMapMouseInteractionHandler(towerFactory, towers.getInteractionTarget());
-        final SoldierSpawnInteractionHandler soldierSpawnInteractionHandler = new SoldierSpawnInteractionHandler(soldierFactory, soldierSpawner.getInteractionTarget());
+        final GameMapMouseInteractionHandler gameMapMouseInteractionHandler = new GameMapMouseInteractionHandler(gameStatisticsHolder, towerFactory, towers.getInteractionTarget());
+        final SoldierSpawnInteractionHandler soldierSpawnInteractionHandler = new SoldierSpawnInteractionHandler(gameStatisticsHolder, soldierFactory, soldierSpawner.getInteractionTarget());
 
-        attachSubscriber(eventHandler, gameStatisticsHandler);
+        attachSubscriber(eventHandler, gameStatisticsHolder);
         attachSubscriber(eventHandler, gameMapMouseInteractionHandler);
         attachSubscriber(eventHandler, soldierSpawnInteractionHandler);
 

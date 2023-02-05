@@ -1,3 +1,3 @@
 package game.events.interaction;
 
-public record TowerBuildSelectionChangedEvent(TowerSelection currentSelection) { }
+public record TowerBuildSelectionChangedEvent(PricedSelection<TowerType> currentSelection) { }

@@ -6,6 +6,8 @@ import engine.traits.Removable;
 
 public interface Creature extends TimeAware, Paintable, Removable {
 
+    Health getHealth();
+
     int getPathPosition();
 
     int getPathPositionInTicks(int ticks);

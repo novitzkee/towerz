@@ -7,6 +7,7 @@ import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
 import engine.graphics.animations.Animation;
 import game.events.world.EnemyArrivalEvent;
+import game.events.world.EnemyDeathEvent;
 import game.events.world.SoldierArrivalEvent;
 import game.world.GameGeometry;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public abstract class AbstractCreature implements Creature {
     @Getter
     private int pathPosition;
 
+    @Getter
     private final Health health;
 
     @Getter
@@ -78,9 +80,7 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void cleanUp() {
-        if (creatureBehaviour.isAtDestination()) {
-            creatureBehaviour.signalArrival();
-        }
+        creatureBehaviour.clear();
     }
 
     @Override
@@ -104,7 +104,7 @@ public abstract class AbstractCreature implements Creature {
 
         boolean isAtDestination();
 
-        void signalArrival();
+        void clear();
     }
 
     @RequiredArgsConstructor
@@ -133,9 +133,11 @@ public abstract class AbstractCreature implements Creature {
         }
 
         @Override
-        public void signalArrival() {
-            final SoldierArrivalEvent soldierArrivalEvent = new SoldierArrivalEvent(AbstractCreature.this);
-            eventEmitter.emit(soldierArrivalEvent);
+        public void clear() {
+            if (isAtDestination()) {
+                final SoldierArrivalEvent soldierArrivalEvent = new SoldierArrivalEvent(AbstractCreature.this);
+                eventEmitter.emit(soldierArrivalEvent);
+            }
         }
     }
 
@@ -165,9 +167,14 @@ public abstract class AbstractCreature implements Creature {
         }
 
         @Override
-        public void signalArrival() {
-            final EnemyArrivalEvent enemyArrivalEvent = new EnemyArrivalEvent(AbstractCreature.this);
-            eventEmitter.emit(enemyArrivalEvent);
+        public void clear() {
+            if (isAtDestination()) {
+                final EnemyArrivalEvent enemyArrivalEvent = new EnemyArrivalEvent(AbstractCreature.this);
+                eventEmitter.emit(enemyArrivalEvent);
+            } else {
+                final EnemyDeathEvent enemyDeathEvent = new EnemyDeathEvent(AbstractCreature.this);
+                eventEmitter.emit(enemyDeathEvent);
+            }
         }
     }
 }

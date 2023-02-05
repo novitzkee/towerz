@@ -1,6 +1,6 @@
 package game.events.interaction;
 
-public enum TowerSelection {
+public enum TowerType {
     ARROW,
     ELECTRIC,
     CANDY,

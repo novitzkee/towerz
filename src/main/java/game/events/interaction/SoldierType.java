@@ -1,6 +1,6 @@
 package game.events.interaction;
 
-public enum SoldierSelection {
+public enum SoldierType {
     LIGHT,
     MEDIUM,
     HEAVY,

@@ -1,6 +1,7 @@
 package presentation.components.selection;
 
-import game.events.interaction.SoldierSelection;
+import game.events.interaction.PricedSelection;
+import game.events.interaction.SoldierType;
 import lombok.Getter;
 import presentation.components.resources.SoldierIcons;
 import presentation.components.resources.SymbolIcons;
@@ -22,15 +23,15 @@ public class SoldierBuySelections {
 
     private static final int SKELETON_SOLDIERS_PRICE = 500;
 
-    private final BuySelection<SoldierSelection> lightSoldierSelection;
+    private final BuySelection<SoldierType> lightSoldierSelection;
 
-    private final BuySelection<SoldierSelection> mediumSoldierSelection;
+    private final BuySelection<SoldierType> mediumSoldierSelection;
 
-    private final BuySelection<SoldierSelection> heavySoldierSelection;
+    private final BuySelection<SoldierType> heavySoldierSelection;
 
-    private final BuySelection<SoldierSelection> skeletonSoldierSelection;
+    private final BuySelection<SoldierType> skeletonSoldierSelection;
 
-    private final List<Consumer<SoldierSelection>> soldierSelectionConsumer = new ArrayList<>();
+    private final List<Consumer<PricedSelection<SoldierType>>> soldierSelectionConsumer = new ArrayList<>();
 
     public SoldierBuySelections() {
         final SymbolIcons symbolIcons = new SymbolIcons();
@@ -41,20 +42,20 @@ public class SoldierBuySelections {
         final JButton heavySoldierButton = new JButton(soldierIcons.getHeavySoldierIcon());
         final JButton skeletonSoldierButton = new JButton(soldierIcons.getSkeletonSoldierIcon());
 
-        this.lightSoldierSelection = new BuySelection<>(LIGHT_SOLDIERS_PRICE, lightSoldierButton, SoldierSelection.LIGHT, symbolIcons);
-        this.mediumSoldierSelection = new BuySelection<>(MEDIUM_SOLDIERS_PRICE, mediumSoldierButton, SoldierSelection.MEDIUM, symbolIcons);
-        this.heavySoldierSelection = new BuySelection<>(HEAVY_SOLDIERS_PRICE, heavySoldierButton, SoldierSelection.HEAVY, symbolIcons);
-        this.skeletonSoldierSelection = new BuySelection<>(SKELETON_SOLDIERS_PRICE, skeletonSoldierButton, SoldierSelection.SKELETON, symbolIcons);
+        this.lightSoldierSelection = new BuySelection<>(LIGHT_SOLDIERS_PRICE, lightSoldierButton, SoldierType.LIGHT, symbolIcons);
+        this.mediumSoldierSelection = new BuySelection<>(MEDIUM_SOLDIERS_PRICE, mediumSoldierButton, SoldierType.MEDIUM, symbolIcons);
+        this.heavySoldierSelection = new BuySelection<>(HEAVY_SOLDIERS_PRICE, heavySoldierButton, SoldierType.HEAVY, symbolIcons);
+        this.skeletonSoldierSelection = new BuySelection<>(SKELETON_SOLDIERS_PRICE, skeletonSoldierButton, SoldierType.SKELETON, symbolIcons);
 
         Stream.of(lightSoldierSelection, mediumSoldierSelection, heavySoldierSelection, skeletonSoldierSelection)
                 .forEach(towerSelection -> towerSelection.addSelectionChangeConsumer(this::notifyAnySelectionChanged));
     }
 
-    private void notifyAnySelectionChanged(SoldierSelection soldierSelection) {
-        soldierSelectionConsumer.forEach(consumer -> consumer.accept(soldierSelection));
+    private void notifyAnySelectionChanged(PricedSelection<SoldierType> soldierType) {
+        soldierSelectionConsumer.forEach(consumer -> consumer.accept(soldierType));
     }
 
-    public void addSelectionChangeConsumer(Consumer<SoldierSelection> consumer) {
+    public void addSelectionChangeConsumer(Consumer<PricedSelection<SoldierType>> consumer) {
         soldierSelectionConsumer.add(consumer);
     }
 }
