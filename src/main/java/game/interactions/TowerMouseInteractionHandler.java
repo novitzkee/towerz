@@ -103,7 +103,7 @@ public class TowerMouseInteractionHandler implements Paintable, Subscriber {
         if(towerBuildingInteractionTarget.get(towerUpgradeable.getPosition()).isPresent()) {
             gameStatisticsHolder.sell(towerUpgradeable.getSellPrice());
             towerBuildingInteractionTarget.remove(towerUpgradeable.getPosition());
-            notifyTowerSelected(towerUpgradeable);
+            notifyTowerSelected(null);
         }
     }
 
