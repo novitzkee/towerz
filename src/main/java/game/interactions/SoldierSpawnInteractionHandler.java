@@ -36,10 +36,10 @@ public class SoldierSpawnInteractionHandler implements Subscriber {
 
     private Soldier createSoldier(SoldierSelection soldierSelection) {
         return switch (soldierSelection) {
-            case LIGHT -> soldierFactory.createLightSolder();
+            case LIGHT -> soldierFactory.createLightSoldier();
             case MEDIUM -> soldierFactory.createMediumSoldier();
             case HEAVY -> soldierFactory.createHeavySoldier();
-            case SKELETON -> soldierFactory.createSkeletonSolder();
+            case SKELETON -> soldierFactory.createSkeletonSoldier();
         };
     }
 

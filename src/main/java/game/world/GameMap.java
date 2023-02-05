@@ -6,7 +6,6 @@ import engine.graphics.Paintable;
 import engine.utils.Fraction;
 import engine.utils.Pair;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashSet;
 import java.util.List;
@@ -53,11 +52,24 @@ public class GameMap implements Paintable {
         }
     }
 
-    @RequiredArgsConstructor
     private class Geometry implements GameGeometry {
 
         private final Function<Vector2i, Vector2i> relativeTranslation;
         private final int stepsPerTile;
+
+        @Getter
+        private final Pair<Integer> attackerPositions;
+
+        @Getter
+        private final Pair<Integer> defenderPositions;
+
+        public Geometry(Function<Vector2i, Vector2i> relativeTranslation, int stepsPerTile) {
+            this.relativeTranslation = relativeTranslation;
+            this.stepsPerTile = stepsPerTile;
+            this.attackerPositions = new Pair<>(0, getMaxPathPosition());
+            this.defenderPositions = new Pair<>(getMaxPathPosition(), 0);
+        }
+
 
         @Override
         public Vector2i toRealPosition(int pathPosition) {
@@ -96,16 +108,6 @@ public class GameMap implements Paintable {
         @Override
         public Range getPathRange(Circle circle) {
             return null;
-        }
-
-        @Override
-        public Pair<Integer> getAttackerPositions() {
-            return new Pair<>(0,  getMaxPathPosition());
-        }
-
-        @Override
-        public Pair<Integer> getDefenderPositions() {
-            return new Pair<>(getMaxPathPosition(), 0);
         }
 
         private int getMaxPathPosition() {

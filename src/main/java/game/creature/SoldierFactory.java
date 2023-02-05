@@ -17,7 +17,7 @@ public class SoldierFactory {
 
     private final SoldierAnimationFactory soldierAnimationFactory;
 
-    public Soldier createLightSolder() {
+    public Soldier createLightSoldier() {
         final Map<CreatureState, Animation> animations = soldierAnimationFactory.getLightSoldierAnimations();
         return new Soldier(eventEmitter, gameGeometry, animations, new Health(200), 6, 5);
     }
@@ -32,7 +32,7 @@ public class SoldierFactory {
         return new Soldier(eventEmitter, gameGeometry, animations, new Health(1000), 3, 10);
     }
 
-    public Soldier createSkeletonSolder() {
+    public Soldier createSkeletonSoldier() {
         final Map<CreatureState, Animation> animations = soldierAnimationFactory.getSkeletonSoldierAnimations();
         return new Soldier(eventEmitter, gameGeometry, animations, new Health(2000), 2, 0);
     }

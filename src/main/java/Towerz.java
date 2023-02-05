@@ -4,7 +4,8 @@ import game.engine.GameEngine;
 import presentation.components.GUI;
 import presentation.loaders.map.TextFileCastleLoader;
 import presentation.loaders.map.TextFileMapLoader;
-import presentation.loaders.sprites.CreatureResourceAnimationFactory;
+import presentation.loaders.sprites.MonsterResourceAnimationFactory;
+import presentation.loaders.sprites.SoldierResourceAnimationFactory;
 import presentation.loaders.sprites.TowerResourceSpriteFactory;
 
 public class Towerz {
@@ -19,14 +20,15 @@ public class Towerz {
     private static EngineConfig getEngineConfiguration() {
         final TextFileCastleLoader castleLoader = new TextFileCastleLoader();
         final TextFileMapLoader mapLoader = new TextFileMapLoader();
-        final CreatureResourceAnimationFactory creatureAnimationFactory = new CreatureResourceAnimationFactory();
+        final MonsterResourceAnimationFactory monsterAnimationFactory = new MonsterResourceAnimationFactory();
+        final SoldierResourceAnimationFactory soldierAnimationFactory = new SoldierResourceAnimationFactory();
         final TowerResourceSpriteFactory towerSpriteFactory = new TowerResourceSpriteFactory();
 
         return EngineConfig.builder()
                 .castleLoader(castleLoader)
                 .mapLoader(mapLoader)
-                .monsterAnimationFactory(creatureAnimationFactory)
-                .soldierAnimationFactory(creatureAnimationFactory)
+                .monsterAnimationFactory(monsterAnimationFactory)
+                .soldierAnimationFactory(soldierAnimationFactory)
                 .towerSpriteFactory(towerSpriteFactory)
                 .build();
     }
