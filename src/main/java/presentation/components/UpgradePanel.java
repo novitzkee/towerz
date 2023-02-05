@@ -56,10 +56,10 @@ public class UpgradePanel extends JPanel implements Subscriber {
         sellButton.addActionListener(new EnabledButtonClickListener(this::notifyTowerSold));
         upgradeButton.addActionListener(new EnabledButtonClickListener(this::notifyTowerUpgraded));
 
-        this.upgradePriceLabel = new JLabel("100", symbolIcons.getSmallGoldIcon(), SwingConstants.RIGHT);
+        this.upgradePriceLabel = new JLabel("", symbolIcons.getSmallGoldIcon(), SwingConstants.RIGHT);
         upgradePriceLabel.setFont(FontProvider.get().deriveFont(14f));
 
-        this.sellPriceLabel = new JLabel("100", symbolIcons.getSmallGoldIcon(), SwingConstants.RIGHT);
+        this.sellPriceLabel = new JLabel("", symbolIcons.getSmallGoldIcon(), SwingConstants.RIGHT);
         sellPriceLabel.setFont(FontProvider.get().deriveFont(14f));
 
         compose();
@@ -123,8 +123,26 @@ public class UpgradePanel extends JPanel implements Subscriber {
     private void updateUpgradable(Upgradeable upgradeable) {
         currentTower = upgradeable;
         final JPanel newPanel = getPanelToDisplay(upgradeable);
-        swapPanel(newPanel);
+        updateLabels(upgradeable);
         updateButtons(upgradeable);
+        swapPanel(newPanel);
+    }
+
+    private void updateLabels(Upgradeable upgradeable) {
+        if (upgradeable == null) return;
+
+        this.upgradePriceLabel.setText(String.valueOf(upgradeable.getUpgradePrice()));
+        this.sellPriceLabel.setText(String.valueOf(upgradeable.getSellPrice()));
+    }
+
+    private void updateButtons(Upgradeable upgradeable) {
+        if (upgradeable == null) {
+            setUpgradeActive(false);
+            setSellActive(false);
+        } else {
+            setUpgradeActive(upgradeable.canUpgrade());
+            setSellActive(true);
+        }
     }
 
     private JPanel getPanelToDisplay(Upgradeable upgradeable) {
@@ -157,16 +175,6 @@ public class UpgradePanel extends JPanel implements Subscriber {
         layoutConstraints.gridy = 1;
 
         return layoutConstraints;
-    }
-
-    private void updateButtons(Upgradeable upgradeable) {
-        if (upgradeable == null) {
-            setUpgradeActive(false);
-            setSellActive(false);
-        } else {
-            setUpgradeActive(upgradeable.canUpgrade());
-            setSellActive(true);
-        }
     }
 
     private void setUpgradeActive(boolean value) {
