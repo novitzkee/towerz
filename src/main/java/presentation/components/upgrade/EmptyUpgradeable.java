@@ -9,7 +9,11 @@ import java.awt.*;
 public class EmptyUpgradeable extends JPanel {
 
     public EmptyUpgradeable() {
-        setBackground(Colors.TRANSPARENT);
+        compose();
+    }
+
+    private void compose() {
+        setBackground(Colors.STONE_GRAY);
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final JLabel label = new JLabel("No tower selected");

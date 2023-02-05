@@ -1,18 +1,21 @@
 package presentation.components.upgrade;
 
 import engine.traits.Upgradeable;
+import presentation.components.resources.Colors;
 import presentation.components.resources.SymbolIcons;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static presentation.components.SidePanel.SIDE_PANEL_COLOR;
-
 public class ActiveUpgradeable extends JPanel {
 
     public ActiveUpgradeable(Upgradeable upgradeable) {
+        compose(upgradeable);
+    }
+
+    private void compose(Upgradeable upgradeable) {
         final SymbolIcons symbolIcons = new SymbolIcons();
-        setBackground(SIDE_PANEL_COLOR);
+        setBackground(Colors.STONE_GRAY);
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final JLabel currentIconDummyLabel = new JLabel("", upgradeable.getCurrentIcon(), SwingConstants.CENTER);

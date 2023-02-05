@@ -4,6 +4,7 @@ import engine.events.EventEmitter;
 import engine.events.EventListener;
 import engine.events.Subscriber;
 import lombok.RequiredArgsConstructor;
+import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
 
 import javax.swing.*;
@@ -19,8 +20,6 @@ import static presentation.config.Dimensions.SELECTION_WIDTH;
 @RequiredArgsConstructor
 public class SidePanel extends JPanel implements Subscriber {
 
-    public static final Color SIDE_PANEL_COLOR = new Color(136,139,141);
-
     private final UpgradePanel upgradePanel;
 
     private final TowerPanel towerPanel;
@@ -35,18 +34,13 @@ public class SidePanel extends JPanel implements Subscriber {
         this.soldierPanel = new SoldierPanel(eventEmitter);
         this.statisticsPanel = new StatisticsPanel();
 
-        setFont(FontProvider.get());
+        compose();
     }
 
-    public void compose() {
-        upgradePanel.compose();
-        towerPanel.compose();
-        soldierPanel.compose();
-        statisticsPanel.compose();
-
+    private void compose() {
         setPreferredSize(new Dimension(SELECTION_WIDTH, JFRAME_Y_SIZE));
         setVisible(true);
-        setBackground(SIDE_PANEL_COLOR);
+        setBackground(Colors.STONE_GRAY);
 
         final JLabel titleLabel = new JLabel("Towerz");
         titleLabel.setFont(FontProvider.get().deriveFont(42f));

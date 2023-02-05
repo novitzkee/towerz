@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class TowerMouseInteractionHandler implements Paintable, Subscriber {
+public class MouseInteractionHandler implements Paintable, Subscriber {
 
     private static final Vector2i SELECTION_RECT_SIZE = new Vector2i(64, 64);
 
@@ -42,11 +42,11 @@ public class TowerMouseInteractionHandler implements Paintable, Subscriber {
 
     @Getter
     private final List<EventListener<?>> eventListeners = List.of(
-            new TowerSelectionChangeListener(),
-            new MapMouseHoverEventListener(),
-            new MapMouseClickEventListener(),
-            new TowerUpgradeEventListener(),
-            new TowerSellEventListener());
+            EventListener.of(this::handleTowerSelectionEvent, TowerBuildSelectionChangedEvent.class),
+            EventListener.of(this::handleHoverEvent, GameMapHoverEvent.class),
+            EventListener.of(this::handleClickEvent, GameMapClickEvent.class),
+            EventListener.of(this::handleTowerUpgradeEvent, TowerUpgradeEvent.class),
+            EventListener.of(this::handleTowerSellEvent, TowerSellEvent.class));
 
     private Vector2i selectionPosition;
 
@@ -60,11 +60,26 @@ public class TowerMouseInteractionHandler implements Paintable, Subscriber {
         drawingTarget.drawRect(selectionRect, getDrawingColor(), DrawingPositioning.RELATIVE);
     }
 
-    private void handleClick(Vector2i position) {
+    private Color getDrawingColor() {
+        return towerBuildingInteractionTarget.canPlace(selectionPosition) ?
+                INACTIVE_SELECTION_COLOR :
+                ACTIVE_SELECTION_COLOR;
+    }
+
+    private void handleTowerSelectionEvent(TowerBuildSelectionChangedEvent towerBuildSelectionChangedEvent) {
+        currentTowerSelection = towerBuildSelectionChangedEvent.currentSelection();
+    }
+
+    private void handleHoverEvent(GameMapHoverEvent gameMapHoverEvent) {
+        selectionPosition = gameMapHoverEvent.position();
+    }
+
+    private void handleClickEvent(GameMapClickEvent gameMapClickEvent) {
+        final Vector2i clickPosition = gameMapClickEvent.position();
         if (isBuildingActive()) {
-            build(position);
+            build(clickPosition);
         } else {
-            select(position);
+            select(clickPosition);
         }
     }
 
@@ -88,106 +103,31 @@ public class TowerMouseInteractionHandler implements Paintable, Subscriber {
 
     private void select(Vector2i position) {
         final Optional<Tower> towerOptional = towerBuildingInteractionTarget.get(position);
-        notifyTowerSelected(towerOptional.map(Tower::getUpgradeable).orElse(null));
+        notifyTowerSelectionChanged(towerOptional.map(Tower::getUpgradeable).orElse(null));
     }
 
-    private void upgradeAndNotify(Upgradeable towerUpgradeable) {
+    private void handleTowerUpgradeEvent(TowerUpgradeEvent towerUpgradeEvent) {
+        final Upgradeable towerUpgradeable = towerUpgradeEvent.tower();
+
         if (!gameStatisticsHolder.canPurchase(towerUpgradeable.getUpgradePrice())) return;
 
         gameStatisticsHolder.purchase(towerUpgradeable.getUpgradePrice());
         towerBuildingInteractionTarget.get(towerUpgradeable.getPosition()).ifPresent(Tower::upgrade);
-        notifyTowerSelected(towerUpgradeable);
+        notifyTowerSelectionChanged(towerUpgradeable);
     }
 
-    private void sellAndNotify(Upgradeable towerUpgradeable) {
+    private void handleTowerSellEvent(TowerSellEvent towerSellEvent) {
+        final Upgradeable towerUpgradeable = towerSellEvent.tower();
+
         if(towerBuildingInteractionTarget.get(towerUpgradeable.getPosition()).isPresent()) {
             gameStatisticsHolder.sell(towerUpgradeable.getSellPrice());
             towerBuildingInteractionTarget.remove(towerUpgradeable.getPosition());
-            notifyTowerSelected(null);
+            notifyTowerSelectionChanged(null);
         }
     }
 
-    private void notifyTowerSelected(Upgradeable upgradeable) {
+    private void notifyTowerSelectionChanged(Upgradeable upgradeable) {
         final TowerUpgradeSelectionChangedEvent event = new TowerUpgradeSelectionChangedEvent(upgradeable);
         eventEmitter.emit(event);
-    }
-
-    private Color getDrawingColor() {
-        return towerBuildingInteractionTarget.canPlace(selectionPosition) ?
-                INACTIVE_SELECTION_COLOR :
-                ACTIVE_SELECTION_COLOR;
-    }
-
-    private void updateSelection(PricedSelection<TowerType> newSelection) {
-        currentTowerSelection = newSelection;
-    }
-
-    private void updatePosition(Vector2i newPosition) {
-        selectionPosition = newPosition;
-    }
-
-    private class TowerSelectionChangeListener implements EventListener<TowerBuildSelectionChangedEvent> {
-
-        @Override
-        public void onEvent(TowerBuildSelectionChangedEvent event) {
-            updateSelection(event.currentSelection());
-        }
-
-        @Override
-        public Class<TowerBuildSelectionChangedEvent> getEventClass() {
-            return TowerBuildSelectionChangedEvent.class;
-        }
-    }
-
-    private class MapMouseHoverEventListener implements EventListener<GameMapHoverEvent> {
-
-        @Override
-        public void onEvent(GameMapHoverEvent event) {
-            updatePosition(event.position());
-        }
-
-        @Override
-        public Class<GameMapHoverEvent> getEventClass() {
-            return GameMapHoverEvent.class;
-        }
-    }
-
-    private class MapMouseClickEventListener implements EventListener<GameMapClickEvent> {
-
-        @Override
-        public void onEvent(GameMapClickEvent event) {
-            handleClick(event.position());
-        }
-
-        @Override
-        public Class<GameMapClickEvent> getEventClass() {
-            return GameMapClickEvent.class;
-        }
-    }
-
-    private class TowerUpgradeEventListener implements EventListener<TowerUpgradeEvent> {
-
-        @Override
-        public void onEvent(TowerUpgradeEvent event) {
-            upgradeAndNotify(event.tower());
-        }
-
-        @Override
-        public Class<TowerUpgradeEvent> getEventClass() {
-            return TowerUpgradeEvent.class;
-        }
-    }
-
-    private class TowerSellEventListener implements EventListener<TowerSellEvent> {
-
-        @Override
-        public void onEvent(TowerSellEvent event) {
-            sellAndNotify(event.tower());
-        }
-
-        @Override
-        public Class<TowerSellEvent> getEventClass() {
-            return TowerSellEvent.class;
-        }
     }
 }

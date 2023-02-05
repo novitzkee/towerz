@@ -21,12 +21,13 @@ public class SoldierPanel extends JPanel {
 
     public SoldierPanel(EventEmitter eventEmitter) {
         this.eventEmitter = eventEmitter;
+        compose();
         soldierBuySelections.addSelectionChangeConsumer(this::notifySelected);
     }
 
-    public void compose() {
+    private void compose() {
         setPreferredSize(new Dimension(SELECTION_WIDTH, 0));
-        setBackground(Colors.TRANSPARENT);
+        setBackground(Colors.STONE_GRAY);
 
         final JLabel soldierPanelLabel = new JLabel("Soldiers");
         soldierPanelLabel.setFont(FontProvider.get().deriveFont(18f));

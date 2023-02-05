@@ -7,7 +7,7 @@ import engine.graphics.Paintable;
 import game.engine.GameEngine;
 import game.events.interaction.input.GameMapClickEvent;
 import game.events.interaction.input.GameMapHoverEvent;
-import game.interactions.TowerMouseInteractionHandler;
+import game.interactions.MouseInteractionHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,18 +22,20 @@ public class WorldPanel extends JPanel {
 
     private final Paintable worldPaintable;
 
-    private final TowerMouseInteractionHandler towerMouseInteractionHandler;
+    private final MouseInteractionHandler mouseInteractionHandler;
 
     public WorldPanel(GameEngine gameEngine) {
         this.eventEmitter = gameEngine.getEventEmitter();
         this.worldPaintable = gameEngine.getWorldObject();
-        this.towerMouseInteractionHandler = gameEngine.getTowerMouseInteractionHandler();
+        this.mouseInteractionHandler = gameEngine.getMouseInteractionHandler();
+
+        compose();
 
         addMouseListener(new MouseClickEmitter());
         addMouseMotionListener(new MouseMovementEmitter());
     }
 
-    public void compose() {
+    private void compose() {
         setPreferredSize(new Dimension(WORLD_SIZE_PX.getX(), WORLD_SIZE_PX.getY()));
         setVisible(true);
     }
@@ -43,7 +45,7 @@ public class WorldPanel extends JPanel {
         super.paintComponent(g);
         final Graphics2DTarget drawingTarget = new Graphics2DTarget((Graphics2D) g, WORLD_TO_REAL_POSITION_TRANSLATION);
         worldPaintable.draw(drawingTarget);
-        towerMouseInteractionHandler.draw(drawingTarget);
+        mouseInteractionHandler.draw(drawingTarget);
     }
 
     private Vector2i translatePosition(int realX, int realY) {

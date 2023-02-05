@@ -25,21 +25,20 @@ public class GUI {
     public GUI(GameEngine gameEngine) {
         this.worldPanel = new WorldPanel(gameEngine);
         this.sidePanel = new SidePanel(gameEngine.getEventEmitter());
+        configure(gameEngine);
+        compose();
+    }
 
+    private void configure(GameEngine gameEngine) {
         attachSubscriber(gameEngine.getEventRouter(), sidePanel);
-
         gameEngine.getRepaintLoop().add(worldPanel::repaint);
-        composeGUI();
     }
 
     private void attachSubscriber(EventRouter eventRouter, Subscriber subscriber) {
         eventRouter.addAll(subscriber.getEventListeners());
     }
 
-    private void composeGUI() {
-        sidePanel.compose();
-        worldPanel.compose();
-
+    private void compose() {
         JFrame frame = new JFrame("Tower defence");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(JFRAME_X_SIZE, JFRAME_Y_SIZE);

@@ -1,16 +1,19 @@
 package presentation.components.upgrade;
 
 import engine.traits.Upgradeable;
+import presentation.components.resources.Colors;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static presentation.components.SidePanel.SIDE_PANEL_COLOR;
-
 public class MaxUpgradable extends JPanel {
 
     public MaxUpgradable(Upgradeable upgradeable) {
-        setBackground(SIDE_PANEL_COLOR);
+        compose(upgradeable);
+    }
+
+    private void compose(Upgradeable upgradeable) {
+        setBackground(Colors.STONE_GRAY);
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final JLabel icon = new JLabel("", upgradeable.getCurrentIcon(), SwingConstants.CENTER);

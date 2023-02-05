@@ -19,8 +19,8 @@ import game.fight.Creatures;
 import game.fight.Fight;
 import game.fight.Towers;
 import game.interactions.GameStatisticsHolder;
+import game.interactions.MouseInteractionHandler;
 import game.interactions.SoldierSpawnInteractionHandler;
-import game.interactions.TowerMouseInteractionHandler;
 import game.tower.TowerFactory;
 import game.world.GameMap;
 import game.world.World;
@@ -52,7 +52,7 @@ public class ConfigurableGameEngine implements GameEngine {
     private final World worldObject;
 
     @Getter
-    private final TowerMouseInteractionHandler towerMouseInteractionHandler;
+    private final MouseInteractionHandler mouseInteractionHandler;
 
 
     public static GameEngine configure(EngineConfig engineConfig) {
@@ -83,11 +83,11 @@ public class ConfigurableGameEngine implements GameEngine {
 
         final GameStatisticsHolder gameStatisticsHolder = new GameStatisticsHolder(eventHandler, castle, STARTING_GOLD_AMOUNT);
 
-        final TowerMouseInteractionHandler towerMouseInteractionHandler = new TowerMouseInteractionHandler(eventHandler, gameStatisticsHolder, towerFactory, towers.getInteractionTarget());
+        final MouseInteractionHandler mouseInteractionHandler = new MouseInteractionHandler(eventHandler, gameStatisticsHolder, towerFactory, towers.getInteractionTarget());
         final SoldierSpawnInteractionHandler soldierSpawnInteractionHandler = new SoldierSpawnInteractionHandler(gameStatisticsHolder, soldierFactory, soldierSpawner.getInteractionTarget());
 
         attachSubscriber(eventHandler, gameStatisticsHolder);
-        attachSubscriber(eventHandler, towerMouseInteractionHandler);
+        attachSubscriber(eventHandler, mouseInteractionHandler);
         attachSubscriber(eventHandler, soldierSpawnInteractionHandler);
 
         final Loop mainLoop = new ExecutorServiceLoop(Delay.ratePerSecond(30));
@@ -99,15 +99,11 @@ public class ConfigurableGameEngine implements GameEngine {
         mainLoop.add(delegatedRepaintLoop);
         tickLoop.add(fight);
 
-        return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world, towerMouseInteractionHandler);
+        return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world, mouseInteractionHandler);
     }
 
     private static void attachSubscriber(EventRouter eventRouter, Subscriber subscriber) {
         eventRouter.addAll(subscriber.getEventListeners());
-    }
-
-    private static void detachSubscriber(EventRouter eventRouter, Subscriber subscriber) {
-        eventRouter.removeAll(subscriber.getEventListeners());
     }
 
     @Override

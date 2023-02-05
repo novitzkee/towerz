@@ -1,7 +1,7 @@
 package presentation.components.selection;
 
 import game.events.interaction.PricedSelection;
-import lombok.RequiredArgsConstructor;
+import presentation.components.listeners.ButtonSelectionGroupToggleListener;
 import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
 import presentation.components.resources.SymbolIcons;
@@ -9,13 +9,9 @@ import presentation.components.resources.SymbolIcons;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static presentation.components.SidePanel.SIDE_PANEL_COLOR;
 
 public class BuySelection<T> extends JPanel {
 
@@ -23,11 +19,18 @@ public class BuySelection<T> extends JPanel {
 
     private final List<Consumer<PricedSelection<T>>> selectionConsumers = new ArrayList<>();
 
-    public BuySelection(int price, AbstractButton button, T selection, SymbolIcons symbolIcons) {
+    public BuySelection(int price, AbstractButton button, T selection) {
         this.selection = new PricedSelection<>(price, selection);
-        setBackground(Colors.TRANSPARENT);
+        compose(button, price);
+        button.addActionListener(new ButtonSelectionGroupToggleListener(this::notifySelectionChanged));
+    }
 
-        button.setBackground(SIDE_PANEL_COLOR);
+    private void compose(AbstractButton button, int price) {
+        final SymbolIcons symbolIcons = new SymbolIcons();
+
+        setBackground(Colors.STONE_GRAY);
+
+        button.setBackground(Colors.STONE_GRAY);
         button.setBorder(new LineBorder(Color.BLACK));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -51,8 +54,6 @@ public class BuySelection<T> extends JPanel {
         layoutConstraints.gridy = 1;
 
         add(label, layoutConstraints);
-
-        button.addActionListener(new SelectionToggleChangeListener());
     }
 
     private String toPaddedString(int price) {
@@ -64,24 +65,7 @@ public class BuySelection<T> extends JPanel {
         selectionConsumers.add(selectionConsumer);
     }
 
-    private void notifySelectionChanged(PricedSelection<T> selection) {
+    private void notifySelectionChanged() {
         selectionConsumers.forEach(consumer -> consumer.accept(selection));
-    }
-
-    @RequiredArgsConstructor
-    private class SelectionToggleChangeListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            final AbstractButton abstractButton = (AbstractButton) e.getSource();
-            boolean changed = didSelectionChange(abstractButton);
-            if(changed) {
-                notifySelectionChanged(selection);
-            }
-        }
-
-        private boolean didSelectionChange(AbstractButton abstractButton) {
-            return !(abstractButton instanceof JToggleButton) || abstractButton.getModel().isSelected();
-        }
     }
 }

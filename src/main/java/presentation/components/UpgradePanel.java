@@ -9,6 +9,7 @@ import game.events.interaction.tower.TowerUpgradeEvent;
 import game.events.interaction.tower.TowerUpgradeSelectionChangedEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import presentation.components.resources.Colors;
 import presentation.components.resources.FontProvider;
 import presentation.components.resources.SymbolIcons;
 import presentation.components.upgrade.ActiveUpgradeable;
@@ -23,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static presentation.components.SidePanel.SIDE_PANEL_COLOR;
 import static presentation.config.Dimensions.SELECTION_WIDTH;
 
 public class UpgradePanel extends JPanel implements Subscriber {
@@ -46,9 +46,9 @@ public class UpgradePanel extends JPanel implements Subscriber {
     private final List<EventListener<?>> eventListeners = List.of(new TowerForUpgradeSelectionListener());
 
     public UpgradePanel(EventEmitter eventEmitter) {
-        this.eventEmitter = eventEmitter;
-
         final SymbolIcons symbolIcons = new SymbolIcons();
+
+        this.eventEmitter = eventEmitter;
 
         this.sellButton = new JButton("Sell");
         this.upgradeButton = new JButton("Upgrade");
@@ -61,22 +61,24 @@ public class UpgradePanel extends JPanel implements Subscriber {
 
         this.sellPriceLabel = new JLabel("100", symbolIcons.getSmallGoldIcon(), SwingConstants.RIGHT);
         sellPriceLabel.setFont(FontProvider.get().deriveFont(14f));
+
+        compose();
     }
 
-    public void compose() {
+    private void compose() {
         setPreferredSize(new Dimension(SELECTION_WIDTH, 0));
-        setBackground(SIDE_PANEL_COLOR);
+        setBackground(Colors.STONE_GRAY);
 
         final JLabel upgradePanelLabel = new JLabel("Build");
         upgradePanelLabel.setFont(FontProvider.get().deriveFont(18f));
         upgradePanelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         sellButton.setFont(FontProvider.get().deriveFont(16f));
-        sellButton.setBackground(SIDE_PANEL_COLOR);
+        sellButton.setBackground(Colors.STONE_GRAY);
         sellButton.setBorder(new LineBorder(Color.BLACK));
 
         upgradeButton.setFont(FontProvider.get().deriveFont(16f));
-        upgradeButton.setBackground(SIDE_PANEL_COLOR);
+        upgradeButton.setBackground(Colors.STONE_GRAY);
         upgradeButton.setBorder(new LineBorder(Color.BLACK));
 
         setLayout(new GridBagLayout());
@@ -159,21 +161,22 @@ public class UpgradePanel extends JPanel implements Subscriber {
 
     private void updateButtons(Upgradeable upgradeable) {
         if (upgradeable == null) {
-            upgradePriceLabel.setVisible(false);
-            upgradeButton.setEnabled(false);
-            sellPriceLabel.setVisible(false);
-            sellButton.setEnabled(false);
-        } else if (upgradeable.canUpgrade()) {
-            upgradePriceLabel.setVisible(true);
-            upgradeButton.setEnabled(true);
-            sellPriceLabel.setVisible(true);
-            sellButton.setEnabled(true);
+            setUpgradeActive(false);
+            setSellActive(false);
         } else {
-            upgradePriceLabel.setVisible(false);
-            upgradeButton.setEnabled(false);
-            sellPriceLabel.setVisible(true);
-            sellButton.setEnabled(true);
+            setUpgradeActive(upgradeable.canUpgrade());
+            setSellActive(true);
         }
+    }
+
+    private void setUpgradeActive(boolean value) {
+        upgradePriceLabel.setVisible(value);
+        upgradeButton.setEnabled(value);
+    }
+
+    private void setSellActive(boolean value) {
+        sellPriceLabel.setVisible(value);
+        sellButton.setEnabled(value);
     }
 
     private void notifyTowerUpgraded(Upgradeable tower) {

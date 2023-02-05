@@ -28,12 +28,13 @@ public class TowerPanel extends JPanel {
 
     public TowerPanel(EventEmitter eventEmitter) {
         this.eventEmitter = eventEmitter;
+        compose();
         towerBuySelections.addSelectionChangeConsumer(this::emitSelectionEvent);
     }
 
-    public void compose() {
+    private void compose() {
         setPreferredSize(new Dimension(SELECTION_WIDTH, 0));
-        setBackground(Colors.TRANSPARENT);
+        setBackground(Colors.STONE_GRAY);
 
         final JLabel towerPanelLabel = new JLabel("Towers");
         towerPanelLabel.setFont(FontProvider.get().deriveFont(18f));

@@ -28,10 +28,13 @@ public class SoldierSpawnInteractionHandler implements Subscriber {
     private final SoldierSpawnInteractionTarget soldierSpawnInteractionTarget;
 
     @Getter
-    private final List<EventListener<?>> eventListeners = List.of(new SoldierForSpawnEventListener());
+    private final List<EventListener<?>> eventListeners = List.of(
+            EventListener.of(this::handleSpawnSelectionEvent, SoldierForSpawnSelectionEvent.class));
 
-    private void handleSpawnSelection(PricedSelection<SoldierType> soldierSelection) {
-        if(!gameStatisticsHolder.canPurchase(soldierSelection.price())) return;
+    private void handleSpawnSelectionEvent(SoldierForSpawnSelectionEvent soldierForSpawnSelectionEvent) {
+        final PricedSelection<SoldierType> soldierSelection = soldierForSpawnSelectionEvent.currentSelection();
+
+        if (!gameStatisticsHolder.canPurchase(soldierSelection.price())) return;
 
         gameStatisticsHolder.purchase(soldierSelection.price());
         final List<Soldier> soldiers = createSoldiersForSelection(soldierSelection.selection());
@@ -52,18 +55,5 @@ public class SoldierSpawnInteractionHandler implements Subscriber {
             case HEAVY -> soldierFactory.createHeavySoldier();
             case SKELETON -> soldierFactory.createSkeletonSoldier();
         };
-    }
-
-    private class SoldierForSpawnEventListener implements EventListener<SoldierForSpawnSelectionEvent> {
-
-        @Override
-        public void onEvent(SoldierForSpawnSelectionEvent event) {
-            handleSpawnSelection(event.currentSelection());
-        }
-
-        @Override
-        public Class<SoldierForSpawnSelectionEvent> getEventClass() {
-            return SoldierForSpawnSelectionEvent.class;
-        }
     }
 }
