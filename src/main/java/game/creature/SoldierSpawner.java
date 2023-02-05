@@ -8,23 +8,28 @@ import game.interactions.targets.SoldierSpawnInteractionTarget;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Queue;
 
 @RequiredArgsConstructor
 public class SoldierSpawner implements TimeAware {
 
     private final Creatures creatures;
 
-    private final List<Action> activeSpawnActions = new ArrayList<>();
+    private final Queue<Action> activeSpawnActions = new ArrayDeque<>();
 
     @Getter
     private final SoldierSpawnInteractionTarget interactionTarget = new SpawningInteractionTarget();
 
     @Override
     public void tick() {
-        activeSpawnActions.forEach(TimeAware::tick);
-        activeSpawnActions.removeIf(Action::isGarbage);
+        if (activeSpawnActions.isEmpty()) return;
+        activeSpawnActions.peek().tick();
+
+        if(activeSpawnActions.peek().isGarbage()) {
+            activeSpawnActions.poll();
+        }
     }
 
     private class SpawningInteractionTarget implements SoldierSpawnInteractionTarget {
@@ -40,7 +45,7 @@ public class SoldierSpawner implements TimeAware {
                     .toList();
 
             final Action spawningAction = new ConsecutiveAction(20, spawningRunnables);
-            activeSpawnActions.add(spawningAction);
+            activeSpawnActions.offer(spawningAction);
         }
 
         private Runnable createSpawningRunnable(Soldier soldier) {
