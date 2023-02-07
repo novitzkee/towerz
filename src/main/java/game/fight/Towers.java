@@ -40,7 +40,7 @@ public class Towers implements Paintable, TimeAware {
 
     @Override
     public void tick() {
-
+        towers.values().forEach(Tower::tick);
     }
 
     public class BuildingInteractionTarget implements TowerBuildingInteractionTarget {

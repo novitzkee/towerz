@@ -1,7 +1,6 @@
 package game.fight;
 
 import engine.geometry.BasicRange;
-import engine.geometry.Circle;
 import engine.geometry.Range;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
@@ -11,7 +10,6 @@ import engine.utils.RandomRNG;
 import game.creature.Creature;
 import game.creature.CreatureState;
 import game.creature.CreatureType;
-import game.world.GameGeometry;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -26,26 +24,16 @@ public class Creatures implements TimeAware, Paintable {
 
     private static final int FIGHT_RANGE = 80;
 
-    private final GameGeometry gameGeometry;
-
     private final RNG rng = new RandomRNG();
 
     private final List<Creature> defendingCreatures = new ArrayList<>();
 
     private final List<Creature> attackingCreatures = new ArrayList<>();
 
-    public Optional<Creature> getFirstCreatureInCircle(Circle circle, CreatureType creatureType) {
-        final Range range = gameGeometry.getPathRange(circle);
-
-        return switch (creatureType) {
-            case ATTACKER -> attackingCreatures.stream()
-                    .filter(enemy -> range.contains(enemy.getPathPosition()))
-                    .max(Comparator.comparing(Creature::getPathPosition));
-
-            case DEFENDER -> attackingCreatures.stream()
-                    .filter(enemy -> range.contains(enemy.getPathPosition()))
-                    .min(Comparator.comparing(Creature::getPathPosition));
-        };
+    public Optional<Creature> getFirstMonsterInRange(Range range) {
+        return attackingCreatures.stream()
+                .filter(enemy -> range.contains(enemy.getPathPosition()))
+                .max(Comparator.comparing(Creature::getPathPosition));
     }
 
     public List<Creature> getCreaturesInRange(Range range, CreatureType creatureType) {

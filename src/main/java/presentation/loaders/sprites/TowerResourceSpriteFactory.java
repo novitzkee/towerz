@@ -3,6 +3,7 @@ package presentation.loaders.sprites;
 import engine.geometry.Vector2i;
 import engine.graphics.sprites.Sprite;
 import engine.graphics.sprites.SpriteSheet;
+import game.engine.loaders.ProjectileSpriteFactory;
 import game.engine.loaders.TowerSpriteFactory;
 import game.tower.TowerLevel;
 
@@ -13,7 +14,7 @@ import static presentation.config.Dimensions.TILE_DIMENSIONS_PX;
 import static presentation.config.Dimensions.TILE_SIZE_PX;
 import static presentation.config.Resources.*;
 
-public class TowerResourceSpriteFactory implements TowerSpriteFactory {
+public class TowerResourceSpriteFactory implements TowerSpriteFactory, ProjectileSpriteFactory {
 
     private static final Vector2i TOWER_SPRITE_SIZE = new Vector2i(1, 2).mul(TILE_DIMENSIONS_PX);
 

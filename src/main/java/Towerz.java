@@ -34,6 +34,7 @@ public class Towerz {
                 .soldierAnimationFactory(soldierAnimationFactory)
                 .towerIconFactory(towerIconFactory)
                 .towerSpriteFactory(towerSpriteFactory)
+                .projectileSpriteFactory(towerSpriteFactory)
                 .build();
     }
 }

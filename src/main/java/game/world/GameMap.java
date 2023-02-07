@@ -7,9 +7,7 @@ import engine.utils.Fraction;
 import engine.utils.Pair;
 import lombok.Getter;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 public class GameMap implements Paintable {
@@ -18,7 +16,7 @@ public class GameMap implements Paintable {
 
     private final Tile[][] tiles;
 
-    private final Set<Vector2i> path;
+    private final List<Vector2i> path;
 
     private final List<PathSegment> pathSegments;
 
@@ -33,7 +31,7 @@ public class GameMap implements Paintable {
                    List<PathSegment> pathSegments) {
         this.size = size;
         this.tiles = tiles;
-        this.path = new HashSet<>(path);
+        this.path = path;
         this.pathSegments = pathSegments;
         this.gameGeometry = new Geometry(relativeTranslation, stepsPerTile);
     }
@@ -70,6 +68,10 @@ public class GameMap implements Paintable {
             this.defenderPositions = new Pair<>(getMaxPathPosition(), 0);
         }
 
+        @Override
+        public Vector2i toRealPosition(Vector2i mapPosition) {
+            return relativeTranslation.apply(mapPosition);
+        }
 
         @Override
         public Vector2i toRealPosition(int pathPosition) {
@@ -100,16 +102,6 @@ public class GameMap implements Paintable {
             return pathPosition < 0 ? 0 : Math.min(pathPosition, getMaxPathPosition());
         }
 
-        @Override
-        public Range getPathRange(Vector2i mapPosition) {
-            return null;
-        }
-
-        @Override
-        public Range getPathRange(Circle circle) {
-            return null;
-        }
-
         private int getMaxPathPosition() {
             return pathSegments.size() * stepsPerTile - 1;
         }
@@ -121,6 +113,33 @@ public class GameMap implements Paintable {
 
         private boolean canBuildOnTile(Vector2i position) {
             return tiles[position.getX()][position.getY()].isCanPlaceTower() && !path.contains(position);
+        }
+
+        @Override
+        public Range toPathRange(List<Vector2i> pathPositionRange) {
+            final List<Range> pathRangeList = pathPositionRange.stream()
+                    .map(this::toPathRange)
+                    .toList();
+
+            return new CompositeRange(pathRangeList);
+        }
+
+        private Range toPathRange(Vector2i position) {
+            final int segmentIndex = getTileIndex(position);
+            return new BasicRange(segmentIndex * stepsPerTile, (segmentIndex + 1) * stepsPerTile);
+        }
+
+        private int getTileIndex(Vector2i position) {
+            final int segmentIndex = path.indexOf(position);
+            if (segmentIndex == -1) throw new IllegalArgumentException("Position " + position + " is not on path");
+            return segmentIndex;
+        }
+
+        @Override
+        public List<Vector2i> getMapPositionsInRange(Circle circle) {
+            return path.stream()
+                    .filter(circle::contains)
+                    .toList();
         }
     }
 }

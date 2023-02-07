@@ -10,7 +10,7 @@ public class Circle {
     private final int radius;
 
     public boolean contains(Vector2i point) {
-        final Vector2i distanceFromCenter = point.sub(center);
-        return distanceFromCenter.getLength() <= radius;
+        final double distanceFromCenter = point.sub(center).getLength();
+        return distanceFromCenter <= radius;
     }
 }

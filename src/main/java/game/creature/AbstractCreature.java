@@ -84,8 +84,9 @@ public abstract class AbstractCreature implements Creature {
     }
 
     @Override
-    public int getPathPositionInTicks(int ticks) {
-        return creatureBehaviour.step(ticks);
+    public Vector2i getMapPositionInTicks(int ticks) {
+        final int positionInTicks = creatureBehaviour.step(ticks);
+        return gameGeometry.toMapPosition(positionInTicks);
     }
 
     @Override

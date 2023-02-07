@@ -1,34 +1,34 @@
 package game.tower;
 
+import engine.geometry.Circle;
 import engine.geometry.Vector2i;
 import engine.graphics.DrawingPositioning;
 import engine.graphics.DrawingTarget;
 import engine.graphics.Paintable;
+import engine.graphics.sprites.Sprite;
 import engine.time.TimeAware;
 import engine.traits.Upgradeable;
-import game.fight.Creatures;
-import game.tower.utils.TowerEngine;
-import game.tower.utils.TowerSprites;
+import game.tower.projectiles.Projectile;
+import game.tower.utils.TowerMechanics;
 import game.tower.utils.TowerStats;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-@RequiredArgsConstructor
 public class Tower implements Paintable, TimeAware {
 
     private static final Vector2i TOWER_DRAWING_OFFSET = new Vector2i(0, -1);
 
-    private final Creatures creatures;
+    private final Map<TowerLevel, TowerStats> towerStatsMap;
 
-    private final TowerStats towerStats;
+    private final Map<TowerLevel, Sprite> towerSpriteMap;
 
-    private final TowerEngine towerEngine;
+    private final Map<TowerLevel, ImageIcon> towerIcons;
 
-    private final TowerSprites towerSprites;
+    private final TowerMechanics towerMechanics;
 
     @Getter
     private final Vector2i position;
@@ -38,22 +38,60 @@ public class Tower implements Paintable, TimeAware {
 
     private final List<Projectile> projectiles = new ArrayList<>();
 
-    private TowerLevel level = TowerLevel.WEAK;
+    @Getter
+    private TowerLevel level;
 
+    @Getter
+    private TowerStats currentTowerStats;
+
+    public Tower(Map<TowerLevel, TowerStats> towerStats,
+                 Map<TowerLevel, Sprite> towerSprites,
+                 Map<TowerLevel, ImageIcon> towerIcons,
+                 TowerMechanics towerMechanics,
+                 Vector2i position) {
+        this.towerStatsMap = towerStats;
+        this.towerSpriteMap = towerSprites;
+        this.towerIcons = towerIcons;
+        this.towerMechanics = towerMechanics;
+        this.position = position;
+
+        this.level = TowerLevel.WEAK;
+        this.currentTowerStats = towerStats.get(level);
+
+        towerMechanics.calibrate(this);
+    }
+
+    public Circle getCurrentRange() {
+        return new Circle(position, currentTowerStats.rangeRadius());
+    }
 
     public void upgrade() {
         level = TowerLevel.getNextLevel(level);
+        currentTowerStats = towerStatsMap.get(level);
+        towerMechanics.setReloadTime(currentTowerStats.reloadTime());
+        towerMechanics.calibrate(this);
     }
 
     @Override
     public void draw(DrawingTarget drawingTarget) {
-        towerSprites.getBaseSpriteForLevel(level).draw(position.add(TOWER_DRAWING_OFFSET), drawingTarget, DrawingPositioning.RELATIVE);
+        towerSpriteMap.get(level).draw(position.add(TOWER_DRAWING_OFFSET), drawingTarget, DrawingPositioning.RELATIVE);
         projectiles.forEach(projectile -> projectile.draw(drawingTarget));
     }
 
     @Override
     public void tick() {
+        towerMechanics.tick();
+        towerMechanics.getFiredProjectile().ifPresent(projectiles::add);
+        clearProjectiles();
         projectiles.forEach(Projectile::tick);
+    }
+
+    private void clearProjectiles() {
+        projectiles.stream()
+                .filter(Projectile::isGarbage)
+                .forEach(Projectile::cleanUp);
+
+        projectiles.removeIf(Projectile::isGarbage);
     }
 
     private final class TowerUpgradeable implements Upgradeable {
@@ -70,22 +108,22 @@ public class Tower implements Paintable, TimeAware {
 
         @Override
         public ImageIcon getCurrentIcon() {
-            return towerSprites.getIconForLevel(level);
+            return towerIcons.get(level);
         }
 
         @Override
         public ImageIcon getUpgradedIcon() {
-            return towerSprites.getIconForLevel(TowerLevel.getNextLevel(level));
+            return towerIcons.get(TowerLevel.getNextLevel(level));
         }
 
         @Override
         public int getUpgradePrice() {
-            return towerStats.getStatsForLevel(level).upgradePrice();
+            return towerStatsMap.get(level).upgradePrice();
         }
 
         @Override
         public int getSellPrice() {
-            return towerStats.getStatsForLevel(level).sellPrice();
+            return towerStatsMap.get(level).sellPrice();
         }
     }
 }

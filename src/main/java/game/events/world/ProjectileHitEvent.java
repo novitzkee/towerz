@@ -1,6 +1,5 @@
 package game.events.world;
 
-import engine.geometry.Vector2i;
-import game.tower.Projectile;
+import engine.geometry.Range;
 
-public record ProjectileHitEvent(Projectile projectile, Vector2i position) { }
+public record ProjectileHitEvent(Range damageRange, int damage) { }

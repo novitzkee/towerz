@@ -8,11 +8,9 @@ import javax.swing.*;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class TowerSprites {
+public class TowerSpriteMap {
 
     private final Map<TowerLevel, Sprite> baseSprites;
-
-    private final Map<TowerLevel, Sprite> projectileSprites;
 
     private final Map<TowerLevel, ImageIcon> icons;
 

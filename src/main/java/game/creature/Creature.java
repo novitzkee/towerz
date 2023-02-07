@@ -1,5 +1,6 @@
 package game.creature;
 
+import engine.geometry.Vector2i;
 import engine.graphics.Paintable;
 import engine.time.TimeAware;
 import engine.traits.Removable;
@@ -10,7 +11,7 @@ public interface Creature extends TimeAware, Paintable, Removable {
 
     int getPathPosition();
 
-    int getPathPositionInTicks(int ticks);
+    Vector2i getMapPositionInTicks(int ticks);
 
     CreatureState getState();
 
