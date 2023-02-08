@@ -23,6 +23,8 @@ public class StatisticsPanel extends JPanel implements Subscriber {
 
     private final JLabel goldLabel;
 
+    private final JLabel waveLabel;
+
     @Getter
     private final List<EventListener<?>> eventListeners = List.of(
             EventListener.of(this::updateHealth, CastleHealthChangeEvent.class),
@@ -37,6 +39,9 @@ public class StatisticsPanel extends JPanel implements Subscriber {
         final ImageIcon goldIcon = symbolIcons.getBigGoldIcon();
         this.goldLabel = new JLabel(String.valueOf(STARTING_GOLD_AMOUNT), goldIcon, SwingConstants.RIGHT);
 
+        final ImageIcon swordIcon = symbolIcons.getSwordIcon();
+        this.waveLabel = new JLabel("0/0", swordIcon, SwingConstants.RIGHT);
+
         compose();
     }
 
@@ -45,6 +50,9 @@ public class StatisticsPanel extends JPanel implements Subscriber {
         healthLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         goldLabel.setFont(FontProvider.get().deriveFont(18f));
+        goldLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        waveLabel.setFont(FontProvider.get().deriveFont(18f));
         goldLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         setPreferredSize(new Dimension(SELECTION_WIDTH, 0));
@@ -63,17 +71,17 @@ public class StatisticsPanel extends JPanel implements Subscriber {
 
         add(upgradePanelLabel, layoutConstraints);
 
-        layoutConstraints.fill = GridBagConstraints.WEST;
-        layoutConstraints.anchor = GridBagConstraints.WEST;
         layoutConstraints.gridy = 1;
 
         add(goldLabel, layoutConstraints);
 
-        layoutConstraints.fill = GridBagConstraints.WEST;
-        layoutConstraints.anchor = GridBagConstraints.WEST;
         layoutConstraints.gridy = 2;
 
         add(healthLabel, layoutConstraints);
+
+        layoutConstraints.gridy = 3;
+
+        add(waveLabel, layoutConstraints);
     }
 
     private void updateHealth(CastleHealthChangeEvent castleHealthChangeEvent) {

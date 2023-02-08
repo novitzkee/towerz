@@ -12,7 +12,7 @@ public class EnemySpawner implements TimeAware {
 
     private final Creatures creatures;
 
-    private final ScalingDelegator spawnDelegator = new ScalingDelegator(0.01f, this::spawnEnemies);
+    private final ScalingDelegator spawnDelegator = new ScalingDelegator(0.02f, this::spawnEnemies);
 
     @Override
     public void tick() {

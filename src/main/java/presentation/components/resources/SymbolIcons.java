@@ -29,4 +29,6 @@ public class SymbolIcons {
     private final ImageIcon bigHeartIcon = ImageToIconConverter.createIcon(HEART, BIG_ICON_LOCATION, 1d);
 
     private final ImageIcon arrowIcon = ImageToIconConverter.createIcon(ARROW, BIG_ICON_LOCATION, 1d);
+
+    private final ImageIcon swordIcon = ImageToIconConverter.createIcon(SWORD, BIG_ICON_LOCATION, 1d);
 }

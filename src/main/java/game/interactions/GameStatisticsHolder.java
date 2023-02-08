@@ -6,6 +6,7 @@ import engine.events.Subscriber;
 import game.castle.Castle;
 import game.events.interaction.castle.CastleGoldChangeEvent;
 import game.events.interaction.castle.CastleHealthChangeEvent;
+import game.events.interaction.gameplay.GameOverEvent;
 import game.events.world.EnemyArrivalEvent;
 import game.events.world.EnemyDeathEvent;
 import game.events.world.SoldierArrivalEvent;
@@ -29,7 +30,7 @@ public class GameStatisticsHolder implements Subscriber {
 
     @Getter
     private final List<EventListener<?>> eventListeners = List.of(
-            EventListener.of(this::handleEnemyArrivalEvent, EnemyArrivalEvent.class),
+            EventListener.of(this::handleEnemyArrival, EnemyArrivalEvent.class),
             EventListener.of(this::handleEnemyDeath, EnemyDeathEvent.class),
             EventListener.of(this::handleSoldierArrival, SoldierArrivalEvent.class));
 
@@ -46,10 +47,19 @@ public class GameStatisticsHolder implements Subscriber {
     }
 
 
-    private void handleEnemyArrivalEvent(EnemyArrivalEvent enemyArrivalEvent) {
+    private void handleEnemyArrival(EnemyArrivalEvent enemyArrivalEvent) {
         castle.damage(enemyArrivalEvent.monster().getDamage());
         final CastleHealthChangeEvent event = new CastleHealthChangeEvent(castle.getCurrentHealth());
         eventEmitter.emit(event);
+
+        if (castle.getCurrentHealth() == 0) {
+            emitGameOverEvent();
+        }
+    }
+
+    private void emitGameOverEvent() {
+        final GameOverEvent gameOverEvent = new GameOverEvent();
+        eventEmitter.emit(gameOverEvent);
     }
 
     private void handleEnemyDeath(EnemyDeathEvent enemyDeathEvent) {

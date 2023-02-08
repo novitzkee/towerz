@@ -73,15 +73,15 @@ public class Tower implements Paintable, TimeAware {
     }
 
     @Override
-    public void draw(DrawingTarget drawingTarget) {
+    public synchronized void draw(DrawingTarget drawingTarget) {
         towerSpriteMap.get(level).draw(position.add(TOWER_DRAWING_OFFSET), drawingTarget, DrawingPositioning.RELATIVE);
         projectiles.forEach(projectile -> projectile.draw(drawingTarget));
     }
 
     @Override
-    public void tick() {
+    public synchronized void tick() {
         towerMechanics.tick();
-        towerMechanics.getFiredProjectile().ifPresent(projectiles::add);
+        towerMechanics.fireProjectile().ifPresent(projectiles::add);
         clearProjectiles();
         projectiles.forEach(Projectile::tick);
     }

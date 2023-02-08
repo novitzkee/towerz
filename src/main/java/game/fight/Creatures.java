@@ -154,4 +154,8 @@ public class Creatures implements TimeAware, Paintable {
             case DEFENDER -> defendingCreatures.add(creature);
         }
     }
+
+    public int attackerCount() {
+        return attackingCreatures.size();
+    }
 }

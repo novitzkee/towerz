@@ -21,7 +21,7 @@ public class Vector2i implements Comparable<Vector2i> {
     }
 
     public Vector2i sub(Vector2i v) {
-        return new Vector2i(x - v.y, y - v.y);
+        return new Vector2i(x - v.x, y - v.y);
     }
 
     public Vector2i mul(int a) {

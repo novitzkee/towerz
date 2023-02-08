@@ -1,6 +1,7 @@
 package game.tower.projectiles;
 
 import engine.events.EventEmitter;
+import engine.geometry.Angle;
 import engine.geometry.Range;
 import engine.geometry.Vector2i;
 import engine.graphics.DrawingPositioning;
@@ -41,7 +42,7 @@ public class Projectile implements TimeAware, Removable, Paintable {
         this.realTarget = realTarget;
         this.realDistancePx = (int) Math.round(realTarget.sub(realSource).getLength());
         this.stats = stats;
-        this.sprite = sprite;
+        this.sprite = sprite.rotate(Angle.between(realSource, realTarget));
     }
 
     @Override

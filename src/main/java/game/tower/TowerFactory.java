@@ -63,7 +63,7 @@ public class TowerFactory {
         final Map<TowerLevel, Sprite> sprites = towerSpriteFactory.getArrowTowerSprites();
         final Map<TowerLevel, ImageIcon> icons = towerIconFactory.getArrowTowerIcons();
 
-        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, arrowTowerProjectileFactory, ARROW_TOWER_PROJECTILE_STATS);
+        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, arrowTowerProjectileFactory);
 
         return new Tower(ARROW_TOWER_STATS, sprites, icons, towerMechanics, position);
     }
@@ -72,7 +72,7 @@ public class TowerFactory {
         final Map<TowerLevel, Sprite> sprites = towerSpriteFactory.getElectricTowerSprites();
         final Map<TowerLevel, ImageIcon> icons = towerIconFactory.getElectricTowerIcons();
 
-        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, electricTowerProjectileFactory, ELECTRIC_TOWER_PROJECTILE_STATS);
+        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, electricTowerProjectileFactory);
 
         return new Tower(ELECTRIC_TOWER_STATS, sprites, icons, towerMechanics, position);
     }
@@ -81,7 +81,7 @@ public class TowerFactory {
         final Map<TowerLevel, Sprite> sprites = towerSpriteFactory.getCandyTowerSprites();
         final Map<TowerLevel, ImageIcon> icons = towerIconFactory.getCandyTowerIcons();
 
-        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, candyTowerProjectileFactory, CANDY_TOWER_PROJECTILE_STATS);
+        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, candyTowerProjectileFactory);
 
         return new Tower(CANDY_TOWER_STATS, sprites, icons, towerMechanics, position);
     }
@@ -90,7 +90,7 @@ public class TowerFactory {
         final Map<TowerLevel, Sprite> sprites = towerSpriteFactory.getBastionTowerSprites();
         final Map<TowerLevel, ImageIcon> icons = towerIconFactory.getBastionTowerIcons();
 
-        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, bastionTowerProjectileFactory, BASTION_TOWER_PROJECTILE_STATS);
+        final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, bastionTowerProjectileFactory);
 
         return new Tower(BASTION_TOWER_STATS,  sprites, icons, towerMechanics, position);
     }

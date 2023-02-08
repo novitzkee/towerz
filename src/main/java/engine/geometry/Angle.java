@@ -18,12 +18,12 @@ public class Angle {
 
     public static Angle between(Vector2i begin, Vector2i end) {
         final Vector2i displacement = end.sub(begin);
-        final double valueRadians = Math.atan2(displacement.getX(), displacement.getY());
+        final double valueRadians = -Math.atan2(displacement.getX(), displacement.getY()) + Math.PI;
         return new Angle(valueRadians);
     }
 
     private static double normalize(float value) {
-        return value % (2 * Math.PI);
+        return value;
     }
 
     public Vector2f asVector() {

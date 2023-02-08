@@ -1,9 +1,6 @@
 package game.engine;
 
-import engine.events.EventEmitter;
-import engine.events.EventRouter;
-import engine.events.SingleDispatchEventRouter;
-import engine.events.Subscriber;
+import engine.events.*;
 import engine.time.*;
 import engine.time.delegators.TickDelegator;
 import game.castle.Castle;
@@ -12,6 +9,7 @@ import game.creature.MonsterFactory;
 import game.creature.SoldierFactory;
 import game.creature.SoldierSpawner;
 import game.engine.loaders.*;
+import game.events.interaction.gameplay.GameOverEvent;
 import game.fight.Creatures;
 import game.fight.Fight;
 import game.fight.Towers;
@@ -97,6 +95,9 @@ public class ConfigurableGameEngine implements GameEngine {
         mainLoop.add(tickLoop);
         mainLoop.add(delegatedRepaintLoop);
         tickLoop.add(fight);
+
+        final EventListener<GameOverEvent> gameOverListener = EventListener.of(e -> tickLoop.stop(), GameOverEvent.class);
+        eventHandler.add(gameOverListener);
 
         return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world, mouseInteractionHandler);
     }

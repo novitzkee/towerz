@@ -3,12 +3,12 @@ package game.tower.utils;
 import engine.geometry.Range;
 import engine.geometry.Vector2i;
 import engine.time.TimeAware;
+import game.creature.Creature;
 import game.fight.Creatures;
 import game.tower.Tower;
 import game.tower.TowerLevel;
 import game.tower.projectiles.Projectile;
 import game.tower.projectiles.ProjectileFactory;
-import game.tower.projectiles.ProjectileStats;
 import game.world.GameGeometry;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,17 +21,15 @@ import java.util.Optional;
 public class TowerMechanics implements TimeAware {
 
     private static final Map<TowerLevel, Vector2i> IDLE_PROJECTILE_OFFSETS = Map.of(
-            TowerLevel.WEAK, new Vector2i(0, -80),
-            TowerLevel.MEDIUM, new Vector2i(0, -80),
-            TowerLevel.STRONG, new Vector2i(0, -100));
+            TowerLevel.WEAK, new Vector2i(0, -40),
+            TowerLevel.MEDIUM, new Vector2i(0, -60),
+            TowerLevel.STRONG, new Vector2i(0, -80));
 
     private final Creatures creatures;
 
     private final GameGeometry gameGeometry;
 
     private final ProjectileFactory projectileFactory;
-
-    private final Map<TowerLevel, ProjectileStats> projectileStats;
 
     private TowerLevel currentTowerLevel = TowerLevel.WEAK;
 
@@ -52,19 +50,26 @@ public class TowerMechanics implements TimeAware {
     }
 
     private void updateReloadCounter() {
-        reloadCounter = Math.min(reloadTime, ++reloadCounter);
+        reloadCounter++;
+        reloadCounter = Math.min(reloadTime, reloadCounter);
     }
 
     private boolean isReloaded() {
         return reloadCounter >= reloadTime;
     }
 
-    public Optional<Projectile> getFiredProjectile() {
+    public synchronized Optional<Projectile> fireProjectile() {
         if (!isReloaded()) return Optional.empty();
 
-        return creatures.getFirstMonsterInRange(currentRange)
-                .flatMap(distanceMap::getBestRendezvouzPosition)
+        final Optional<Creature> firstCreature = creatures.getFirstMonsterInRange(currentRange);
+
+        return firstCreature.flatMap(distanceMap::getBestRendezvouzPosition)
+                .or(() -> firstCreature.map(this::creatureMapPosition))
                 .map(this::createAndSendProjectile);
+    }
+
+    private Vector2i creatureMapPosition(Creature creature) {
+        return gameGeometry.toMapPosition(creature.getPathPosition());
     }
 
     private Projectile createAndSendProjectile(Vector2i mapTarget) {
@@ -72,7 +77,7 @@ public class TowerMechanics implements TimeAware {
         return projectileFactory.createProjectile(projectileShootingPosition, mapTarget, currentTowerLevel);
     }
 
-    public void calibrate(Tower tower) {
+    public synchronized void calibrate(Tower tower) {
         currentTowerLevel = tower.getLevel();
         reloadTime = tower.getCurrentTowerStats().reloadTime();
 
@@ -93,7 +98,7 @@ public class TowerMechanics implements TimeAware {
     }
 
     private int calculateRealTickDistance(Vector2i realFrom, Vector2i realTo, int projectileSpeed) {
-        final double tickDistance = realTo.sub(realFrom).getLength() / projectileSpeed;
+        final double tickDistance = realTo.sub(realFrom).getLength() / projectileSpeed - 5;
         return (int) Math.round(tickDistance);
     }
 }

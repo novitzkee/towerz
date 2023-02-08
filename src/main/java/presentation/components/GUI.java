@@ -31,6 +31,7 @@ public class GUI {
 
     private void configure(GameEngine gameEngine) {
         attachSubscriber(gameEngine.getEventRouter(), sidePanel);
+        attachSubscriber(gameEngine.getEventRouter(), worldPanel);
         gameEngine.getRepaintLoop().add(worldPanel::repaint);
     }
 
