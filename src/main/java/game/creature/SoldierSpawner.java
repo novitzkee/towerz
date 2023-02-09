@@ -2,6 +2,7 @@ package game.creature;
 
 import engine.action.Action;
 import engine.action.ConsecutiveAction;
+import engine.action.OneTimeAction;
 import engine.time.TimeAware;
 import game.fight.Creatures;
 import game.interactions.targets.SoldierSpawnInteractionTarget;
@@ -27,7 +28,7 @@ public class SoldierSpawner implements TimeAware {
         if (activeSpawnActions.isEmpty()) return;
         activeSpawnActions.peek().tick();
 
-        if(activeSpawnActions.peek().isGarbage()) {
+        if(activeSpawnActions.peek().isFinished()) {
             activeSpawnActions.poll();
         }
     }
@@ -40,16 +41,17 @@ public class SoldierSpawner implements TimeAware {
         }
 
         private void scheduleSpawn(List<Soldier> soldiers) {
-            final List<Runnable> spawningRunnables = soldiers.stream()
-                    .map(this::createSpawningRunnable)
+            final List<Action> spawnActions = soldiers.stream()
+                    .map(this::createSpawningAction)
                     .toList();
 
-            final Action spawningAction = new ConsecutiveAction(20, spawningRunnables);
+            final Action spawningAction = new ConsecutiveAction(20, spawnActions);
             activeSpawnActions.offer(spawningAction);
         }
 
-        private Runnable createSpawningRunnable(Soldier soldier) {
-            return () -> creatures.add(soldier, CreatureType.DEFENDER);
+        private Action createSpawningAction(Soldier soldier) {
+            final Runnable spawn = () -> creatures.add(soldier, CreatureType.DEFENDER);
+            return new OneTimeAction(spawn);
         }
     }
 }

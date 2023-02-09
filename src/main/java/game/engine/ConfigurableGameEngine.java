@@ -10,6 +10,7 @@ import game.creature.SoldierFactory;
 import game.creature.SoldierSpawner;
 import game.engine.loaders.*;
 import game.events.interaction.gameplay.GameOverEvent;
+import game.events.interaction.gameplay.GameWonEvent;
 import game.fight.Creatures;
 import game.fight.Fight;
 import game.fight.Towers;
@@ -67,7 +68,7 @@ public class ConfigurableGameEngine implements GameEngine {
 
         final Creatures creatures = new Creatures();
 
-        final EnemySpawner enemySpawner = new EnemySpawner(monsterFactory,  creatures);
+        final EnemySpawner enemySpawner = new EnemySpawner(eventHandler, monsterFactory,  creatures);
         final SoldierSpawner soldierSpawner = new SoldierSpawner(creatures);
 
         final TowerFactory towerFactory = new TowerFactory(eventHandler, map.getGameGeometry(), towerIconFactory, towerSpriteFactory, projectileSpriteFactory, creatures);
@@ -96,7 +97,10 @@ public class ConfigurableGameEngine implements GameEngine {
         mainLoop.add(delegatedRepaintLoop);
         tickLoop.add(fight);
 
+        final EventListener<GameWonEvent> gameWonEventListener = EventListener.of(e -> tickLoop.stop(), GameWonEvent.class);
         final EventListener<GameOverEvent> gameOverListener = EventListener.of(e -> tickLoop.stop(), GameOverEvent.class);
+
+        eventHandler.add(gameWonEventListener);
         eventHandler.add(gameOverListener);
 
         return new ConfigurableGameEngine(mainLoop, tickLoop, eventHandler, eventHandler, repaintLoop, world, mouseInteractionHandler);

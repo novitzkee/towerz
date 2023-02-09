@@ -19,7 +19,7 @@ public class RepeatedAction implements Action {
     public void tick() {
         counter++;
 
-        if (!isGarbage() && counter >= delayBetween) {
+        if (!isFinished() && counter >= delayBetween) {
             action.run();
             counter %= delayBetween;
             timesExecuted++;
@@ -27,7 +27,7 @@ public class RepeatedAction implements Action {
     }
 
     @Override
-    public boolean isGarbage() {
+    public boolean isFinished() {
         return timesExecuted >= timesToRepeat;
     }
 }
