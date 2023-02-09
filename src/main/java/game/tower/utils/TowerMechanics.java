@@ -63,7 +63,7 @@ public class TowerMechanics implements TimeAware {
 
         final Optional<Creature> firstCreature = creatures.getFirstMonsterInRange(currentRange);
 
-        return firstCreature.flatMap(distanceMap::getBestRendezvouzPosition)
+        return firstCreature.flatMap(distanceMap::getBestRendezvousPosition)
                 .or(() -> firstCreature.map(this::creatureMapPosition))
                 .map(this::createAndSendProjectile);
     }

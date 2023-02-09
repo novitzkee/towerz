@@ -9,14 +9,14 @@ public class SingleDispatchEventRouter implements EventEmitter, EventRouter {
 
     private final Map<Class<?>, Set<EventListener<?>>> listenersByEventType = new HashMap<>();
 
-    public void add(EventListener<?> element) {
-        final Class<?> eventClass = element.getEventClass();
-        listenersByEventType.merge(eventClass, Set.of(element), this::union);
+    public void add(EventListener<?> listener) {
+        final Class<?> eventClass = listener.getEventClass();
+        listenersByEventType.merge(eventClass, Set.of(listener), this::union);
     }
 
     @Override
-    public void addAll(Collection<EventListener<?>> elements) {
-        elements.forEach(this::add);
+    public void addAll(Collection<EventListener<?>> listeners) {
+        listeners.forEach(this::add);
     }
 
     private <T> Set<T> union(Set<T> first, Set<T> second) {
@@ -25,10 +25,15 @@ public class SingleDispatchEventRouter implements EventEmitter, EventRouter {
                 .collect(Collectors.toSet());
     }
 
-    public void remove(EventListener<?> element) {
-        final Class<?> eventClass = element.getEventClass();
+    public void remove(EventListener<?> listener) {
+        final Class<?> eventClass = listener.getEventClass();
         Optional.ofNullable(listenersByEventType.get(eventClass))
-                .ifPresent(set -> set.remove(element));
+                .ifPresent(set -> set.remove(listener));
+    }
+
+    @Override
+    public void removeAll(Collection<EventListener<?>> listeners) {
+        listeners.forEach(this::remove);
     }
 
     @Override
@@ -43,12 +48,5 @@ public class SingleDispatchEventRouter implements EventEmitter, EventRouter {
         listeners.stream()
                 .map(listener -> (EventListener<Object>)listener)
                 .forEach(listener -> listener.onEvent(event));
-    }
-
-    @Override
-    public Stream<EventListener<?>> getElements() {
-        return listenersByEventType.values()
-                .stream()
-                .flatMap(Collection::stream);
     }
 }

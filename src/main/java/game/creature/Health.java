@@ -13,8 +13,6 @@ public class Health {
         this.currentAmount = maxAmount;
     }
 
-    public void increase(int amount) { currentAmount = Math.min(currentAmount + amount, maxAmount); }
-
     public void decrease(int amount) {
         currentAmount = Math.max(currentAmount - amount, 0);
     }

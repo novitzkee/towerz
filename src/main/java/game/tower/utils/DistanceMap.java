@@ -18,7 +18,7 @@ public class DistanceMap {
         return new DistanceMap(List.of(), List.of());
     }
 
-    public Optional<Vector2i> getBestRendezvouzPosition(Creature creature) {
+    public Optional<Vector2i> getBestRendezvousPosition(Creature creature) {
         for (int i = 0; i < tickDistances.size() - 1; i++) {
             final int currentTickDistance = tickDistances.get(i);
             final Vector2i currentMapPosition = mapPositions.get(i);

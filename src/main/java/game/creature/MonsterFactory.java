@@ -27,11 +27,11 @@ public class MonsterFactory {
 
     public Enemy createButterfly() {
         final Animation animation = monsterAnimationFactory.getButterflyAnimation();
-        return new Enemy(eventEmitter, gameGeometry, animation, new Health(400), 6, 6);
+        return new Enemy(eventEmitter, gameGeometry, animation, new Health(700), 6, 6);
     }
 
     public Enemy createBeetle() {
         final Animation animation = monsterAnimationFactory.getBeetleAnimation();
-        return new Enemy(eventEmitter, gameGeometry, animation, new Health(1500), 3, 5);
+        return new Enemy(eventEmitter, gameGeometry, animation, new Health(1200), 3, 5);
     }
 }

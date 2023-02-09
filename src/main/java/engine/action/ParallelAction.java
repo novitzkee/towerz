@@ -14,7 +14,6 @@ public class ParallelAction implements Action {
         this(Arrays.asList(actions));
     }
 
-
     @Override
     public void tick() {
         actions.forEach(Action::tick);

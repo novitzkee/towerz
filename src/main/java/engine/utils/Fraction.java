@@ -17,8 +17,4 @@ public final class Fraction {
     public Fraction(int a, int b) {
         this((float) a / b);
     }
-
-    public Fraction mul(float f) {
-        return new Fraction(value * f);
-    }
 }
