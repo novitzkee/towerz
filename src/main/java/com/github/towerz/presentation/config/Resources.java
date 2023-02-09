@@ -6,7 +6,7 @@ public class Resources {
 
     public static final String WORLD_SPRITES_PATH = "sprites/map/world.png";
 
-    public static final String WORLD_MAP_PATH = "maps/map1.txt";
+    public static final String WORLD_MAP_PATH = "maps/map2.txt";
 
     public static final char GRASS_CHAR = 'O';
 

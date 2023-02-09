@@ -41,7 +41,7 @@ public class SidePanel extends JPanel implements Subscriber {
         setVisible(true);
         setBackground(Colors.STONE_GRAY);
 
-        final JLabel titleLabel = new JLabel("com.github.towerz.Towerz");
+        final JLabel titleLabel = new JLabel("Towerz");
         titleLabel.setFont(FontProvider.get().deriveFont(42f));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 

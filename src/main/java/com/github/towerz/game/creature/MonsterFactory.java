@@ -27,7 +27,7 @@ public class MonsterFactory {
 
     public Enemy createButterfly() {
         final Animation animation = monsterAnimationFactory.getButterflyAnimation();
-        return new Enemy(eventEmitter, gameGeometry, animation, new Health(700), 6, 6);
+        return new Enemy(eventEmitter, gameGeometry, animation, new Health(500), 6, 6);
     }
 
     public Enemy createBeetle() {

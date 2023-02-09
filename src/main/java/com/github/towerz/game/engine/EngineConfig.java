@@ -27,5 +27,6 @@ public class EngineConfig {
     @NonNull
     private final TowerSpriteFactory towerSpriteFactory;
 
+    @NonNull
     private final ProjectileSpriteFactory projectileSpriteFactory;
 }

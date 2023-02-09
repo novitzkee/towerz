@@ -58,11 +58,11 @@ public class WorldPanel extends JPanel implements Subscriber {
         setPreferredSize(new Dimension(WORLD_SIZE_PX.getX(), WORLD_SIZE_PX.getY()));
         setVisible(true);
 
-        gameOverLabel.setFont(FontProvider.get().deriveFont(100f));
+        gameOverLabel.setFont(FontProvider.get().deriveFont(120f));
         gameOverLabel.setHorizontalAlignment(JLabel.CENTER);
         gameOverLabel.setVerticalAlignment(JLabel.CENTER);
 
-        gameWonLabel.setFont(FontProvider.get().deriveFont(100f));
+        gameWonLabel.setFont(FontProvider.get().deriveFont(120f));
         gameWonLabel.setHorizontalAlignment(JLabel.CENTER);
         gameWonLabel.setVerticalAlignment(JLabel.CENTER);
 
