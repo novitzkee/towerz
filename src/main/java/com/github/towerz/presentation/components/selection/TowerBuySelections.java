@@ -14,11 +14,11 @@ import java.util.stream.Stream;
 @Getter
 public class TowerBuySelections implements SelectionChangeNotifier<TowerType> {
 
-    private static final int ARROW_TOWER_PRICE = 200;
+    private static final int ARROW_TOWER_PRICE = 500;
 
-    private static final int ELECTRIC_TOWER_PRICE = 500;
+    private static final int ELECTRIC_TOWER_PRICE = 1000;
 
-    private static final int CANDY_TOWER_PRICE = 1000;
+    private static final int CANDY_TOWER_PRICE = 1500;
 
     private static final int BASTION_TOWER_PRICE = 2000;
 

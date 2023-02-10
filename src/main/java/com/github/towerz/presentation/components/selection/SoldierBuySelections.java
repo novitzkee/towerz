@@ -14,13 +14,13 @@ import java.util.stream.Stream;
 @Getter
 public class SoldierBuySelections implements SelectionChangeNotifier<SoldierType> {
 
-    private static final int LIGHT_SOLDIERS_PRICE = 150;
+    private static final int LIGHT_SOLDIERS_PRICE = 250;
 
-    private static final int MEDIUM_SOLDIERS_PRICE = 200;
+    private static final int MEDIUM_SOLDIERS_PRICE = 300;
 
-    private static final int HEAVY_SOLDIERS_PRICE = 300;
+    private static final int HEAVY_SOLDIERS_PRICE = 500;
 
-    private static final int SKELETON_SOLDIERS_PRICE = 400;
+    private static final int SKELETON_SOLDIERS_PRICE = 700;
 
     private final BuySelection<SoldierType> lightSoldierSelection;
 

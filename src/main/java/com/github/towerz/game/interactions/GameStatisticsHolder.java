@@ -63,12 +63,12 @@ public class GameStatisticsHolder implements Subscriber {
     }
 
     private void handleEnemyDeath(EnemyDeathEvent enemyDeathEvent) {
-        final int goldToIncrease = enemyDeathEvent.enemy().getHealth().getMaxAmount() / 100;
+        final int goldToIncrease = enemyDeathEvent.enemy().getHealth().getMaxAmount() / 33;
         updateGoldAndNotify(goldToIncrease);
     }
 
     private void handleSoldierArrival(SoldierArrivalEvent soldierArrivalEvent) {
-        final int goldToIncrease = soldierArrivalEvent.soldier().getHealth().getMaxAmount() / 100;
+        final int goldToIncrease = soldierArrivalEvent.soldier().getHealth().getMaxAmount() / 33;
         updateGoldAndNotify(goldToIncrease);
     }
 
