@@ -11,9 +11,10 @@ import com.github.towerz.presentation.loaders.sprites.CastleSpriteResourceFactor
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,9 +32,15 @@ public class TextFileCastleLoader implements CastleLoader {
 
     @SneakyThrows
     private List<String> loadMapFile() {
-        final URL fileURL = Objects.requireNonNull(TextFileMapLoader.class.getClassLoader().getResource(WORLD_MAP_PATH));
-        final File file = new File(fileURL.toURI());
-        return Files.readAllLines(file.toPath());
+        final InputStream is = Objects.requireNonNull(TextFileMapLoader.class.getClassLoader().getResourceAsStream(WORLD_MAP_PATH));
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        final List<String> result = new ArrayList<>();
+        for(String line; (line = reader.readLine()) != null;) {
+            result.add(line);
+        }
+
+        return result;
     }
 
     @Override
