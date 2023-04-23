@@ -58,7 +58,7 @@ public class TextFileMapLoader implements MapLoader {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
         final List<String> result = new ArrayList<>();
-        for(String line; (line = reader.readLine()) != null;) {
+        for (String line; (line = reader.readLine()) != null; ) {
             result.add(line);
         }
 

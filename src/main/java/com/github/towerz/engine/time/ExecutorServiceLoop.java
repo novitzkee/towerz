@@ -23,14 +23,14 @@ public class ExecutorServiceLoop implements Loop {
 
     @Override
     public synchronized void start() {
-        if(isRunning) return;
+        if (isRunning) return;
         tasksForSubjects.keySet().forEach(sub -> tasksForSubjects.put(sub, scheduleTask(sub)));
         isRunning = true;
     }
 
     @Override
     public synchronized void stop() {
-        if(!isRunning) return;
+        if (!isRunning) return;
 
         tasksForSubjects.values().forEach(task -> task.cancel(false));
         tasksForSubjects.keySet().forEach(sub -> tasksForSubjects.put(sub, null));

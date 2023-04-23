@@ -68,7 +68,7 @@ public class ConfigurableGameEngine implements GameEngine {
 
         final Creatures creatures = new Creatures();
 
-        final EnemySpawner enemySpawner = new EnemySpawner(eventHandler, monsterFactory,  creatures);
+        final EnemySpawner enemySpawner = new EnemySpawner(eventHandler, monsterFactory, creatures);
         final SoldierSpawner soldierSpawner = new SoldierSpawner(creatures);
 
         final TowerFactory towerFactory = new TowerFactory(eventHandler, map.getGameGeometry(), towerIconFactory, towerSpriteFactory, projectileSpriteFactory, creatures);

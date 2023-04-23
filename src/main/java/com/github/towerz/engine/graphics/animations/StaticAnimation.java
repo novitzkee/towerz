@@ -22,5 +22,6 @@ public class StaticAnimation extends IndexingAnimation {
     }
 
     @Override
-    protected void update() { }
+    protected void update() {
+    }
 }

@@ -33,7 +33,7 @@ public class ConsecutiveAction implements Action {
         final Action currentAction = actions.get(currentActionIndex);
         currentAction.tick();
 
-        if(currentAction.isFinished()) {
+        if (currentAction.isFinished()) {
             currentActionIndex++;
             counter = 0;
         }

@@ -57,9 +57,9 @@ public class Vector2i implements Comparable<Vector2i> {
 
     @Override
     public int compareTo(Vector2i v) {
-        if(this.equals(v)) {
+        if (this.equals(v)) {
             return 0;
-        } else if(this.x <= v.x && this.y <= v.y) {
+        } else if (this.x <= v.x && this.y <= v.y) {
             return -1;
         } else {
             return 1;

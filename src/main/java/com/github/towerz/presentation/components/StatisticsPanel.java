@@ -96,6 +96,6 @@ public class StatisticsPanel extends JPanel implements Subscriber {
     }
 
     private void updateWave(WaveElapsedEvent waveElapsedEvent) {
-        waveLabel.setText(String.format("%d/%d",waveElapsedEvent.currentWave() + 1, waveElapsedEvent.totalWaves()));
+        waveLabel.setText(String.format("%d/%d", waveElapsedEvent.currentWave() + 1, waveElapsedEvent.totalWaves()));
     }
 }

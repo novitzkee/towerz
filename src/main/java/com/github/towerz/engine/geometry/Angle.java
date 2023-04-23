@@ -14,7 +14,9 @@ public class Angle {
         return new Angle(normalize(value));
     }
 
-    public static Angle fromDegrees(double degrees) { return new Angle(Math.toRadians(degrees)); }
+    public static Angle fromDegrees(double degrees) {
+        return new Angle(Math.toRadians(degrees));
+    }
 
     public static Angle between(Vector2i begin, Vector2i end) {
         final Vector2i displacement = end.sub(begin);

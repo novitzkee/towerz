@@ -9,8 +9,8 @@ public class TowerStatsConfiguration {
 
     public static final Map<TowerLevel, TowerStats> ARROW_TOWER_STATS = Map.of(
             TowerLevel.WEAK, new TowerStats(4, 80, 300, 100),
-            TowerLevel.MEDIUM, new TowerStats(4, 65,  400, 125),
-            TowerLevel.STRONG, new TowerStats(4, 45,  500, 150));
+            TowerLevel.MEDIUM, new TowerStats(4, 65, 400, 125),
+            TowerLevel.STRONG, new TowerStats(4, 45, 500, 150));
 
     public static final Map<TowerLevel, ProjectileStats> ARROW_TOWER_PROJECTILE_STATS = Map.of(
             TowerLevel.WEAK, new ProjectileStats(180, 21),
@@ -18,7 +18,7 @@ public class TowerStatsConfiguration {
             TowerLevel.STRONG, new ProjectileStats(360, 21));
 
     public static final Map<TowerLevel, TowerStats> ELECTRIC_TOWER_STATS = Map.of(
-            TowerLevel.WEAK, new TowerStats(4, 4,450, 100),
+            TowerLevel.WEAK, new TowerStats(4, 4, 450, 100),
             TowerLevel.MEDIUM, new TowerStats(4, 3, 550, 125),
             TowerLevel.STRONG, new TowerStats(5, 2, 600, 150));
 

@@ -19,11 +19,11 @@ public class ImageToIconConverter {
 
     public static ImageIcon createIcon(String filename, Rect2i subImageLocation, double scaleFactor) {
         final BufferedImage wholeImage = loadImage(filename);
-        
+
         final BufferedImage subImage = wholeImage.getSubimage(
                 subImageLocation.getPosition().getX(), subImageLocation.getPosition().getY(),
                 subImageLocation.getSize().getX(), subImageLocation.getSize().getY());
-        
+
         final BufferedImage scaledImage = transformSize(subImage, scaleFactor);
         return new ImageIcon(scaledImage);
     }

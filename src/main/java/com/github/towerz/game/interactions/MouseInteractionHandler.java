@@ -119,7 +119,7 @@ public class MouseInteractionHandler implements Paintable, Subscriber {
     private void handleTowerSellEvent(TowerSellEvent towerSellEvent) {
         final Upgradeable towerUpgradeable = towerSellEvent.tower();
 
-        if(towerBuildingInteractionTarget.get(towerUpgradeable.getPosition()).isPresent()) {
+        if (towerBuildingInteractionTarget.get(towerUpgradeable.getPosition()).isPresent()) {
             gameStatisticsHolder.sell(towerUpgradeable.getSellPrice());
             towerBuildingInteractionTarget.remove(towerUpgradeable.getPosition());
             notifyTowerSelectionChanged(null);

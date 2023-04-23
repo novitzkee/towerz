@@ -41,7 +41,7 @@ public class Transformations {
 
     public static AffineTransform scale(Image image, double scale) {
         final AffineTransform tx = AffineTransform.getScaleInstance(scale, scale);
-        tx.translate(0 , 0);
+        tx.translate(0, 0);
         return tx;
     }
 

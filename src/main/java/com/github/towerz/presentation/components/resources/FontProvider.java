@@ -13,7 +13,7 @@ public class FontProvider {
     private static Font FONT;
 
     public static Font get() {
-        if(FONT == null) {
+        if (FONT == null) {
             FONT = loadFont();
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(FONT);
         }

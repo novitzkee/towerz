@@ -25,7 +25,7 @@ public class ScalingDelegator implements TimeAware {
     public synchronized void tick() {
         remainingTicks += scale;
 
-        if(remainingTicks >= 1)
+        if (remainingTicks >= 1)
             executeRemainingTicks();
     }
 

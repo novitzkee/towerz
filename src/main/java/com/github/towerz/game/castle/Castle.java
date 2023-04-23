@@ -27,7 +27,7 @@ public class Castle implements Paintable {
     private State getState() {
         final float healthiness = health.getHealthiness();
 
-        if(healthiness < 0.33f) {
+        if (healthiness < 0.33f) {
             return State.BAD;
         } else if (0.33f <= healthiness && healthiness < 0.66f) {
             return State.MEDIUM;

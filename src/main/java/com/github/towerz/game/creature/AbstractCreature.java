@@ -85,7 +85,7 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public Vector2i getMapPositionInTicks(int ticks) {
-        if(state == CreatureState.WALKING) {
+        if (state == CreatureState.WALKING) {
             final int positionInTicks = creatureBehaviour.step(ticks);
             return gameGeometry.toMapPosition(positionInTicks);
         } else {

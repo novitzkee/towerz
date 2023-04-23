@@ -90,6 +90,6 @@ public class TowerFactory {
 
         final TowerMechanics towerMechanics = new TowerMechanics(creatures, gameGeometry, bastionTowerProjectileFactory);
 
-        return new Tower(TowerStatsConfiguration.BASTION_TOWER_STATS,  sprites, icons, towerMechanics, position);
+        return new Tower(TowerStatsConfiguration.BASTION_TOWER_STATS, sprites, icons, towerMechanics, position);
     }
 }

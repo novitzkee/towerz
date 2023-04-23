@@ -36,7 +36,7 @@ public class TextFileCastleLoader implements CastleLoader {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
         final List<String> result = new ArrayList<>();
-        for(String line; (line = reader.readLine()) != null;) {
+        for (String line; (line = reader.readLine()) != null; ) {
             result.add(line);
         }
 
@@ -55,7 +55,7 @@ public class TextFileCastleLoader implements CastleLoader {
     private Vector2i findCastlePosition(List<String> map) {
         for (int y = 0; y < WORLD_SIZE.getY(); y++) {
             final char character = map.get(y).charAt(CASTLE_X_LOCATION);
-            if(character == CASTLE_CHAR) {
+            if (character == CASTLE_CHAR) {
                 return new Vector2i(CASTLE_X_LOCATION, y);
             }
         }

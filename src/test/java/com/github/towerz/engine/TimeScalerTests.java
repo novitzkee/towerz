@@ -31,7 +31,7 @@ public class TimeScalerTests {
         final ScalingDelegator scaledCounter = new ScalingDelegator(tickCounter);
         scaledCounter.setScale(scale);
 
-        for(int i = 0; i < totalTickCount; i++) {
+        for (int i = 0; i < totalTickCount; i++) {
             scaledCounter.tick();
         }
 

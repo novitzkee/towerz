@@ -46,7 +46,7 @@ public class SingleDispatchEventRouter implements EventEmitter, EventRouter {
     @SuppressWarnings("unchecked") // Not elegant but type system won't let me do it otherwise.
     private void castAndDispatch(Set<com.github.towerz.engine.events.EventListener<?>> listeners, Object event) {
         listeners.stream()
-                .map(listener -> (EventListener<Object>)listener)
+                .map(listener -> (EventListener<Object>) listener)
                 .forEach(listener -> listener.onEvent(event));
     }
 }

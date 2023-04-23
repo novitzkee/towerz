@@ -28,7 +28,7 @@ public class SoldierSpawner implements TimeAware {
         if (activeSpawnActions.isEmpty()) return;
         activeSpawnActions.peek().tick();
 
-        if(activeSpawnActions.peek().isFinished()) {
+        if (activeSpawnActions.peek().isFinished()) {
             activeSpawnActions.poll();
         }
     }

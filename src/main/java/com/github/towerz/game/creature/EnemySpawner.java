@@ -37,7 +37,7 @@ public class EnemySpawner implements TimeAware {
     private Action spawnerAction() {
         final List<Action> spawnActions = new ArrayList<>();
 
-        for(int i = 1; i < TOTAL_WAVE_AMOUNT - 1; i++) {
+        for (int i = 1; i < TOTAL_WAVE_AMOUNT - 1; i++) {
             spawnActions.add(spawnNextWaveAndWaitForNoEnemyAction(i));
         }
 
