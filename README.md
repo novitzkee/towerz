@@ -1,5 +1,7 @@
 ## Towerz
 Simple tower defence game where player's objective is to survive consecutive waves of enemies.
+This project is a challenge to build something from basic Java AWT components.
+No third party packages are used (beside lombok or testing dependencies).
 
 ### How to run
 Please make sure you have JDK 17 installed.<br/>
